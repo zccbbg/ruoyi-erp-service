@@ -18,10 +18,10 @@
 
 ## 前端项目地址
 #### gitee
-[https://gitee.com/zccbbg/ruo-yi-wms-vue](https://gitee.com/zccbbg/ruo-yi-wms-vue)
+[https://gitee.com/zccbbg/ruoyi-erp-vue](https://gitee.com/zccbbg/ruoyi-erp-vue)
 
 #### github
-[https://github.com/zccbbg/RuoYi-WMS-VUE](https://github.com/zccbbg/RuoYi-WMS-VUE)
+[https://github.com/zccbbg/ruoyi-erp-vue](https://github.com/zccbbg/ruoyi-erp-vue)
 
 ## CSDN实战技术专栏
 关注文末公众号回复：星球
