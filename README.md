@@ -9,7 +9,7 @@
 > 项目代码、文档 均开源免费可商用 遵循开源协议在项目中保留开源协议文件即可<br>
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
 
-若依wms是一套基于若依的wms仓库管理系统，支持lodop和网页打印入库单、出库单。毫无保留给个人及企业免费使用。
+若依erp是一套基于若依的erp管理系统，支持lodop和网页打印入库单、出库单。毫无保留给个人及企业免费使用。
 * 前端采用Vue、Element UI。
 * 后端采用Spring Boot、Spring Security、Redis & Jwt。
 * 权限认证使用Jwt，支持多终端认证系统。
@@ -23,24 +23,14 @@
 #### github
 [https://github.com/zccbbg/ruoyi-erp-vue](https://github.com/zccbbg/ruoyi-erp-vue)
 
-## CSDN实战技术专栏
+## 若依实战技术专栏
 关注文末公众号回复：星球
 
 ## 在线体验
-- 最近版V2 Lite演示地址：http://cangku.ichengle.top/
-- 最新版V2 Advance演示地址：http://kucun.ichengle.top
-- 旧版V1演示地址：http://wms.ichengle.top
 
-## 不同分支介绍
-`lite` jdk17+vue3，支持多仓库，没有库区概念，操作简单，覆盖大部分库存应用场景。
 
-`advance` jdk17+vue3，支持多仓库、多库区，记录生产日期、过期日期、sn，可适配一物一码，操作相对复杂。
 
-`v1` jdk8+vue2
-
-`master` 同步lite分支
-
-## 若依wms功能
+## 若依erp功能
 1. 首页：库存预警与到期提醒、基础数据报表展示
 2. 仓库/库区：管理维护仓库基础数据
 3. 物料：管理维护物料基础数据
