@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi-wms</artifactId>
+    <artifactId>ruoyi-erp</artifactId>
     <version>${revision}</version>
 
-    <name>ruoyi-wms</name>
+    <name>ruoyi-erp</name>
     <url>https://gitee.com/zccbbg/wms-ruoyi</url>
-    <description>ruoyi-wms后台管理系统</description>
+    <description>ruoyi-erp后台管理系统</description>
 
     <properties>
         <revision>5.2.0</revision>
@@ -322,7 +322,7 @@
 
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-wms-service</artifactId>
+                <artifactId>ruoyi-erp-service</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -330,7 +330,7 @@
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin-wms</module>
+        <module>ruoyi-admin-erp</module>
         <module>ruoyi-common</module>
         <module>ruoyi-modules</module>
     </modules>
