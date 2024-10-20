@@ -322,7 +322,7 @@
 
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-erp-service</artifactId>
+                <artifactId>ruoyi-admin-erp</artifactId>
                 <version>${revision}</version>
             </dependency>
 
