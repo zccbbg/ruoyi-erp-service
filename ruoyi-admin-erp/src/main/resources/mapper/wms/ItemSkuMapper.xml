@@ -4,11 +4,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.wms.mapper.ItemSkuMapper">
 
-    <resultMap id="itemSkuMapVo" type="com.ruoyi.wms.domain.vo.ItemSkuMapVo">
-        <association property="item" javaType="com.ruoyi.wms.domain.vo.ItemVo">
+    <resultMap id="itemSkuMapVo" type="com.ruoyi.erp.domain.vo.ItemSkuMapVo">
+        <association property="item" javaType="com.ruoyi.erp.domain.vo.ItemVo">
             <id property="id" column="item_id"/> <!-- 映射 item 的 id -->
         </association>
-        <association property="itemSku" javaType="com.ruoyi.wms.domain.vo.ItemSkuVo">
+        <association property="itemSku" javaType="com.ruoyi.erp.domain.vo.ItemSkuVo">
             <id property="id" column="sku_id"/> <!-- 映射 item 的 id -->
         </association>
     </resultMap>
