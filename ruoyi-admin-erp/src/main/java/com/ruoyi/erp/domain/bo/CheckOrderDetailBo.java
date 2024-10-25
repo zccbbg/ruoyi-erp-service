@@ -1,6 +1,6 @@
 package com.ruoyi.erp.domain.bo;
 
-import com.ruoyi.erp.domain.entity.CheckOrderDetail;
+import com.ruoyi.erp.domain.entity.CheckDocDetail;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = CheckOrderDetail.class, reverseConvertGenerate = false)
+@AutoMapper(target = CheckDocDetail.class, reverseConvertGenerate = false)
 public class CheckOrderDetailBo extends BaseOrderDetailBo {
 
     /**

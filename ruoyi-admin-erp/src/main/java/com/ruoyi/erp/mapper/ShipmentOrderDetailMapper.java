@@ -1,6 +1,6 @@
 package com.ruoyi.erp.mapper;
 
-import com.ruoyi.erp.domain.entity.ShipmentOrderDetail;
+import com.ruoyi.erp.domain.entity.ShipmentDocDetail;
 import com.ruoyi.erp.domain.vo.ShipmentOrderDetailVo;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 
@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-08-01
  */
-public interface ShipmentOrderDetailMapper extends BaseMapperPlus<ShipmentOrderDetail, ShipmentOrderDetailVo> {
+public interface ShipmentOrderDetailMapper extends BaseMapperPlus<ShipmentDocDetail, ShipmentOrderDetailVo> {
 
 }

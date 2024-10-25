@@ -1,6 +1,6 @@
 package com.ruoyi.erp.domain.bo;
 
-import com.ruoyi.erp.domain.entity.ShipmentOrderDetail;
+import com.ruoyi.erp.domain.entity.ShipmentDocDetail;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMappers({
-    @AutoMapper(target = ShipmentOrderDetail.class, reverseConvertGenerate = false),
+    @AutoMapper(target = ShipmentDocDetail.class, reverseConvertGenerate = false),
     @AutoMapper(target = InventoryBo.class, reverseConvertGenerate = false)
 })
 public class ShipmentOrderDetailBo extends BaseOrderDetailBo{

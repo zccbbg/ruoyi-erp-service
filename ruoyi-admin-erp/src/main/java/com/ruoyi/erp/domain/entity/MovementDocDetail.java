@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("wms_movement_order_detail")
-public class MovementOrderDetail extends BaseOrderDetail {
+public class MovementDocDetail extends BaseDocDetail {
 
     /**
      * 源仓库

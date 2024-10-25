@@ -9,7 +9,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.domain.bo.CheckOrderDetailBo;
-import com.ruoyi.erp.domain.entity.CheckOrderDetail;
+import com.ruoyi.erp.domain.entity.CheckDocDetail;
 import com.ruoyi.erp.domain.vo.CheckOrderDetailVo;
 import com.ruoyi.erp.mapper.CheckOrderDetailMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper, CheckOrderDetail> {
+public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper, CheckDocDetail> {
 
     private final CheckOrderDetailMapper checkOrderDetailMapper;
     private final ItemSkuService itemSkuService;
@@ -44,7 +44,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
      * 查询库存盘点单据详情列表
      */
     public TableDataInfo<CheckOrderDetailVo> queryPageList(CheckOrderDetailBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<CheckOrderDetail> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
         Page<CheckOrderDetailVo> result = checkOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         if (CollUtil.isEmpty(result.getRecords())) {
             return TableDataInfo.build(result);
@@ -57,18 +57,18 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
      * 查询库存盘点单据详情列表
      */
     public List<CheckOrderDetailVo> queryList(CheckOrderDetailBo bo) {
-        LambdaQueryWrapper<CheckOrderDetail> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
         return checkOrderDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<CheckOrderDetail> buildQueryWrapper(CheckOrderDetailBo bo) {
+    private LambdaQueryWrapper<CheckDocDetail> buildQueryWrapper(CheckOrderDetailBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<CheckOrderDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, CheckOrderDetail::getOrderId, bo.getOrderId());
-        lqw.eq(bo.getSkuId() != null, CheckOrderDetail::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, CheckOrderDetail::getQuantity, bo.getQuantity());
-        lqw.eq(bo.getCheckQuantity() != null, CheckOrderDetail::getCheckQuantity, bo.getCheckQuantity());
-        lqw.eq(bo.getWarehouseId() != null, CheckOrderDetail::getWarehouseId, bo.getWarehouseId());
+        LambdaQueryWrapper<CheckDocDetail> lqw = Wrappers.lambdaQuery();
+        lqw.eq(bo.getOrderId() != null, CheckDocDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getSkuId() != null, CheckDocDetail::getSkuId, bo.getSkuId());
+        lqw.eq(bo.getQuantity() != null, CheckDocDetail::getQuantity, bo.getQuantity());
+        lqw.eq(bo.getCheckQuantity() != null, CheckDocDetail::getCheckQuantity, bo.getCheckQuantity());
+        lqw.eq(bo.getWarehouseId() != null, CheckDocDetail::getWarehouseId, bo.getWarehouseId());
         lqw.apply(bo.getHaveProfitAndLoss() != null && bo.getHaveProfitAndLoss(), "quantity != check_quantity");
         return lqw;
     }
@@ -77,7 +77,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
      * 新增库存盘点单据详情
      */
     public void insertByBo(CheckOrderDetailBo bo) {
-        CheckOrderDetail add = MapstructUtils.convert(bo, CheckOrderDetail.class);
+        CheckDocDetail add = MapstructUtils.convert(bo, CheckDocDetail.class);
         checkOrderDetailMapper.insert(add);
     }
 
@@ -85,7 +85,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
      * 修改库存盘点单据详情
      */
     public void updateByBo(CheckOrderDetailBo bo) {
-        CheckOrderDetail update = MapstructUtils.convert(bo, CheckOrderDetail.class);
+        CheckDocDetail update = MapstructUtils.convert(bo, CheckDocDetail.class);
         checkOrderDetailMapper.updateById(update);
     }
 
@@ -97,7 +97,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     }
 
     @Transactional
-    public void saveDetails(List<CheckOrderDetail> list) {
+    public void saveDetails(List<CheckDocDetail> list) {
         if (CollUtil.isEmpty(list)) {
             return;
         }

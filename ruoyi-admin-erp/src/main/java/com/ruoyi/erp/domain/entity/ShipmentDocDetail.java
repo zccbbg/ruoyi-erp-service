@@ -5,20 +5,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 入库单详情对象 wms_receipt_order_detail
+ * 出库单详情对象 wms_shipment_order_detail
  *
  * @author zcc
- * @date 2024-07-19
+ * @date 2024-08-01
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_receipt_order_detail")
-public class ReceiptOrderDetail extends BaseOrderDetail {
+@TableName("wms_shipment_order_detail")
+public class ShipmentDocDetail extends BaseDocDetail {
 
     /**
      * 所属仓库
      */
     private Long warehouseId;
-
-
 }

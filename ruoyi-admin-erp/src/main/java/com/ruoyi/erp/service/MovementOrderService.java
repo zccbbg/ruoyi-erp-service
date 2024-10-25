@@ -13,8 +13,8 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.domain.bo.MovementOrderBo;
-import com.ruoyi.erp.domain.entity.MovementOrder;
-import com.ruoyi.erp.domain.entity.MovementOrderDetail;
+import com.ruoyi.erp.domain.entity.MovementDoc;
+import com.ruoyi.erp.domain.entity.MovementDocDetail;
 import com.ruoyi.erp.domain.vo.MovementOrderVo;
 import com.ruoyi.erp.mapper.MovementOrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class MovementOrderService {
      * 查询移库单列表
      */
     public TableDataInfo<MovementOrderVo> queryPageList(MovementOrderBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<MovementOrder> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
         Page<MovementOrderVo> result = movementOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -68,18 +68,18 @@ public class MovementOrderService {
      * 查询移库单列表
      */
     public List<MovementOrderVo> queryList(MovementOrderBo bo) {
-        LambdaQueryWrapper<MovementOrder> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
         return movementOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<MovementOrder> buildQueryWrapper(MovementOrderBo bo) {
+    private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementOrderBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<MovementOrder> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), MovementOrder::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getSourceWarehouseId() != null, MovementOrder::getSourceWarehouseId, bo.getSourceWarehouseId());
-        lqw.eq(bo.getTargetWarehouseId() != null, MovementOrder::getTargetWarehouseId, bo.getTargetWarehouseId());
-        lqw.eq(bo.getOrderStatus() != null, MovementOrder::getOrderStatus, bo.getOrderStatus());
-        lqw.eq(bo.getTotalQuantity() != null, MovementOrder::getTotalQuantity, bo.getTotalQuantity());
+        LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), MovementDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(bo.getSourceWarehouseId() != null, MovementDoc::getSourceWarehouseId, bo.getSourceWarehouseId());
+        lqw.eq(bo.getTargetWarehouseId() != null, MovementDoc::getTargetWarehouseId, bo.getTargetWarehouseId());
+        lqw.eq(bo.getOrderStatus() != null, MovementDoc::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getTotalQuantity() != null, MovementDoc::getTotalQuantity, bo.getTotalQuantity());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -92,11 +92,11 @@ public class MovementOrderService {
         // 1.校验移库单号唯一性
         validateMovementOrderNo(bo.getOrderNo());
         // 2.创建移库单
-        MovementOrder add = MapstructUtils.convert(bo, MovementOrder.class);
+        MovementDoc add = MapstructUtils.convert(bo, MovementDoc.class);
         movementOrderMapper.insert(add);
         bo.setId(add.getId());
         // 3.创建移库单明细
-        List<MovementOrderDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), MovementOrderDetail.class);
+        List<MovementDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         addDetailList.forEach(it -> {
             it.setOrderId(add.getId());
         });
@@ -104,8 +104,8 @@ public class MovementOrderService {
     }
 
     private void validateMovementOrderNo(String movementOrderNo) {
-        LambdaQueryWrapper<MovementOrder> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(MovementOrder::getOrderNo, movementOrderNo);
+        LambdaQueryWrapper<MovementDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
+        lambdaQueryWrapper.eq(MovementDoc::getOrderNo, movementOrderNo);
         if (movementOrderMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("移库单号重复，请手动修改");
         }
@@ -117,10 +117,10 @@ public class MovementOrderService {
     @Transactional
     public void updateByBo(MovementOrderBo bo) {
         // 1.更新移库单
-        MovementOrder update = MapstructUtils.convert(bo, MovementOrder.class);
+        MovementDoc update = MapstructUtils.convert(bo, MovementDoc.class);
         movementOrderMapper.updateById(update);
         // 2.保存移库单明细
-        List<MovementOrderDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementOrderDetail.class);
+        List<MovementDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
         movementOrderDetailService.saveDetails(detailList);
     }

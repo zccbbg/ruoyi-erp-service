@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("wms_check_order_detail")
-public class CheckOrderDetail extends BaseOrderDetail {
+public class CheckDocDetail extends BaseDocDetail {
 
     /**
      * 盘点数量

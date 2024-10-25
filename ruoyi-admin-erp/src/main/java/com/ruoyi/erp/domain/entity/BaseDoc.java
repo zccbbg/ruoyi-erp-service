@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseOrder extends BaseEntity {
+public class BaseDoc extends BaseEntity {
 
     /**
      *

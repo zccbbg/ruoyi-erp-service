@@ -1,7 +1,7 @@
 package com.ruoyi.erp.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
-import com.ruoyi.erp.domain.entity.CheckOrder;
+import com.ruoyi.erp.domain.entity.CheckDoc;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-@AutoMapper(target = CheckOrder.class)
+@AutoMapper(target = CheckDoc.class)
 public class CheckOrderVo extends BaseOrderVo<CheckOrderDetailVo> {
 
 }

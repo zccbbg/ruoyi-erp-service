@@ -3,7 +3,7 @@ package com.ruoyi.erp.domain.bo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.erp.domain.entity.Inventory;
-import com.ruoyi.erp.domain.entity.MovementOrderDetail;
+import com.ruoyi.erp.domain.entity.MovementDocDetail;
 import io.github.linpeilie.annotations.AutoMapper;
 import io.github.linpeilie.annotations.AutoMappers;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMappers({
-    @AutoMapper(target = MovementOrderDetail.class, reverseConvertGenerate = false),
+    @AutoMapper(target = MovementDocDetail.class, reverseConvertGenerate = false),
     @AutoMapper(target = Inventory.class, reverseConvertGenerate = false)
 })
 public class MovementOrderDetailBo extends BaseOrderDetailBo {

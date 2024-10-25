@@ -13,8 +13,8 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.domain.bo.CheckOrderBo;
 import com.ruoyi.erp.domain.bo.CheckOrderDetailBo;
-import com.ruoyi.erp.domain.entity.CheckOrder;
-import com.ruoyi.erp.domain.entity.CheckOrderDetail;
+import com.ruoyi.erp.domain.entity.CheckDoc;
+import com.ruoyi.erp.domain.entity.CheckDocDetail;
 import com.ruoyi.erp.domain.vo.CheckOrderVo;
 import com.ruoyi.erp.mapper.CheckOrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class CheckOrderService {
      * 查询库存盘点单据列表
      */
     public TableDataInfo<CheckOrderVo> queryPageList(CheckOrderBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<CheckOrder> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
         Page<CheckOrderVo> result = checkOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -68,17 +68,17 @@ public class CheckOrderService {
      * 查询库存盘点单据列表
      */
     public List<CheckOrderVo> queryList(CheckOrderBo bo) {
-        LambdaQueryWrapper<CheckOrder> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
         return checkOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<CheckOrder> buildQueryWrapper(CheckOrderBo bo) {
+    private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckOrderBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<CheckOrder> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), CheckOrder::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getOrderStatus() != null, CheckOrder::getOrderStatus, bo.getOrderStatus());
-        lqw.eq(bo.getTotalQuantity() != null, CheckOrder::getTotalQuantity, bo.getTotalQuantity());
-        lqw.eq(bo.getWarehouseId() != null, CheckOrder::getWarehouseId, bo.getWarehouseId());
+        LambdaQueryWrapper<CheckDoc> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), CheckDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(bo.getOrderStatus() != null, CheckDoc::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getTotalQuantity() != null, CheckDoc::getTotalQuantity, bo.getTotalQuantity());
+        lqw.eq(bo.getWarehouseId() != null, CheckDoc::getWarehouseId, bo.getWarehouseId());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -91,17 +91,17 @@ public class CheckOrderService {
         // 校验盘库单号唯一性
         validateCheckOrderNo(bo.getOrderNo());
         // 创建盘库单
-        CheckOrder add = MapstructUtils.convert(bo, CheckOrder.class);
+        CheckDoc add = MapstructUtils.convert(bo, CheckDoc.class);
         checkOrderMapper.insert(add);
         // 创建盘库单明细
-        List<CheckOrderDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), CheckOrderDetail.class);
+        List<CheckDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
         checkOrderDetailService.saveDetails(addDetailList);
     }
 
     private void validateCheckOrderNo(String checkOrderNo) {
-        LambdaQueryWrapper<CheckOrder> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(CheckOrder::getOrderNo, checkOrderNo);
+        LambdaQueryWrapper<CheckDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
+        lambdaQueryWrapper.eq(CheckDoc::getOrderNo, checkOrderNo);
         if (checkOrderMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("盘库单号重复，请手动修改");
         }
@@ -113,10 +113,10 @@ public class CheckOrderService {
     @Transactional
     public void updateByBo(CheckOrderBo bo) {
         // 更新盘库单
-        CheckOrder update = MapstructUtils.convert(bo, CheckOrder.class);
+        CheckDoc update = MapstructUtils.convert(bo, CheckDoc.class);
         checkOrderMapper.updateById(update);
         // 保存盘库单明细
-        List<CheckOrderDetail> detailList = MapstructUtils.convert(bo.getDetails(), CheckOrderDetail.class);
+        List<CheckDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
         checkOrderDetailService.saveDetails(detailList);
     }

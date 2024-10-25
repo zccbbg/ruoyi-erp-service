@@ -2,7 +2,7 @@ package com.ruoyi.erp.domain.bo;
 
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
-import com.ruoyi.erp.domain.entity.ReceiptOrder;
+import com.ruoyi.erp.domain.entity.OtherReceipt;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = ReceiptOrder.class, reverseConvertGenerate = false)
+@AutoMapper(target = OtherReceipt.class, reverseConvertGenerate = false)
 public class ReceiptOrderBo extends BaseOrderBo<ReceiptOrderDetailBo> {
 
     /**
