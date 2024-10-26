@@ -18,7 +18,7 @@ public class BaseDocDetail extends BaseEntity {
     /**
      * 入库单号
      */
-    private Long orderId;
+    private Long docId;
     /**
      * 规格id
      */

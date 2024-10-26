@@ -17,8 +17,8 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.domain.bo.ReceiptOrderBo;
 import com.ruoyi.erp.domain.bo.ReceiptOrderDetailBo;
-import com.ruoyi.erp.domain.entity.OtherReceipt;
-import com.ruoyi.erp.domain.entity.OtherReceiptDetail;
+import com.ruoyi.erp.domain.entity.OtherReceiptDoc;
+import com.ruoyi.erp.domain.entity.OtherReceiptDocDetail;
 import com.ruoyi.erp.domain.vo.ReceiptOrderVo;
 import com.ruoyi.erp.mapper.ReceiptOrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class ReceiptOrderService {
      * 查询入库单列表
      */
     public TableDataInfo<ReceiptOrderVo> queryPageList(ReceiptOrderBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<OtherReceipt> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherReceiptDoc> lqw = buildQueryWrapper(bo);
         Page<ReceiptOrderVo> result = receiptOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -68,19 +68,19 @@ public class ReceiptOrderService {
      * 查询入库单列表
      */
     public List<ReceiptOrderVo> queryList(ReceiptOrderBo bo) {
-        LambdaQueryWrapper<OtherReceipt> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherReceiptDoc> lqw = buildQueryWrapper(bo);
         return receiptOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherReceipt> buildQueryWrapper(ReceiptOrderBo bo) {
+    private LambdaQueryWrapper<OtherReceiptDoc> buildQueryWrapper(ReceiptOrderBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<OtherReceipt> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceipt::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getOptType() != null, OtherReceipt::getOptType, bo.getOptType());
-        lqw.eq(bo.getMerchantId() != null, OtherReceipt::getMerchantId, bo.getMerchantId());
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceipt::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getTotalAmount() != null, OtherReceipt::getTotalAmount, bo.getTotalAmount());
-        lqw.eq(bo.getOrderStatus() != null, OtherReceipt::getOrderStatus, bo.getOrderStatus());
+        LambdaQueryWrapper<OtherReceiptDoc> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceiptDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(bo.getOptType() != null, OtherReceiptDoc::getOptType, bo.getOptType());
+        lqw.eq(bo.getMerchantId() != null, OtherReceiptDoc::getMerchantId, bo.getMerchantId());
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceiptDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(bo.getTotalAmount() != null, OtherReceiptDoc::getTotalAmount, bo.getTotalAmount());
+        lqw.eq(bo.getOrderStatus() != null, OtherReceiptDoc::getOrderStatus, bo.getOrderStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -93,11 +93,11 @@ public class ReceiptOrderService {
         // 校验入库单号唯一性
         validateReceiptOrderNo(bo.getOrderNo());
         // 创建入库单
-        OtherReceipt add = MapstructUtils.convert(bo, OtherReceipt.class);
+        OtherReceiptDoc add = MapstructUtils.convert(bo, OtherReceiptDoc.class);
         receiptOrderMapper.insert(add);
         bo.setId(add.getId());
         List<ReceiptOrderDetailBo> detailBoList = bo.getDetails();
-        List<OtherReceiptDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherReceiptDetail.class);
+        List<OtherReceiptDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherReceiptDocDetail.class);
         addDetailList.forEach(it -> {
             it.setOrderId(add.getId());
         });
@@ -144,10 +144,10 @@ public class ReceiptOrderService {
     @Transactional
     public void updateByBo(ReceiptOrderBo bo) {
         // 更新入库单
-        OtherReceipt update = MapstructUtils.convert(bo, OtherReceipt.class);
+        OtherReceiptDoc update = MapstructUtils.convert(bo, OtherReceiptDoc.class);
         receiptOrderMapper.updateById(update);
         // 保存入库单明细
-        List<OtherReceiptDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherReceiptDetail.class);
+        List<OtherReceiptDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherReceiptDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
         receiptOrderDetailService.saveDetails(detailList);
     }
@@ -157,9 +157,9 @@ public class ReceiptOrderService {
      * @param id
      */
     public void editToInvalid(Long id) {
-        LambdaUpdateWrapper<OtherReceipt> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(OtherReceipt::getId, id);
-        wrapper.set(OtherReceipt::getOrderStatus, ServiceConstants.ReceiptOrderStatus.INVALID);
+        LambdaUpdateWrapper<OtherReceiptDoc> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(OtherReceiptDoc::getId, id);
+        wrapper.set(OtherReceiptDoc::getOrderStatus, ServiceConstants.ReceiptOrderStatus.INVALID);
         receiptOrderMapper.update(null, wrapper);
     }
 
@@ -187,9 +187,9 @@ public class ReceiptOrderService {
     }
 
     public void validateReceiptOrderNo(String receiptOrderNo) {
-        LambdaQueryWrapper<OtherReceipt> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherReceipt::getOrderNo, receiptOrderNo);
-        OtherReceipt receiptOrder = receiptOrderMapper.selectOne(receiptOrderLqw);
+        LambdaQueryWrapper<OtherReceiptDoc> receiptOrderLqw = Wrappers.lambdaQuery();
+        receiptOrderLqw.eq(OtherReceiptDoc::getOrderNo, receiptOrderNo);
+        OtherReceiptDoc receiptOrder = receiptOrderMapper.selectOne(receiptOrderLqw);
         Assert.isNull(receiptOrder, "入库单号重复，请手动修改");
     }
 }

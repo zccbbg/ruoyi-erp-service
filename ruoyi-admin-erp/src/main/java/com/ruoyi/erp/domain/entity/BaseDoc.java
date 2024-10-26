@@ -17,22 +17,22 @@ public class BaseDoc extends BaseEntity {
     @TableId(value = "id")
     private Long id;
     /**
-     * 入库单号
+     * 编号
      */
-    private String orderNo;
+    private String docNo;
 
     /**
      * 商品总数
      */
     private BigDecimal totalQuantity;
     /**
-     * 订单总金额
+     * 单据总金额
      */
     private BigDecimal totalAmount;
     /**
-     * 订单状态
+     * 单据状态
      */
-    private Integer orderStatus;
+    private Integer docStatus;
 
     /**
      * 备注

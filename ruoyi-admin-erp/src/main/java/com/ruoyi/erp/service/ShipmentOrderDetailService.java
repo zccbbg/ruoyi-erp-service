@@ -9,7 +9,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.domain.bo.ShipmentOrderDetailBo;
-import com.ruoyi.erp.domain.entity.ShipmentDocDetail;
+import com.ruoyi.erp.domain.entity.OtherShipmentDetail;
 import com.ruoyi.erp.domain.vo.ShipmentOrderDetailVo;
 import com.ruoyi.erp.mapper.ShipmentOrderDetailMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailMapper, ShipmentDocDetail> {
+public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailMapper, OtherShipmentDetail> {
 
     private final ShipmentOrderDetailMapper shipmentOrderDetailMapper;
     private final ItemSkuService itemSkuService;
@@ -44,7 +44,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
      * 查询出库单详情列表
      */
     public TableDataInfo<ShipmentOrderDetailVo> queryPageList(ShipmentOrderDetailBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ShipmentDocDetail> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherShipmentDetail> lqw = buildQueryWrapper(bo);
         Page<ShipmentOrderDetailVo> result = shipmentOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -53,18 +53,18 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
      * 查询出库单详情列表
      */
     public List<ShipmentOrderDetailVo> queryList(ShipmentOrderDetailBo bo) {
-        LambdaQueryWrapper<ShipmentDocDetail> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherShipmentDetail> lqw = buildQueryWrapper(bo);
         return shipmentOrderDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<ShipmentDocDetail> buildQueryWrapper(ShipmentOrderDetailBo bo) {
+    private LambdaQueryWrapper<OtherShipmentDetail> buildQueryWrapper(ShipmentOrderDetailBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ShipmentDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, ShipmentDocDetail::getOrderId, bo.getOrderId());
-        lqw.eq(bo.getSkuId() != null, ShipmentDocDetail::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, ShipmentDocDetail::getQuantity, bo.getQuantity());
-        lqw.eq(bo.getAmount() != null, ShipmentDocDetail::getAmount, bo.getAmount());
-        lqw.eq(bo.getWarehouseId() != null, ShipmentDocDetail::getWarehouseId, bo.getWarehouseId());
+        LambdaQueryWrapper<OtherShipmentDetail> lqw = Wrappers.lambdaQuery();
+        lqw.eq(bo.getOrderId() != null, OtherShipmentDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getSkuId() != null, OtherShipmentDetail::getSkuId, bo.getSkuId());
+        lqw.eq(bo.getQuantity() != null, OtherShipmentDetail::getQuantity, bo.getQuantity());
+        lqw.eq(bo.getAmount() != null, OtherShipmentDetail::getAmount, bo.getAmount());
+        lqw.eq(bo.getWarehouseId() != null, OtherShipmentDetail::getWarehouseId, bo.getWarehouseId());
         return lqw;
     }
 
@@ -72,7 +72,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
      * 新增出库单详情
      */
     public void insertByBo(ShipmentOrderDetailBo bo) {
-        ShipmentDocDetail add = MapstructUtils.convert(bo, ShipmentDocDetail.class);
+        OtherShipmentDetail add = MapstructUtils.convert(bo, OtherShipmentDetail.class);
         shipmentOrderDetailMapper.insert(add);
     }
 
@@ -80,7 +80,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
      * 修改出库单详情
      */
     public void updateByBo(ShipmentOrderDetailBo bo) {
-        ShipmentDocDetail update = MapstructUtils.convert(bo, ShipmentDocDetail.class);
+        OtherShipmentDetail update = MapstructUtils.convert(bo, OtherShipmentDetail.class);
         shipmentOrderDetailMapper.updateById(update);
     }
 
@@ -92,7 +92,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     }
 
     @Transactional
-    public void saveDetails(List<ShipmentDocDetail> list) {
+    public void saveDetails(List<OtherShipmentDetail> list) {
         if (CollUtil.isEmpty(list)) {
             return;
         }

@@ -2,7 +2,7 @@ package com.ruoyi.erp.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.erp.domain.entity.OtherReceipt;
+import com.ruoyi.erp.domain.entity.OtherReceiptDoc;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-@AutoMapper(target = OtherReceipt.class)
+@AutoMapper(target = OtherReceiptDoc.class)
 public class ReceiptOrderVo extends BaseOrderVo<ReceiptOrderDetailVo> {
 
     /**

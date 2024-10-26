@@ -1,7 +1,7 @@
 package com.ruoyi.erp.mapper;
 
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.erp.domain.entity.OtherReceipt;
+import com.ruoyi.erp.domain.entity.OtherReceiptDoc;
 import com.ruoyi.erp.domain.vo.ReceiptOrderVo;
 
 /**
@@ -10,6 +10,6 @@ import com.ruoyi.erp.domain.vo.ReceiptOrderVo;
  * @author zcc
  * @date 2024-07-19
  */
-public interface ReceiptOrderMapper extends BaseMapperPlus<OtherReceipt, ReceiptOrderVo> {
+public interface ReceiptOrderMapper extends BaseMapperPlus<OtherReceiptDoc, ReceiptOrderVo> {
 
 }

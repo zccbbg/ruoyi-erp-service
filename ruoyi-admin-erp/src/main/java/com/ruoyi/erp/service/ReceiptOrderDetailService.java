@@ -9,7 +9,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.domain.bo.ReceiptOrderDetailBo;
-import com.ruoyi.erp.domain.entity.OtherReceiptDetail;
+import com.ruoyi.erp.domain.entity.OtherReceiptDocDetail;
 import com.ruoyi.erp.domain.vo.ReceiptOrderDetailVo;
 import com.ruoyi.erp.mapper.ReceiptOrderDetailMapper;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMapper, OtherReceiptDetail> {
+public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMapper, OtherReceiptDocDetail> {
 
     private final ReceiptOrderDetailMapper receiptOrderDetailMapper;
     private final ItemSkuService itemSkuService;
@@ -46,7 +46,7 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
      * 查询入库单详情列表
      */
     public TableDataInfo<ReceiptOrderDetailVo> queryPageList(ReceiptOrderDetailBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<OtherReceiptDetail> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherReceiptDocDetail> lqw = buildQueryWrapper(bo);
         Page<ReceiptOrderDetailVo> result = receiptOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -55,18 +55,18 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
      * 查询入库单详情列表
      */
     public List<ReceiptOrderDetailVo> queryList(ReceiptOrderDetailBo bo) {
-        LambdaQueryWrapper<OtherReceiptDetail> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherReceiptDocDetail> lqw = buildQueryWrapper(bo);
         return receiptOrderDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherReceiptDetail> buildQueryWrapper(ReceiptOrderDetailBo bo) {
+    private LambdaQueryWrapper<OtherReceiptDocDetail> buildQueryWrapper(ReceiptOrderDetailBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<OtherReceiptDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, OtherReceiptDetail::getOrderId, bo.getOrderId());
-        lqw.eq(bo.getSkuId() != null, OtherReceiptDetail::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, OtherReceiptDetail::getQuantity, bo.getQuantity());
-        lqw.eq(bo.getAmount() != null, OtherReceiptDetail::getAmount, bo.getAmount());
-        lqw.eq(bo.getWarehouseId() != null, OtherReceiptDetail::getWarehouseId, bo.getWarehouseId());
+        LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
+        lqw.eq(bo.getOrderId() != null, OtherReceiptDocDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getSkuId() != null, OtherReceiptDocDetail::getSkuId, bo.getSkuId());
+        lqw.eq(bo.getQuantity() != null, OtherReceiptDocDetail::getQuantity, bo.getQuantity());
+        lqw.eq(bo.getAmount() != null, OtherReceiptDocDetail::getAmount, bo.getAmount());
+        lqw.eq(bo.getWarehouseId() != null, OtherReceiptDocDetail::getWarehouseId, bo.getWarehouseId());
         return lqw;
     }
 
@@ -74,7 +74,7 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
      * 新增入库单详情
      */
     public void insertByBo(ReceiptOrderDetailBo bo) {
-        OtherReceiptDetail add = MapstructUtils.convert(bo, OtherReceiptDetail.class);
+        OtherReceiptDocDetail add = MapstructUtils.convert(bo, OtherReceiptDocDetail.class);
         receiptOrderDetailMapper.insert(add);
     }
 
@@ -82,7 +82,7 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
      * 修改入库单详情
      */
     public void updateByBo(ReceiptOrderDetailBo bo) {
-        OtherReceiptDetail update = MapstructUtils.convert(bo, OtherReceiptDetail.class);
+        OtherReceiptDocDetail update = MapstructUtils.convert(bo, OtherReceiptDocDetail.class);
         receiptOrderDetailMapper.updateById(update);
     }
 
@@ -97,13 +97,13 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
      * 根据入库单id删除入库单详情
      */
     public void deleteByReceiptOrderId(@NotNull Long receiptOrderId) {
-        LambdaQueryWrapper<OtherReceiptDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(OtherReceiptDetail::getOrderId, receiptOrderId);
+        LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
+        lqw.eq(OtherReceiptDocDetail::getOrderId, receiptOrderId);
         receiptOrderDetailMapper.delete(lqw);
     }
 
     @Transactional
-    public void saveDetails(List<OtherReceiptDetail> list) {
+    public void saveDetails(List<OtherReceiptDocDetail> list) {
         if (CollUtil.isEmpty(list)) {
             return;
         }
