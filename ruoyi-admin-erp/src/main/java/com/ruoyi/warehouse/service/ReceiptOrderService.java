@@ -15,8 +15,8 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.ReceiptOrderBo;
-import com.ruoyi.warehouse.domain.bo.ReceiptOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.ReceiptDocBo;
+import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDocDetail;
 import com.ruoyi.warehouse.domain.vo.ReceiptOrderVo;
@@ -58,7 +58,7 @@ public class ReceiptOrderService {
     /**
      * 查询入库单列表
      */
-    public TableDataInfo<ReceiptOrderVo> queryPageList(ReceiptOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptOrderVo> queryPageList(ReceiptDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherReceiptDoc> lqw = buildQueryWrapper(bo);
         Page<ReceiptOrderVo> result = receiptOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
@@ -67,12 +67,12 @@ public class ReceiptOrderService {
     /**
      * 查询入库单列表
      */
-    public List<ReceiptOrderVo> queryList(ReceiptOrderBo bo) {
+    public List<ReceiptOrderVo> queryList(ReceiptDocBo bo) {
         LambdaQueryWrapper<OtherReceiptDoc> lqw = buildQueryWrapper(bo);
         return receiptOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherReceiptDoc> buildQueryWrapper(ReceiptOrderBo bo) {
+    private LambdaQueryWrapper<OtherReceiptDoc> buildQueryWrapper(ReceiptDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceiptDoc::getOrderNo, bo.getOrderNo());
@@ -89,14 +89,14 @@ public class ReceiptOrderService {
      * 暂存入库单
      */
     @Transactional
-    public void insertByBo(ReceiptOrderBo bo) {
+    public void insertByBo(ReceiptDocBo bo) {
         // 校验入库单号唯一性
         validateReceiptOrderNo(bo.getOrderNo());
         // 创建入库单
         OtherReceiptDoc add = MapstructUtils.convert(bo, OtherReceiptDoc.class);
         receiptOrderMapper.insert(add);
         bo.setId(add.getId());
-        List<ReceiptOrderDetailBo> detailBoList = bo.getDetails();
+        List<ReceiptDocDetailBo> detailBoList = bo.getDetails();
         List<OtherReceiptDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherReceiptDocDetail.class);
         addDetailList.forEach(it -> {
             it.setOrderId(add.getId());
@@ -114,7 +114,7 @@ public class ReceiptOrderService {
      * 5.保存库存记录
      */
     @Transactional
-    public void receive(ReceiptOrderBo bo) {
+    public void receive(ReceiptDocBo bo) {
         // 1. 校验
         validateBeforeReceive(bo);
 
@@ -132,7 +132,7 @@ public class ReceiptOrderService {
         inventoryHistoryService.saveInventoryHistory(bo,ServiceConstants.InventoryHistoryOrderType.RECEIPT,true);
     }
 
-    private void validateBeforeReceive(ReceiptOrderBo bo) {
+    private void validateBeforeReceive(ReceiptDocBo bo) {
         if (CollUtil.isEmpty(bo.getDetails())) {
             throw new BaseException("商品明细不能为空");
         }
@@ -142,7 +142,7 @@ public class ReceiptOrderService {
      * 修改入库单
      */
     @Transactional
-    public void updateByBo(ReceiptOrderBo bo) {
+    public void updateByBo(ReceiptDocBo bo) {
         // 更新入库单
         OtherReceiptDoc update = MapstructUtils.convert(bo, OtherReceiptDoc.class);
         receiptOrderMapper.updateById(update);

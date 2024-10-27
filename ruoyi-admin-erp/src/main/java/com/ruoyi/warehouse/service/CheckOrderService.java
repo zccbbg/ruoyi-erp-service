@@ -11,8 +11,8 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.CheckOrderBo;
-import com.ruoyi.warehouse.domain.bo.CheckOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.CheckDocBo;
+import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.CheckDoc;
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
 import com.ruoyi.warehouse.domain.vo.CheckOrderVo;
@@ -58,7 +58,7 @@ public class CheckOrderService {
     /**
      * 查询库存盘点单据列表
      */
-    public TableDataInfo<CheckOrderVo> queryPageList(CheckOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckOrderVo> queryPageList(CheckDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
         Page<CheckOrderVo> result = checkOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
@@ -67,12 +67,12 @@ public class CheckOrderService {
     /**
      * 查询库存盘点单据列表
      */
-    public List<CheckOrderVo> queryList(CheckOrderBo bo) {
+    public List<CheckOrderVo> queryList(CheckDocBo bo) {
         LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
         return checkOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckOrderBo bo) {
+    private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), CheckDoc::getOrderNo, bo.getOrderNo());
@@ -87,7 +87,7 @@ public class CheckOrderService {
      * 新增库存盘点单据
      */
     @Transactional
-    public void insertByBo(CheckOrderBo bo) {
+    public void insertByBo(CheckDocBo bo) {
         // 校验盘库单号唯一性
         validateCheckOrderNo(bo.getOrderNo());
         // 创建盘库单
@@ -111,7 +111,7 @@ public class CheckOrderService {
      * 修改库存盘点单据
      */
     @Transactional
-    public void updateByBo(CheckOrderBo bo) {
+    public void updateByBo(CheckDocBo bo) {
         // 更新盘库单
         CheckDoc update = MapstructUtils.convert(bo, CheckDoc.class);
         checkOrderMapper.updateById(update);
@@ -147,8 +147,8 @@ public class CheckOrderService {
      * @param bo
      */
     @Transactional
-    public void check(CheckOrderBo bo) {
-        List<CheckOrderDetailBo> details = bo.getDetails();
+    public void check(CheckDocBo bo) {
+        List<CheckDocDetailBo> details = bo.getDetails();
         // 保存盘库单 check order
         if (Objects.isNull(bo.getId())) {
             insertByBo(bo);
@@ -158,13 +158,13 @@ public class CheckOrderService {
         // 保存库存 inventory
         inventoryService.updateInventory(details);
         // 新增库存记录 inventory history
-        CheckOrderBo filterBo = this.filterCheckOrderDetail(bo);
+        CheckDocBo filterBo = this.filterCheckOrderDetail(bo);
         inventoryHistoryService.saveInventoryHistory(filterBo, ServiceConstants.InventoryHistoryOrderType.CHECK, true);
     }
 
-    private CheckOrderBo filterCheckOrderDetail(CheckOrderBo bo) {
-        CheckOrderBo filterBo = SerializationUtils.clone(bo);
-        List<CheckOrderDetailBo> details = filterBo.getDetails().stream().filter(detail -> {
+    private CheckDocBo filterCheckOrderDetail(CheckDocBo bo) {
+        CheckDocBo filterBo = SerializationUtils.clone(bo);
+        List<CheckDocDetailBo> details = filterBo.getDetails().stream().filter(detail -> {
             BigDecimal result = detail.getCheckQuantity().subtract(detail.getQuantity());
             return result.signum() != 0;
         }).map(detail->{

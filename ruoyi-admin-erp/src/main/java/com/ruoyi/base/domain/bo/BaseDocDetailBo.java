@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.bo;
+package com.ruoyi.base.domain.bo;
 
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseOrderDetailBo extends BaseEntity {
+public class BaseDocDetailBo extends BaseEntity {
     /**
      * 入库单号
      */

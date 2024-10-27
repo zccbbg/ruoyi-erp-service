@@ -11,7 +11,7 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.warehouse.domain.bo.CheckOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.CheckOrderDetailVo;
 import com.ruoyi.warehouse.service.CheckOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class CheckOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list")
-    public TableDataInfo<CheckOrderDetailVo> list(CheckOrderDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckOrderDetailVo> list(CheckDocDetailBo bo, PageQuery pageQuery) {
         return checkOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -52,7 +52,7 @@ public class CheckOrderDetailController extends BaseController {
     @SaCheckPermission("wms:check:all")
     @Log(title = "库存盘点单据详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(CheckOrderDetailBo bo, HttpServletResponse response) {
+    public void export(CheckDocDetailBo bo, HttpServletResponse response) {
         List<CheckOrderDetailVo> list = checkOrderDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "库存盘点单据详情", CheckOrderDetailVo.class, response);
     }
@@ -76,7 +76,7 @@ public class CheckOrderDetailController extends BaseController {
     @Log(title = "库存盘点单据详情", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody CheckOrderDetailBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody CheckDocDetailBo bo) {
         checkOrderDetailService.insertByBo(bo);
         return R.ok();
     }
@@ -88,7 +88,7 @@ public class CheckOrderDetailController extends BaseController {
     @Log(title = "库存盘点单据详情", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody CheckOrderDetailBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody CheckDocDetailBo bo) {
         checkOrderDetailService.updateByBo(bo);
         return R.ok();
     }

@@ -10,8 +10,8 @@ import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.BaseOrderDetailBo;
-import com.ruoyi.warehouse.domain.bo.CheckOrderDetailBo;
+import com.ruoyi.base.domain.bo.BaseDocDetailBo;
+import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.bo.InventoryBo;
 import com.ruoyi.warehouse.domain.entity.Inventory;
 import com.ruoyi.warehouse.domain.vo.InventoryVo;
@@ -115,7 +115,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
         return TableDataInfo.build(result);
     }
 
-    public void updateInventory(List<CheckOrderDetailBo> details) {
+    public void updateInventory(List<CheckDocDetailBo> details) {
         List<Inventory> updateInventoryList=new LinkedList<>();
         List<Inventory> insertInventoryList=new LinkedList<>();
 
@@ -164,7 +164,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     @Transactional
-    public void add(List<? extends BaseOrderDetailBo> details) {
+    public void add(List<? extends BaseDocDetailBo> details) {
         List<Inventory> addList = new LinkedList<>();
         List<Inventory> updateList = new LinkedList<>();
         details.forEach(orderDetailsBo -> {
@@ -199,7 +199,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
      * @param details
      */
     @Transactional
-    public void subtract(List<? extends BaseOrderDetailBo> details) {
+    public void subtract(List<? extends BaseDocDetailBo> details) {
         List<Inventory> updateList = new LinkedList<>();
         details.forEach(shipmentOrderDetailBo -> {
             LambdaQueryWrapper<Inventory> wrapper = Wrappers.lambdaQuery();

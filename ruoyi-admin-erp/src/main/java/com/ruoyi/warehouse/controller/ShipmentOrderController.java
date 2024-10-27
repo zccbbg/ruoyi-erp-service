@@ -12,7 +12,7 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.warehouse.domain.bo.ShipmentOrderBo;
+import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
 import com.ruoyi.warehouse.domain.vo.ShipmentOrderVo;
 import com.ruoyi.warehouse.service.ShipmentOrderService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class ShipmentOrderController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list")
-    public TableDataInfo<ShipmentOrderVo> list(ShipmentOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentOrderVo> list(ShipmentDocBo bo, PageQuery pageQuery) {
         return shipmentOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -52,7 +52,7 @@ public class ShipmentOrderController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @Log(title = "出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(ShipmentOrderBo bo, HttpServletResponse response) {
+    public void export(ShipmentDocBo bo, HttpServletResponse response) {
         List<ShipmentOrderVo> list = shipmentOrderService.queryList(bo);
         ExcelUtil.exportExcel(list, "出库单", ShipmentOrderVo.class, response);
     }
@@ -76,7 +76,7 @@ public class ShipmentOrderController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ShipmentOrderBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody ShipmentDocBo bo) {
         shipmentOrderService.insertByBo(bo);
         return R.ok();
     }
@@ -88,7 +88,7 @@ public class ShipmentOrderController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ShipmentOrderBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ShipmentDocBo bo) {
         shipmentOrderService.updateByBo(bo);
         return R.ok();
     }
@@ -100,7 +100,7 @@ public class ShipmentOrderController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping("/shipment")
-    public R<Void> shipment(@Validated(AddGroup.class) @RequestBody ShipmentOrderBo bo) {
+    public R<Void> shipment(@Validated(AddGroup.class) @RequestBody ShipmentDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ShipmentOrderStatus.FINISH);
         shipmentOrderService.shipment(bo);
         return R.ok();

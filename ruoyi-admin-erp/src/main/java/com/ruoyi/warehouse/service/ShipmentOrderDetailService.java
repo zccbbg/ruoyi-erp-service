@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.ShipmentOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.warehouse.domain.vo.ShipmentOrderDetailVo;
 import com.ruoyi.warehouse.mapper.ShipmentOrderDetailMapper;
@@ -43,7 +43,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     /**
      * 查询出库单详情列表
      */
-    public TableDataInfo<ShipmentOrderDetailVo> queryPageList(ShipmentOrderDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentOrderDetailVo> queryPageList(ShipmentDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = buildQueryWrapper(bo);
         Page<ShipmentOrderDetailVo> result = shipmentOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
@@ -52,12 +52,12 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     /**
      * 查询出库单详情列表
      */
-    public List<ShipmentOrderDetailVo> queryList(ShipmentOrderDetailBo bo) {
+    public List<ShipmentOrderDetailVo> queryList(ShipmentDocDetailBo bo) {
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = buildQueryWrapper(bo);
         return shipmentOrderDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherShipmentDocDetail> buildQueryWrapper(ShipmentOrderDetailBo bo) {
+    private LambdaQueryWrapper<OtherShipmentDocDetail> buildQueryWrapper(ShipmentDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, OtherShipmentDocDetail::getOrderId, bo.getOrderId());
@@ -71,7 +71,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     /**
      * 新增出库单详情
      */
-    public void insertByBo(ShipmentOrderDetailBo bo) {
+    public void insertByBo(ShipmentDocDetailBo bo) {
         OtherShipmentDocDetail add = MapstructUtils.convert(bo, OtherShipmentDocDetail.class);
         shipmentOrderDetailMapper.insert(add);
     }
@@ -79,7 +79,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     /**
      * 修改出库单详情
      */
-    public void updateByBo(ShipmentOrderDetailBo bo) {
+    public void updateByBo(ShipmentDocDetailBo bo) {
         OtherShipmentDocDetail update = MapstructUtils.convert(bo, OtherShipmentDocDetail.class);
         shipmentOrderDetailMapper.updateById(update);
     }
@@ -100,7 +100,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     }
 
     public List<ShipmentOrderDetailVo> queryByShipmentOrderId(Long shipmentOrderId) {
-        ShipmentOrderDetailBo bo = new ShipmentOrderDetailBo();
+        ShipmentDocDetailBo bo = new ShipmentDocDetailBo();
         bo.setOrderId(shipmentOrderId);
         List<ShipmentOrderDetailVo> details = queryList(bo);
         itemSkuService.setItemSkuMap(details);

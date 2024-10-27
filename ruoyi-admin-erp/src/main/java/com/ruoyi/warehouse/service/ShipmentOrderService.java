@@ -14,8 +14,8 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.ShipmentOrderBo;
-import com.ruoyi.warehouse.domain.bo.ShipmentOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
+import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.warehouse.domain.vo.ShipmentOrderVo;
@@ -58,7 +58,7 @@ public class ShipmentOrderService {
     /**
      * 查询出库单列表
      */
-    public TableDataInfo<ShipmentOrderVo> queryPageList(ShipmentOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentOrderVo> queryPageList(ShipmentDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
         Page<ShipmentOrderVo> result = shipmentOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
@@ -67,12 +67,12 @@ public class ShipmentOrderService {
     /**
      * 查询出库单列表
      */
-    public List<ShipmentOrderVo> queryList(ShipmentOrderBo bo) {
+    public List<ShipmentOrderVo> queryList(ShipmentDocBo bo) {
         LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
         return shipmentOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(ShipmentOrderBo bo) {
+    private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(ShipmentDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipmentDoc::getOrderNo, bo.getOrderNo());
@@ -90,14 +90,14 @@ public class ShipmentOrderService {
      * 暂存出库单
      */
     @Transactional
-    public void insertByBo(ShipmentOrderBo bo) {
+    public void insertByBo(ShipmentDocBo bo) {
         // 校验出库单号唯一性
         validateShipmentOrderNo(bo.getOrderNo());
         // 创建出库单
         OtherShipmentDoc add = MapstructUtils.convert(bo, OtherShipmentDoc.class);
         shipmentOrderMapper.insert(add);
         bo.setId(add.getId());
-        List<ShipmentOrderDetailBo> detailBoList = bo.getDetails();
+        List<ShipmentDocDetailBo> detailBoList = bo.getDetails();
         List<OtherShipmentDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
         shipmentOrderDetailService.saveDetails(addDetailList);
@@ -115,7 +115,7 @@ public class ShipmentOrderService {
      * 修改出库单
      */
     @Transactional
-    public void updateByBo(ShipmentOrderBo bo) {
+    public void updateByBo(ShipmentDocBo bo) {
         // 更新出库单
         OtherShipmentDoc update = MapstructUtils.convert(bo, OtherShipmentDoc.class);
         shipmentOrderMapper.updateById(update);
@@ -148,7 +148,7 @@ public class ShipmentOrderService {
      * @param bo
      */
     @Transactional
-    public void shipment(ShipmentOrderBo bo) {
+    public void shipment(ShipmentDocBo bo) {
         // 1.校验商品明细不能为空！
         validateBeforeShipment(bo);
         // 2. 保存入库单和入库单明细
@@ -165,7 +165,7 @@ public class ShipmentOrderService {
     }
 
 
-    private void validateBeforeShipment(ShipmentOrderBo bo) {
+    private void validateBeforeShipment(ShipmentDocBo bo) {
         if (CollUtil.isEmpty(bo.getDetails())) {
             throw new BaseException("商品明细不能为空！");
         }

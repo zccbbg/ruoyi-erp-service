@@ -11,7 +11,7 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.warehouse.domain.bo.MovementOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.MovementDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.MovementOrderDetailVo;
 import com.ruoyi.warehouse.service.MovementOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class MovementOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list")
-    public TableDataInfo<MovementOrderDetailVo> list(MovementOrderDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementOrderDetailVo> list(MovementDocDetailBo bo, PageQuery pageQuery) {
         return movementOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -52,7 +52,7 @@ public class MovementOrderDetailController extends BaseController {
     @SaCheckPermission("wms:movement:all")
     @Log(title = "库存移动详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(MovementOrderDetailBo bo, HttpServletResponse response) {
+    public void export(MovementDocDetailBo bo, HttpServletResponse response) {
         List<MovementOrderDetailVo> list = movementOrderDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "库存移动详情", MovementOrderDetailVo.class, response);
     }
@@ -76,7 +76,7 @@ public class MovementOrderDetailController extends BaseController {
     @Log(title = "库存移动详情", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementOrderDetailBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementDocDetailBo bo) {
         movementOrderDetailService.insertByBo(bo);
         return R.ok();
     }
@@ -88,7 +88,7 @@ public class MovementOrderDetailController extends BaseController {
     @Log(title = "库存移动详情", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody MovementOrderDetailBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody MovementDocDetailBo bo) {
         movementOrderDetailService.updateByBo(bo);
         return R.ok();
     }

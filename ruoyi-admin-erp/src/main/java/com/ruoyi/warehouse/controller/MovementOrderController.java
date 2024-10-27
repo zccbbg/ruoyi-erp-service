@@ -12,7 +12,7 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.warehouse.domain.bo.MovementOrderBo;
+import com.ruoyi.warehouse.domain.bo.MovementDocBo;
 import com.ruoyi.warehouse.domain.vo.MovementOrderVo;
 import com.ruoyi.warehouse.service.MovementOrderService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class MovementOrderController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list")
-    public TableDataInfo<MovementOrderVo> list(MovementOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementOrderVo> list(MovementDocBo bo, PageQuery pageQuery) {
         return movementOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -52,7 +52,7 @@ public class MovementOrderController extends BaseController {
     @SaCheckPermission("wms:movement:all")
     @Log(title = "移库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(MovementOrderBo bo, HttpServletResponse response) {
+    public void export(MovementDocBo bo, HttpServletResponse response) {
         List<MovementOrderVo> list = movementOrderService.queryList(bo);
         ExcelUtil.exportExcel(list, "移库单", MovementOrderVo.class, response);
     }
@@ -76,7 +76,7 @@ public class MovementOrderController extends BaseController {
     @Log(title = "移库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementOrderBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
         bo.setOrderStatus(ServiceConstants.MovementOrderStatus.PENDING);
         movementOrderService.insertByBo(bo);
         return R.ok();
@@ -89,7 +89,7 @@ public class MovementOrderController extends BaseController {
     @Log(title = "移库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody MovementOrderBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody MovementDocBo bo) {
         movementOrderService.updateByBo(bo);
         return R.ok();
     }
@@ -101,7 +101,7 @@ public class MovementOrderController extends BaseController {
     @Log(title = "移库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PostMapping("/move")
-    public R<Void> move(@Validated(AddGroup.class) @RequestBody MovementOrderBo bo) {
+    public R<Void> move(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
         bo.setOrderStatus(ServiceConstants.MovementOrderStatus.FINISH);
         movementOrderService.move(bo);
         return R.ok();

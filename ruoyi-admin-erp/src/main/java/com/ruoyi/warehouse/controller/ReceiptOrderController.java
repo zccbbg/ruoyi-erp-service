@@ -17,7 +17,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.warehouse.domain.bo.ReceiptOrderBo;
+import com.ruoyi.warehouse.domain.bo.ReceiptDocBo;
 import com.ruoyi.warehouse.domain.vo.ReceiptOrderVo;
 import com.ruoyi.warehouse.service.ReceiptOrderService;
 
@@ -42,7 +42,7 @@ public class ReceiptOrderController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list")
-    public TableDataInfo<ReceiptOrderVo> list(ReceiptOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptOrderVo> list(ReceiptDocBo bo, PageQuery pageQuery) {
         return receiptOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -52,7 +52,7 @@ public class ReceiptOrderController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @Log(title = "入库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(ReceiptOrderBo bo, HttpServletResponse response) {
+    public void export(ReceiptDocBo bo, HttpServletResponse response) {
         List<ReceiptOrderVo> list = receiptOrderService.queryList(bo);
         ExcelUtil.exportExcel(list, "入库单", ReceiptOrderVo.class, response);
     }
@@ -76,7 +76,7 @@ public class ReceiptOrderController extends BaseController {
     @Log(title = "入库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptOrderBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.PENDING);
         receiptOrderService.insertByBo(bo);
         return R.ok();
@@ -89,7 +89,7 @@ public class ReceiptOrderController extends BaseController {
     @Log(title = "入库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PostMapping("/warehousing")
-    public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody ReceiptOrderBo bo) {
+    public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody ReceiptDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.FINISH);
         receiptOrderService.receive(bo);
         return R.ok();
@@ -102,7 +102,7 @@ public class ReceiptOrderController extends BaseController {
     @Log(title = "入库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ReceiptOrderBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ReceiptDocBo bo) {
         receiptOrderService.updateByBo(bo);
         return R.ok();
     }

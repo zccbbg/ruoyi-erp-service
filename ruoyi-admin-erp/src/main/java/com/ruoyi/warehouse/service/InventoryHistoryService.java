@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.BaseOrderBo;
-import com.ruoyi.warehouse.domain.bo.BaseOrderDetailBo;
+import com.ruoyi.base.domain.bo.BaseDocBo;
+import com.ruoyi.base.domain.bo.BaseDocDetailBo;
 import com.ruoyi.warehouse.domain.bo.InventoryHistoryBo;
 import com.ruoyi.warehouse.domain.entity.InventoryHistory;
 import com.ruoyi.warehouse.domain.vo.InventoryHistoryVo;
@@ -33,7 +33,7 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
 
     private final InventoryHistoryMapper inventoryHistoryMapper;
 
-    public void saveInventoryHistory(BaseOrderBo<? extends BaseOrderDetailBo> bo,Integer orderType,Boolean isAdd){
+    public void saveInventoryHistory(BaseDocBo<? extends BaseDocDetailBo> bo, Integer orderType, Boolean isAdd){
         List<InventoryHistory> inventoryHistoryList = new LinkedList<>();
         bo.getDetails().forEach(detail -> {
             InventoryHistory inventoryHistory = new InventoryHistory();

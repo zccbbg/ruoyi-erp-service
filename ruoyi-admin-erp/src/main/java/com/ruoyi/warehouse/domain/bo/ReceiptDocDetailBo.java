@@ -1,5 +1,6 @@
 package com.ruoyi.warehouse.domain.bo;
 
+import com.ruoyi.base.domain.bo.BaseDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.Inventory;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDocDetail;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
     @AutoMapper(target = OtherReceiptDocDetail.class, reverseConvertGenerate = false),
     @AutoMapper(target = Inventory.class, reverseConvertGenerate = false)
 })
-public class ReceiptOrderDetailBo extends BaseOrderDetailBo {
+public class ReceiptDocDetailBo extends BaseDocDetailBo {
 
 
 }

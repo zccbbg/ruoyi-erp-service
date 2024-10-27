@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.MovementOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.MovementDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.MovementDocDetail;
 import com.ruoyi.warehouse.domain.vo.MovementOrderDetailVo;
 import com.ruoyi.warehouse.mapper.MovementOrderDetailMapper;
@@ -44,7 +44,7 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
     /**
      * 查询库存移动详情列表
      */
-    public TableDataInfo<MovementOrderDetailVo> queryPageList(MovementOrderDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementOrderDetailVo> queryPageList(MovementDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementDocDetail> lqw = buildQueryWrapper(bo);
         Page<MovementOrderDetailVo> result = movementOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
@@ -53,12 +53,12 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
     /**
      * 查询库存移动详情列表
      */
-    public List<MovementOrderDetailVo> queryList(MovementOrderDetailBo bo) {
+    public List<MovementOrderDetailVo> queryList(MovementDocDetailBo bo) {
         LambdaQueryWrapper<MovementDocDetail> lqw = buildQueryWrapper(bo);
         return movementOrderDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<MovementDocDetail> buildQueryWrapper(MovementOrderDetailBo bo) {
+    private LambdaQueryWrapper<MovementDocDetail> buildQueryWrapper(MovementDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, MovementDocDetail::getOrderId, bo.getOrderId());
@@ -72,7 +72,7 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
     /**
      * 新增库存移动详情
      */
-    public void insertByBo(MovementOrderDetailBo bo) {
+    public void insertByBo(MovementDocDetailBo bo) {
         MovementDocDetail add = MapstructUtils.convert(bo, MovementDocDetail.class);
         movementOrderDetailMapper.insert(add);
     }
@@ -80,7 +80,7 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
     /**
      * 修改库存移动详情
      */
-    public void updateByBo(MovementOrderDetailBo bo) {
+    public void updateByBo(MovementDocDetailBo bo) {
         MovementDocDetail update = MapstructUtils.convert(bo, MovementDocDetail.class);
         movementOrderDetailMapper.updateById(update);
     }
@@ -106,7 +106,7 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
      * @return
      */
     public List<MovementOrderDetailVo> queryByMovementOrderId(Long movementOrderId) {
-        MovementOrderDetailBo bo = new MovementOrderDetailBo();
+        MovementDocDetailBo bo = new MovementDocDetailBo();
         bo.setOrderId(movementOrderId);
         List<MovementOrderDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {

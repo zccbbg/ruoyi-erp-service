@@ -1,5 +1,6 @@
 package com.ruoyi.warehouse.domain.bo;
 
+import com.ruoyi.base.domain.bo.BaseDocBo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
@@ -18,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = OtherReceiptDoc.class, reverseConvertGenerate = false)
-public class ReceiptOrderBo extends BaseOrderBo<ReceiptOrderDetailBo> {
+public class ReceiptDocBo extends BaseDocBo<ReceiptDocDetailBo> {
 
     /**
      * 入库类型

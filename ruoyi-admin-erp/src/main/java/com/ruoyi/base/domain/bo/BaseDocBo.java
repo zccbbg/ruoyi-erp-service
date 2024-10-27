@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.bo;
+package com.ruoyi.base.domain.bo;
 
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseOrderBo<T extends BaseOrderDetailBo> extends BaseEntity {
+public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
     /**
      *
      */

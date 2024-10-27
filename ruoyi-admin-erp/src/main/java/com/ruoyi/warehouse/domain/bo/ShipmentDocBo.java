@@ -1,5 +1,6 @@
 package com.ruoyi.warehouse.domain.bo;
 
+import com.ruoyi.base.domain.bo.BaseDocBo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
@@ -18,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = OtherShipmentDoc.class, reverseConvertGenerate = false)
-public class ShipmentOrderBo extends BaseOrderBo<ShipmentOrderDetailBo> {
+public class ShipmentDocBo extends BaseDocBo<ShipmentDocDetailBo> {
     /**
      * 入库类型
      */

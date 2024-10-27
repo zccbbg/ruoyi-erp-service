@@ -1,17 +1,16 @@
 package com.ruoyi.warehouse.domain.bo;
 
+import com.ruoyi.base.domain.bo.BaseDocBo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
-import com.ruoyi.warehouse.domain.entity.Inventory;
-import com.ruoyi.warehouse.domain.entity.MovementDocDetail;
+import com.ruoyi.warehouse.domain.entity.MovementDoc;
 import io.github.linpeilie.annotations.AutoMapper;
-import io.github.linpeilie.annotations.AutoMappers;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 库存移动详情业务对象 wms_movement_order_detail
+ * 移库单业务对象 wms_movement_order
  *
  * @author zcc
  * @date 2024-08-09
@@ -19,11 +18,8 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMappers({
-    @AutoMapper(target = MovementDocDetail.class, reverseConvertGenerate = false),
-    @AutoMapper(target = Inventory.class, reverseConvertGenerate = false)
-})
-public class MovementOrderDetailBo extends BaseOrderDetailBo {
+@AutoMapper(target = MovementDoc.class, reverseConvertGenerate = false)
+public class MovementDocBo extends BaseDocBo<MovementDocDetailBo> {
 
     /**
      * 源仓库
@@ -36,5 +32,6 @@ public class MovementOrderDetailBo extends BaseOrderDetailBo {
      */
     @NotNull(message = "目标仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long targetWarehouseId;
+
 
 }

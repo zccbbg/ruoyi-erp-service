@@ -11,7 +11,7 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.warehouse.domain.bo.ReceiptOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.ReceiptOrderDetailVo;
 import com.ruoyi.warehouse.service.ReceiptOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class ReceiptOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list")
-    public TableDataInfo<ReceiptOrderDetailVo> list(ReceiptOrderDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptOrderDetailVo> list(ReceiptDocDetailBo bo, PageQuery pageQuery) {
         return receiptOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -52,7 +52,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @Log(title = "入库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(ReceiptOrderDetailBo bo, HttpServletResponse response) {
+    public void export(ReceiptDocDetailBo bo, HttpServletResponse response) {
         List<ReceiptOrderDetailVo> list = receiptOrderDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "入库单详情", ReceiptOrderDetailVo.class, response);
     }
@@ -76,7 +76,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @Log(title = "入库单详情", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptOrderDetailBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptDocDetailBo bo) {
         receiptOrderDetailService.insertByBo(bo);
         return R.ok();
     }
@@ -88,7 +88,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @Log(title = "入库单详情", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ReceiptOrderDetailBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ReceiptDocDetailBo bo) {
         receiptOrderDetailService.updateByBo(bo);
         return R.ok();
     }

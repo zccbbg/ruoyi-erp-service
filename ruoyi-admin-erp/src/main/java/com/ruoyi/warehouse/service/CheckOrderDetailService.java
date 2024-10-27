@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.CheckOrderDetailBo;
+import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
 import com.ruoyi.warehouse.domain.vo.CheckOrderDetailVo;
 import com.ruoyi.warehouse.mapper.CheckOrderDetailMapper;
@@ -43,7 +43,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     /**
      * 查询库存盘点单据详情列表
      */
-    public TableDataInfo<CheckOrderDetailVo> queryPageList(CheckOrderDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckOrderDetailVo> queryPageList(CheckDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
         Page<CheckOrderDetailVo> result = checkOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         if (CollUtil.isEmpty(result.getRecords())) {
@@ -56,12 +56,12 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     /**
      * 查询库存盘点单据详情列表
      */
-    public List<CheckOrderDetailVo> queryList(CheckOrderDetailBo bo) {
+    public List<CheckOrderDetailVo> queryList(CheckDocDetailBo bo) {
         LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
         return checkOrderDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<CheckDocDetail> buildQueryWrapper(CheckOrderDetailBo bo) {
+    private LambdaQueryWrapper<CheckDocDetail> buildQueryWrapper(CheckDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, CheckDocDetail::getOrderId, bo.getOrderId());
@@ -76,7 +76,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     /**
      * 新增库存盘点单据详情
      */
-    public void insertByBo(CheckOrderDetailBo bo) {
+    public void insertByBo(CheckDocDetailBo bo) {
         CheckDocDetail add = MapstructUtils.convert(bo, CheckDocDetail.class);
         checkOrderDetailMapper.insert(add);
     }
@@ -84,7 +84,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     /**
      * 修改库存盘点单据详情
      */
-    public void updateByBo(CheckOrderDetailBo bo) {
+    public void updateByBo(CheckDocDetailBo bo) {
         CheckDocDetail update = MapstructUtils.convert(bo, CheckDocDetail.class);
         checkOrderDetailMapper.updateById(update);
     }
@@ -105,7 +105,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     }
 
     public List<CheckOrderDetailVo> queryByCheckOrderId(Long checkOrderId) {
-        CheckOrderDetailBo bo = new CheckOrderDetailBo();
+        CheckDocDetailBo bo = new CheckDocDetailBo();
         bo.setOrderId(checkOrderId);
         List<CheckOrderDetailVo> details = queryList(bo);
         itemSkuService.setItemSkuMap(details);

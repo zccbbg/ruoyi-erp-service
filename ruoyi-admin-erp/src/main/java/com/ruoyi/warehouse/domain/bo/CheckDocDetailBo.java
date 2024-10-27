@@ -1,5 +1,6 @@
 package com.ruoyi.warehouse.domain.bo;
 
+import com.ruoyi.base.domain.bo.BaseDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = CheckDocDetail.class, reverseConvertGenerate = false)
-public class CheckOrderDetailBo extends BaseOrderDetailBo {
+public class CheckDocDetailBo extends BaseDocDetailBo {
 
     /**
      * 盘点数量

@@ -12,7 +12,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.MovementOrderBo;
+import com.ruoyi.warehouse.domain.bo.MovementDocBo;
 import com.ruoyi.warehouse.domain.entity.MovementDoc;
 import com.ruoyi.warehouse.domain.entity.MovementDocDetail;
 import com.ruoyi.warehouse.domain.vo.MovementOrderVo;
@@ -58,7 +58,7 @@ public class MovementOrderService {
     /**
      * 查询移库单列表
      */
-    public TableDataInfo<MovementOrderVo> queryPageList(MovementOrderBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementOrderVo> queryPageList(MovementDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
         Page<MovementOrderVo> result = movementOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
@@ -67,12 +67,12 @@ public class MovementOrderService {
     /**
      * 查询移库单列表
      */
-    public List<MovementOrderVo> queryList(MovementOrderBo bo) {
+    public List<MovementOrderVo> queryList(MovementDocBo bo) {
         LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
         return movementOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementOrderBo bo) {
+    private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), MovementDoc::getOrderNo, bo.getOrderNo());
@@ -88,7 +88,7 @@ public class MovementOrderService {
      * 新增移库单
      */
     @Transactional
-    public void insertByBo(MovementOrderBo bo) {
+    public void insertByBo(MovementDocBo bo) {
         // 1.校验移库单号唯一性
         validateMovementOrderNo(bo.getOrderNo());
         // 2.创建移库单
@@ -115,7 +115,7 @@ public class MovementOrderService {
      * 修改移库单
      */
     @Transactional
-    public void updateByBo(MovementOrderBo bo) {
+    public void updateByBo(MovementDocBo bo) {
         // 1.更新移库单
         MovementDoc update = MapstructUtils.convert(bo, MovementDoc.class);
         movementOrderMapper.updateById(update);
@@ -156,7 +156,7 @@ public class MovementOrderService {
      * @param bo
      */
     @Transactional
-    public void move(MovementOrderBo bo) {
+    public void move(MovementDocBo bo) {
 
 
         // 1.校验商品明细不能为空！
@@ -169,10 +169,10 @@ public class MovementOrderService {
             updateByBo(bo);
         }
         // 4.更新库存Inventory
-        MovementOrderBo shipmentBo = getShipmentBo(bo);
+        MovementDocBo shipmentBo = getShipmentBo(bo);
         inventoryService.subtract(shipmentBo.getDetails());
 
-        MovementOrderBo receiptBo = getReceiptBo(bo);
+        MovementDocBo receiptBo = getReceiptBo(bo);
         inventoryService.add(receiptBo.getDetails());
 
 
@@ -181,20 +181,20 @@ public class MovementOrderService {
         inventoryHistoryService.saveInventoryHistory(receiptBo, ServiceConstants.InventoryHistoryOrderType.MOVEMENT,true);
     }
 
-    private MovementOrderBo getReceiptBo(MovementOrderBo bo) {
+    private MovementDocBo getReceiptBo(MovementDocBo bo) {
 
-        MovementOrderBo receiptBo = SerializationUtils.clone(bo);
+        MovementDocBo receiptBo = SerializationUtils.clone(bo);
         receiptBo.getDetails().forEach(detail -> detail.setWarehouseId(detail.getTargetWarehouseId()));
         return receiptBo;
     }
 
-    private MovementOrderBo getShipmentBo(MovementOrderBo bo) {
-        MovementOrderBo shipmentBo = SerializationUtils.clone(bo);
+    private MovementDocBo getShipmentBo(MovementDocBo bo) {
+        MovementDocBo shipmentBo = SerializationUtils.clone(bo);
         shipmentBo.getDetails().forEach(detail -> detail.setWarehouseId(detail.getSourceWarehouseId()));
         return shipmentBo;
     }
 
-    private void validateBeforeMove(MovementOrderBo bo) {
+    private void validateBeforeMove(MovementDocBo bo) {
         if (CollUtil.isEmpty(bo.getDetails())) {
             throw new BaseException("商品明细不能为空！");
         }
