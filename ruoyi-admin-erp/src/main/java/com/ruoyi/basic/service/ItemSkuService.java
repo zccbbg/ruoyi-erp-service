@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.service;
+package com.ruoyi.basic.service;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
@@ -16,7 +16,8 @@ import com.ruoyi.basic.domain.entity.ItemSku;
 import com.ruoyi.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.warehouse.domain.vo.ItemSkuMapVo;
 import com.ruoyi.warehouse.domain.vo.ItemSkuVo;
-import com.ruoyi.warehouse.mapper.ItemSkuMapper;
+import com.ruoyi.basic.mapper.ItemSkuMapper;
+import com.ruoyi.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;

@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.service;
+package com.ruoyi.basic.service;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
@@ -13,11 +13,11 @@ import com.ruoyi.warehouse.domain.bo.ItemCategoryBo;
 import com.ruoyi.basic.domain.entity.Item;
 import com.ruoyi.warehouse.domain.vo.ItemCategoryVo;
 import com.ruoyi.warehouse.domain.vo.ItemTypeTreeSelectVo;
-import com.ruoyi.warehouse.mapper.ItemCategoryMapper;
+import com.ruoyi.basic.mapper.ItemCategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.basic.domain.entity.ItemCategory;
-import com.ruoyi.warehouse.mapper.ItemMapper;
+import com.ruoyi.basic.mapper.ItemMapper;
 
 import java.util.ArrayList;
 import java.util.List;

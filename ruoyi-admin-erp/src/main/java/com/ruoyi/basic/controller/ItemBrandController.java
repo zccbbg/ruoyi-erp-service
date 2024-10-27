@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.controller;
+package com.ruoyi.basic.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ruoyi.common.core.domain.R;
@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ItemBrandBo;
 import com.ruoyi.warehouse.domain.vo.ItemBrandVo;
-import com.ruoyi.warehouse.service.ItemBrandService;
+import com.ruoyi.basic.service.ItemBrandService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;

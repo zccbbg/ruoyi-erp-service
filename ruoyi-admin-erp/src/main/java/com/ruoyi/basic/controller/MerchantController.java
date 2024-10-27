@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.controller;
+package com.ruoyi.basic.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ruoyi.common.core.domain.R;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.warehouse.domain.bo.MerchantBo;
-import com.ruoyi.warehouse.service.MerchantService;
+import com.ruoyi.basic.service.MerchantService;
 
 import java.util.List;
 

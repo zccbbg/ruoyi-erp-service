@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.service;
+package com.ruoyi.basic.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -14,8 +14,8 @@ import com.ruoyi.warehouse.domain.bo.ItemBrandBo;
 import com.ruoyi.basic.domain.entity.Item;
 import com.ruoyi.basic.domain.entity.ItemBrand;
 import com.ruoyi.warehouse.domain.vo.ItemBrandVo;
-import com.ruoyi.warehouse.mapper.ItemBrandMapper;
-import com.ruoyi.warehouse.mapper.ItemMapper;
+import com.ruoyi.basic.mapper.ItemBrandMapper;
+import com.ruoyi.basic.mapper.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

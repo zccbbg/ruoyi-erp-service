@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.controller;
+package com.ruoyi.basic.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ruoyi.common.core.domain.R;
@@ -14,7 +14,7 @@ import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ItemCategoryBo;
 import com.ruoyi.warehouse.domain.vo.ItemCategoryVo;
 import com.ruoyi.warehouse.domain.vo.ItemTypeTreeSelectVo;
-import com.ruoyi.warehouse.service.ItemCategoryService;
+import com.ruoyi.basic.service.ItemCategoryService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

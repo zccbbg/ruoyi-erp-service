@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.mapper;
+package com.ruoyi.basic.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;

@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.service;
+package com.ruoyi.basic.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -13,7 +13,7 @@ import com.ruoyi.warehouse.domain.bo.MerchantBo;
 import com.ruoyi.basic.domain.entity.Merchant;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import com.ruoyi.warehouse.domain.vo.MerchantVo;
-import com.ruoyi.warehouse.mapper.MerchantMapper;
+import com.ruoyi.basic.mapper.MerchantMapper;
 import com.ruoyi.warehouse.mapper.ReceiptOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

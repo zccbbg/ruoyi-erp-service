@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.mapper;
+package com.ruoyi.basic.mapper;
 
 import com.ruoyi.basic.domain.entity.ItemBrand;
 import com.ruoyi.warehouse.domain.vo.ItemBrandVo;

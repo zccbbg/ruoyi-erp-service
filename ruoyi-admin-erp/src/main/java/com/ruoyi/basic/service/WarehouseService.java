@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.service;
+package com.ruoyi.basic.service;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
@@ -15,7 +15,8 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.WarehouseBo;
 import com.ruoyi.basic.domain.entity.Warehouse;
 import com.ruoyi.warehouse.domain.vo.WarehouseVo;
-import com.ruoyi.warehouse.mapper.WarehouseMapper;
+import com.ruoyi.basic.mapper.WarehouseMapper;
+import com.ruoyi.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
