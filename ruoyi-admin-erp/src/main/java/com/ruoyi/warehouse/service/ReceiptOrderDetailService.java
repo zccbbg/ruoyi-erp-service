@@ -10,7 +10,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDocDetail;
-import com.ruoyi.warehouse.domain.vo.ReceiptOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.ReceiptDocDetailVo;
 import com.ruoyi.warehouse.mapper.ReceiptOrderDetailMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -38,23 +38,23 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
     /**
      * 查询入库单详情
      */
-    public ReceiptOrderDetailVo queryById(Long id){
+    public ReceiptDocDetailVo queryById(Long id){
         return receiptOrderDetailMapper.selectVoById(id);
     }
 
     /**
      * 查询入库单详情列表
      */
-    public TableDataInfo<ReceiptOrderDetailVo> queryPageList(ReceiptDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptDocDetailVo> queryPageList(ReceiptDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = buildQueryWrapper(bo);
-        Page<ReceiptOrderDetailVo> result = receiptOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<ReceiptDocDetailVo> result = receiptOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询入库单详情列表
      */
-    public List<ReceiptOrderDetailVo> queryList(ReceiptDocDetailBo bo) {
+    public List<ReceiptDocDetailVo> queryList(ReceiptDocDetailBo bo) {
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = buildQueryWrapper(bo);
         return receiptOrderDetailMapper.selectVoList(lqw);
     }
@@ -110,10 +110,10 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
         saveOrUpdateBatch(list);
     }
 
-    public List<ReceiptOrderDetailVo> queryByReceiptOrderId(Long receiptOrderId) {
+    public List<ReceiptDocDetailVo> queryByReceiptOrderId(Long receiptOrderId) {
         ReceiptDocDetailBo bo = new ReceiptDocDetailBo();
         bo.setOrderId(receiptOrderId);
-        List<ReceiptOrderDetailVo> details = queryList(bo);
+        List<ReceiptDocDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }

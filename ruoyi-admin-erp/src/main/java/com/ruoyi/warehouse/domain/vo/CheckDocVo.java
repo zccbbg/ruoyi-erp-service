@@ -1,21 +1,22 @@
 package com.ruoyi.warehouse.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
-import com.ruoyi.warehouse.domain.entity.OtherReceiptDocDetail;
+import com.ruoyi.base.domain.vo.BaseDocVo;
+import com.ruoyi.warehouse.domain.entity.CheckDoc;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 入库单详情视图对象 wms_receipt_order_detail
+ * 库存盘点单据视图对象 wms_check_order
  *
  * @author zcc
- * @date 2024-07-19
+ * @date 2024-08-13
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-@AutoMapper(target = OtherReceiptDocDetail.class)
-public class ReceiptOrderDetailVo extends BaseOrderDetailVo{
+@AutoMapper(target = CheckDoc.class)
+public class CheckDocVo extends BaseDocVo<CheckDocDetailVo> {
 
 }

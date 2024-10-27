@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
-import com.ruoyi.warehouse.domain.vo.ShipmentOrderVo;
+import com.ruoyi.warehouse.domain.vo.ShipmentDocVo;
 import com.ruoyi.warehouse.service.ShipmentOrderService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class ShipmentOrderController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list")
-    public TableDataInfo<ShipmentOrderVo> list(ShipmentDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentDocVo> list(ShipmentDocBo bo, PageQuery pageQuery) {
         return shipmentOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class ShipmentOrderController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ShipmentDocBo bo, HttpServletResponse response) {
-        List<ShipmentOrderVo> list = shipmentOrderService.queryList(bo);
-        ExcelUtil.exportExcel(list, "出库单", ShipmentOrderVo.class, response);
+        List<ShipmentDocVo> list = shipmentOrderService.queryList(bo);
+        ExcelUtil.exportExcel(list, "出库单", ShipmentDocVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ShipmentOrderController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/{id}")
-    public R<ShipmentOrderVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<ShipmentDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(shipmentOrderService.queryById(id));
     }

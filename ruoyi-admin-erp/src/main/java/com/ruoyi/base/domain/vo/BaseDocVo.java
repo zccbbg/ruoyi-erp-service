@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.vo;
+package com.ruoyi.base.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-public class BaseOrderVo<T extends BaseOrderDetailVo> extends BaseVo {
+public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
     /**
      *
      */

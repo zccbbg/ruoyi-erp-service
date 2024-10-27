@@ -12,7 +12,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
-import com.ruoyi.warehouse.domain.vo.CheckOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.CheckDocDetailVo;
 import com.ruoyi.warehouse.service.CheckOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,7 +42,7 @@ public class CheckOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list")
-    public TableDataInfo<CheckOrderDetailVo> list(CheckDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckDocDetailVo> list(CheckDocDetailBo bo, PageQuery pageQuery) {
         return checkOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class CheckOrderDetailController extends BaseController {
     @Log(title = "库存盘点单据详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(CheckDocDetailBo bo, HttpServletResponse response) {
-        List<CheckOrderDetailVo> list = checkOrderDetailService.queryList(bo);
-        ExcelUtil.exportExcel(list, "库存盘点单据详情", CheckOrderDetailVo.class, response);
+        List<CheckDocDetailVo> list = checkOrderDetailService.queryList(bo);
+        ExcelUtil.exportExcel(list, "库存盘点单据详情", CheckDocDetailVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class CheckOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:check:all")
     @GetMapping("/{id}")
-    public R<CheckOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<CheckDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(checkOrderDetailService.queryById(id));
     }
@@ -112,7 +112,7 @@ public class CheckOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list/{checkOrderId}")
-    public R<List<CheckOrderDetailVo>> listByCheckOrderId(@NotNull @PathVariable Long checkOrderId) {
+    public R<List<CheckDocDetailVo>> listByCheckOrderId(@NotNull @PathVariable Long checkOrderId) {
         return R.ok(checkOrderDetailService.queryByCheckOrderId(checkOrderId));
     }
 }

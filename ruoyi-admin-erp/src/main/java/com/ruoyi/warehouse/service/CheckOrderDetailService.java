@@ -10,7 +10,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
-import com.ruoyi.warehouse.domain.vo.CheckOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.CheckDocDetailVo;
 import com.ruoyi.warehouse.mapper.CheckOrderDetailMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,16 +36,16 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     /**
      * 查询库存盘点单据详情
      */
-    public CheckOrderDetailVo queryById(Long id){
+    public CheckDocDetailVo queryById(Long id){
         return checkOrderDetailMapper.selectVoById(id);
     }
 
     /**
      * 查询库存盘点单据详情列表
      */
-    public TableDataInfo<CheckOrderDetailVo> queryPageList(CheckDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckDocDetailVo> queryPageList(CheckDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
-        Page<CheckOrderDetailVo> result = checkOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<CheckDocDetailVo> result = checkOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         if (CollUtil.isEmpty(result.getRecords())) {
             return TableDataInfo.build(result);
         }
@@ -56,7 +56,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
     /**
      * 查询库存盘点单据详情列表
      */
-    public List<CheckOrderDetailVo> queryList(CheckDocDetailBo bo) {
+    public List<CheckDocDetailVo> queryList(CheckDocDetailBo bo) {
         LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
         return checkOrderDetailMapper.selectVoList(lqw);
     }
@@ -104,10 +104,10 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
         saveOrUpdateBatch(list);
     }
 
-    public List<CheckOrderDetailVo> queryByCheckOrderId(Long checkOrderId) {
+    public List<CheckDocDetailVo> queryByCheckOrderId(Long checkOrderId) {
         CheckDocDetailBo bo = new CheckDocDetailBo();
         bo.setOrderId(checkOrderId);
-        List<CheckOrderDetailVo> details = queryList(bo);
+        List<CheckDocDetailVo> details = queryList(bo);
         itemSkuService.setItemSkuMap(details);
         return details;
     }

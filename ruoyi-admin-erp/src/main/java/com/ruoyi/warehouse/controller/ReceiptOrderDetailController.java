@@ -12,7 +12,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
-import com.ruoyi.warehouse.domain.vo.ReceiptOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.ReceiptDocDetailVo;
 import com.ruoyi.warehouse.service.ReceiptOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,7 +42,7 @@ public class ReceiptOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list")
-    public TableDataInfo<ReceiptOrderDetailVo> list(ReceiptDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptDocDetailVo> list(ReceiptDocDetailBo bo, PageQuery pageQuery) {
         return receiptOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class ReceiptOrderDetailController extends BaseController {
     @Log(title = "入库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ReceiptDocDetailBo bo, HttpServletResponse response) {
-        List<ReceiptOrderDetailVo> list = receiptOrderDetailService.queryList(bo);
-        ExcelUtil.exportExcel(list, "入库单详情", ReceiptOrderDetailVo.class, response);
+        List<ReceiptDocDetailVo> list = receiptOrderDetailService.queryList(bo);
+        ExcelUtil.exportExcel(list, "入库单详情", ReceiptDocDetailVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ReceiptOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/{id}")
-    public R<ReceiptOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<ReceiptDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(receiptOrderDetailService.queryById(id));
     }
@@ -112,7 +112,7 @@ public class ReceiptOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list/{receiptOrderId}")
-    public R<List<ReceiptOrderDetailVo>> listByReceiptOrderId(@NotNull @PathVariable Long receiptOrderId) {
+    public R<List<ReceiptDocDetailVo>> listByReceiptOrderId(@NotNull @PathVariable Long receiptOrderId) {
         return R.ok(receiptOrderDetailService.queryByReceiptOrderId(receiptOrderId));
     }
 }

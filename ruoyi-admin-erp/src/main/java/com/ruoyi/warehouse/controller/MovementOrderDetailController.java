@@ -12,7 +12,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.MovementDocDetailBo;
-import com.ruoyi.warehouse.domain.vo.MovementOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.MovementDocDetailVo;
 import com.ruoyi.warehouse.service.MovementOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,7 +42,7 @@ public class MovementOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list")
-    public TableDataInfo<MovementOrderDetailVo> list(MovementDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementDocDetailVo> list(MovementDocDetailBo bo, PageQuery pageQuery) {
         return movementOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class MovementOrderDetailController extends BaseController {
     @Log(title = "库存移动详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(MovementDocDetailBo bo, HttpServletResponse response) {
-        List<MovementOrderDetailVo> list = movementOrderDetailService.queryList(bo);
-        ExcelUtil.exportExcel(list, "库存移动详情", MovementOrderDetailVo.class, response);
+        List<MovementDocDetailVo> list = movementOrderDetailService.queryList(bo);
+        ExcelUtil.exportExcel(list, "库存移动详情", MovementDocDetailVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class MovementOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/{id}")
-    public R<MovementOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<MovementDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(movementOrderDetailService.queryById(id));
     }
@@ -112,7 +112,7 @@ public class MovementOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list/{movementOrderId}")
-    public R<List<MovementOrderDetailVo>> listByMovementOrderId(@NotNull @PathVariable Long movementOrderId) {
+    public R<List<MovementDocDetailVo>> listByMovementOrderId(@NotNull @PathVariable Long movementOrderId) {
         return R.ok(movementOrderDetailService.queryByMovementOrderId(movementOrderId));
     }
 }

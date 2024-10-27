@@ -12,7 +12,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
-import com.ruoyi.warehouse.domain.vo.ShipmentOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.ShipmentDocDetailVo;
 import com.ruoyi.warehouse.service.ShipmentOrderDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,7 +42,7 @@ public class ShipmentOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list")
-    public TableDataInfo<ShipmentOrderDetailVo> list(ShipmentDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentDocDetailVo> list(ShipmentDocDetailBo bo, PageQuery pageQuery) {
         return shipmentOrderDetailService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class ShipmentOrderDetailController extends BaseController {
     @Log(title = "出库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ShipmentDocDetailBo bo, HttpServletResponse response) {
-        List<ShipmentOrderDetailVo> list = shipmentOrderDetailService.queryList(bo);
-        ExcelUtil.exportExcel(list, "出库单详情", ShipmentOrderDetailVo.class, response);
+        List<ShipmentDocDetailVo> list = shipmentOrderDetailService.queryList(bo);
+        ExcelUtil.exportExcel(list, "出库单详情", ShipmentDocDetailVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ShipmentOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/{id}")
-    public R<ShipmentOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<ShipmentDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(shipmentOrderDetailService.queryById(id));
     }
@@ -113,7 +113,7 @@ public class ShipmentOrderDetailController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list/{shipmentOrderId}")
-    public R<List<ShipmentOrderDetailVo>> listByShipmentOrderId(@NotNull @PathVariable Long shipmentOrderId) {
+    public R<List<ShipmentDocDetailVo>> listByShipmentOrderId(@NotNull @PathVariable Long shipmentOrderId) {
         return R.ok(shipmentOrderDetailService.queryByShipmentOrderId(shipmentOrderId));
     }
 }

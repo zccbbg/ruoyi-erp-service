@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.CheckDocBo;
-import com.ruoyi.warehouse.domain.vo.CheckOrderVo;
+import com.ruoyi.warehouse.domain.vo.CheckDocVo;
 import com.ruoyi.warehouse.service.CheckOrderService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class CheckOrderController extends BaseController {
      */
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list")
-    public TableDataInfo<CheckOrderVo> list(CheckDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckDocVo> list(CheckDocBo bo, PageQuery pageQuery) {
         return checkOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class CheckOrderController extends BaseController {
     @Log(title = "库存盘点单据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(CheckDocBo bo, HttpServletResponse response) {
-        List<CheckOrderVo> list = checkOrderService.queryList(bo);
-        ExcelUtil.exportExcel(list, "库存盘点单据", CheckOrderVo.class, response);
+        List<CheckDocVo> list = checkOrderService.queryList(bo);
+        ExcelUtil.exportExcel(list, "库存盘点单据", CheckDocVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class CheckOrderController extends BaseController {
      */
     @SaCheckPermission("wms:check:all")
     @GetMapping("/{id}")
-    public R<CheckOrderVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<CheckDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(checkOrderService.queryById(id));
     }

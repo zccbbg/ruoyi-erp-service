@@ -1,7 +1,7 @@
 package com.ruoyi.warehouse.mapper;
 
 import com.ruoyi.warehouse.domain.entity.MovementDoc;
-import com.ruoyi.warehouse.domain.vo.MovementOrderVo;
+import com.ruoyi.warehouse.domain.vo.MovementDocVo;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-08-09
  */
-public interface MovementOrderMapper extends BaseMapperPlus<MovementDoc, MovementOrderVo> {
+public interface MovementOrderMapper extends BaseMapperPlus<MovementDoc, MovementDocVo> {
 
 }

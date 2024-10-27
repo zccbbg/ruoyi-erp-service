@@ -10,7 +10,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.MovementDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.MovementDocDetail;
-import com.ruoyi.warehouse.domain.vo.MovementOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.MovementDocDetailVo;
 import com.ruoyi.warehouse.mapper.MovementOrderDetailMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,23 +37,23 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
     /**
      * 查询库存移动详情
      */
-    public MovementOrderDetailVo queryById(Long id){
+    public MovementDocDetailVo queryById(Long id){
         return movementOrderDetailMapper.selectVoById(id);
     }
 
     /**
      * 查询库存移动详情列表
      */
-    public TableDataInfo<MovementOrderDetailVo> queryPageList(MovementDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementDocDetailVo> queryPageList(MovementDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementDocDetail> lqw = buildQueryWrapper(bo);
-        Page<MovementOrderDetailVo> result = movementOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<MovementDocDetailVo> result = movementOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询库存移动详情列表
      */
-    public List<MovementOrderDetailVo> queryList(MovementDocDetailBo bo) {
+    public List<MovementDocDetailVo> queryList(MovementDocDetailBo bo) {
         LambdaQueryWrapper<MovementDocDetail> lqw = buildQueryWrapper(bo);
         return movementOrderDetailMapper.selectVoList(lqw);
     }
@@ -105,10 +105,10 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
      * @param movementOrderId
      * @return
      */
-    public List<MovementOrderDetailVo> queryByMovementOrderId(Long movementOrderId) {
+    public List<MovementDocDetailVo> queryByMovementOrderId(Long movementOrderId) {
         MovementDocDetailBo bo = new MovementDocDetailBo();
         bo.setOrderId(movementOrderId);
-        List<MovementOrderDetailVo> details = queryList(bo);
+        List<MovementDocDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }

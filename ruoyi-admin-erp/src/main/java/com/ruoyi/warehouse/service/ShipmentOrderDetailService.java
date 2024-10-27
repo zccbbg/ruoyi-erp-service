@@ -10,7 +10,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
-import com.ruoyi.warehouse.domain.vo.ShipmentOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.ShipmentDocDetailVo;
 import com.ruoyi.warehouse.mapper.ShipmentOrderDetailMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,23 +36,23 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     /**
      * 查询出库单详情
      */
-    public ShipmentOrderDetailVo queryById(Long id){
+    public ShipmentDocDetailVo queryById(Long id){
         return shipmentOrderDetailMapper.selectVoById(id);
     }
 
     /**
      * 查询出库单详情列表
      */
-    public TableDataInfo<ShipmentOrderDetailVo> queryPageList(ShipmentDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentDocDetailVo> queryPageList(ShipmentDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = buildQueryWrapper(bo);
-        Page<ShipmentOrderDetailVo> result = shipmentOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<ShipmentDocDetailVo> result = shipmentOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询出库单详情列表
      */
-    public List<ShipmentOrderDetailVo> queryList(ShipmentDocDetailBo bo) {
+    public List<ShipmentDocDetailVo> queryList(ShipmentDocDetailBo bo) {
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = buildQueryWrapper(bo);
         return shipmentOrderDetailMapper.selectVoList(lqw);
     }
@@ -99,10 +99,10 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
         saveOrUpdateBatch(list);
     }
 
-    public List<ShipmentOrderDetailVo> queryByShipmentOrderId(Long shipmentOrderId) {
+    public List<ShipmentDocDetailVo> queryByShipmentOrderId(Long shipmentOrderId) {
         ShipmentDocDetailBo bo = new ShipmentDocDetailBo();
         bo.setOrderId(shipmentOrderId);
-        List<ShipmentOrderDetailVo> details = queryList(bo);
+        List<ShipmentDocDetailVo> details = queryList(bo);
         itemSkuService.setItemSkuMap(details);
         return details;
     }

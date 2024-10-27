@@ -15,7 +15,7 @@ import com.ruoyi.warehouse.domain.bo.CheckDocBo;
 import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.CheckDoc;
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
-import com.ruoyi.warehouse.domain.vo.CheckOrderVo;
+import com.ruoyi.warehouse.domain.vo.CheckDocVo;
 import com.ruoyi.warehouse.mapper.CheckOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SerializationUtils;
@@ -46,8 +46,8 @@ public class CheckOrderService {
     /**
      * 查询库存盘点单据
      */
-    public CheckOrderVo queryById(Long id){
-        CheckOrderVo checkOrderVo = checkOrderMapper.selectVoById(id);
+    public CheckDocVo queryById(Long id){
+        CheckDocVo checkOrderVo = checkOrderMapper.selectVoById(id);
         if (checkOrderVo == null) {
             throw new BaseException("盘库单不存在");
         }
@@ -58,16 +58,16 @@ public class CheckOrderService {
     /**
      * 查询库存盘点单据列表
      */
-    public TableDataInfo<CheckOrderVo> queryPageList(CheckDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CheckDocVo> queryPageList(CheckDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
-        Page<CheckOrderVo> result = checkOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<CheckDocVo> result = checkOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询库存盘点单据列表
      */
-    public List<CheckOrderVo> queryList(CheckDocBo bo) {
+    public List<CheckDocVo> queryList(CheckDocBo bo) {
         LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
         return checkOrderMapper.selectVoList(lqw);
     }
@@ -127,7 +127,7 @@ public class CheckOrderService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        CheckOrderVo checkOrderVo = queryById(id);
+        CheckDocVo checkOrderVo = queryById(id);
         if (checkOrderVo == null) {
             throw new BaseException("盘库单不存在");
         }

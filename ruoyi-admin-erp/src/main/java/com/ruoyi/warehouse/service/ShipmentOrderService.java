@@ -18,7 +18,7 @@ import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
 import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
-import com.ruoyi.warehouse.domain.vo.ShipmentOrderVo;
+import com.ruoyi.warehouse.domain.vo.ShipmentDocVo;
 import com.ruoyi.warehouse.mapper.ShipmentOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,8 +46,8 @@ public class ShipmentOrderService {
     /**
      * 查询出库单
      */
-    public ShipmentOrderVo queryById(Long id){
-        ShipmentOrderVo shipmentOrderVo = shipmentOrderMapper.selectVoById(id);
+    public ShipmentDocVo queryById(Long id){
+        ShipmentDocVo shipmentOrderVo = shipmentOrderMapper.selectVoById(id);
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
@@ -58,16 +58,16 @@ public class ShipmentOrderService {
     /**
      * 查询出库单列表
      */
-    public TableDataInfo<ShipmentOrderVo> queryPageList(ShipmentDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ShipmentDocVo> queryPageList(ShipmentDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
-        Page<ShipmentOrderVo> result = shipmentOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<ShipmentDocVo> result = shipmentOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询出库单列表
      */
-    public List<ShipmentOrderVo> queryList(ShipmentDocBo bo) {
+    public List<ShipmentDocVo> queryList(ShipmentDocBo bo) {
         LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
         return shipmentOrderMapper.selectVoList(lqw);
     }
@@ -134,7 +134,7 @@ public class ShipmentOrderService {
     }
 
     public void validateIdBeforeDelete(Long id) {
-        ShipmentOrderVo shipmentOrderVo = queryById(id);
+        ShipmentDocVo shipmentOrderVo = queryById(id);
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }

@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.ItemSkuBo;
 import com.ruoyi.basic.domain.entity.ItemSku;
-import com.ruoyi.warehouse.domain.vo.BaseOrderDetailVo;
+import com.ruoyi.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.warehouse.domain.vo.ItemSkuMapVo;
 import com.ruoyi.warehouse.domain.vo.ItemSkuVo;
 import com.ruoyi.warehouse.mapper.ItemSkuMapper;
@@ -168,11 +168,11 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
             .collect(Collectors.toMap(ItemSkuMapVo::getSkuId, Function.identity()));
     }
 
-    public void setItemSkuMap(List<? extends BaseOrderDetailVo> details){
+    public void setItemSkuMap(List<? extends BaseDocDetailVo> details){
         if (CollUtil.isNotEmpty(details)) {
             Set<Long> skuIds = details
                 .stream()
-                .map(BaseOrderDetailVo::getSkuId)
+                .map(BaseDocDetailVo::getSkuId)
                 .collect(Collectors.toSet());
 
             Map<Long, ItemSkuMapVo> itemSkuMap = this.queryItemSkuMapVosByIds(skuIds);

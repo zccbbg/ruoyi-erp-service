@@ -1,7 +1,9 @@
-package com.ruoyi.warehouse.domain.vo;
+package com.ruoyi.base.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.ruoyi.warehouse.domain.vo.ItemSkuVo;
+import com.ruoyi.warehouse.domain.vo.ItemVo;
 import lombok.Data;
 
 import java.io.Serial;
@@ -10,7 +12,7 @@ import java.math.BigDecimal;
 
 @Data
 @ExcelIgnoreUnannotated
-public class BaseOrderDetailVo implements Serializable {
+public class BaseDocDetailVo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     /**

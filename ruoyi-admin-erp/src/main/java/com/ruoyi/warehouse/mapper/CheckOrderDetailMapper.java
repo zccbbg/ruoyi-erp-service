@@ -1,7 +1,7 @@
 package com.ruoyi.warehouse.mapper;
 
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
-import com.ruoyi.warehouse.domain.vo.CheckOrderDetailVo;
+import com.ruoyi.warehouse.domain.vo.CheckDocDetailVo;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-08-13
  */
-public interface CheckOrderDetailMapper extends BaseMapperPlus<CheckDocDetail, CheckOrderDetailVo> {
+public interface CheckOrderDetailMapper extends BaseMapperPlus<CheckDocDetail, CheckDocDetailVo> {
 
 }

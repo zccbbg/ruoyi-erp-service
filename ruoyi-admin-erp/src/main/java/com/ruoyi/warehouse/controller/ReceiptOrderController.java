@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.warehouse.domain.bo.ReceiptDocBo;
-import com.ruoyi.warehouse.domain.vo.ReceiptOrderVo;
+import com.ruoyi.warehouse.domain.vo.ReceiptDocVo;
 import com.ruoyi.warehouse.service.ReceiptOrderService;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class ReceiptOrderController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list")
-    public TableDataInfo<ReceiptOrderVo> list(ReceiptDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptDocVo> list(ReceiptDocBo bo, PageQuery pageQuery) {
         return receiptOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class ReceiptOrderController extends BaseController {
     @Log(title = "入库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ReceiptDocBo bo, HttpServletResponse response) {
-        List<ReceiptOrderVo> list = receiptOrderService.queryList(bo);
-        ExcelUtil.exportExcel(list, "入库单", ReceiptOrderVo.class, response);
+        List<ReceiptDocVo> list = receiptOrderService.queryList(bo);
+        ExcelUtil.exportExcel(list, "入库单", ReceiptDocVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ReceiptOrderController extends BaseController {
      */
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/{id}")
-    public R<ReceiptOrderVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<ReceiptDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(receiptOrderService.queryById(id));
     }

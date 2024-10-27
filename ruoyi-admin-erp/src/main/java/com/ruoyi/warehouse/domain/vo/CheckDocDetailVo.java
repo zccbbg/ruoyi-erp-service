@@ -2,6 +2,7 @@ package com.ruoyi.warehouse.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.ruoyi.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.warehouse.domain.entity.CheckDocDetail;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -19,7 +20,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
 @AutoMapper(target = CheckDocDetail.class)
-public class  CheckOrderDetailVo extends BaseOrderDetailVo {
+public class CheckDocDetailVo extends BaseDocDetailVo {
 
     /**
      * 盘点数量

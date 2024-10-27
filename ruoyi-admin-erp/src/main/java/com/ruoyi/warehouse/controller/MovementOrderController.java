@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.MovementDocBo;
-import com.ruoyi.warehouse.domain.vo.MovementOrderVo;
+import com.ruoyi.warehouse.domain.vo.MovementDocVo;
 import com.ruoyi.warehouse.service.MovementOrderService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class MovementOrderController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list")
-    public TableDataInfo<MovementOrderVo> list(MovementDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementDocVo> list(MovementDocBo bo, PageQuery pageQuery) {
         return movementOrderService.queryPageList(bo, pageQuery);
     }
 
@@ -53,8 +53,8 @@ public class MovementOrderController extends BaseController {
     @Log(title = "移库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(MovementDocBo bo, HttpServletResponse response) {
-        List<MovementOrderVo> list = movementOrderService.queryList(bo);
-        ExcelUtil.exportExcel(list, "移库单", MovementOrderVo.class, response);
+        List<MovementDocVo> list = movementOrderService.queryList(bo);
+        ExcelUtil.exportExcel(list, "移库单", MovementDocVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class MovementOrderController extends BaseController {
      */
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/{id}")
-    public R<MovementOrderVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<MovementDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(movementOrderService.queryById(id));
     }

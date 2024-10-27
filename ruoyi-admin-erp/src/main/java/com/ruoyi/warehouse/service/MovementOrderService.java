@@ -15,7 +15,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.MovementDocBo;
 import com.ruoyi.warehouse.domain.entity.MovementDoc;
 import com.ruoyi.warehouse.domain.entity.MovementDocDetail;
-import com.ruoyi.warehouse.domain.vo.MovementOrderVo;
+import com.ruoyi.warehouse.domain.vo.MovementDocVo;
 import com.ruoyi.warehouse.mapper.MovementOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SerializationUtils;
@@ -46,8 +46,8 @@ public class MovementOrderService {
     /**
      * 查询移库单
      */
-    public MovementOrderVo queryById(Long id) {
-        MovementOrderVo movementOrderVo = movementOrderMapper.selectVoById(id);
+    public MovementDocVo queryById(Long id) {
+        MovementDocVo movementOrderVo = movementOrderMapper.selectVoById(id);
         if (movementOrderVo == null) {
             throw new BaseException("移库单不存在");
         }
@@ -58,16 +58,16 @@ public class MovementOrderService {
     /**
      * 查询移库单列表
      */
-    public TableDataInfo<MovementOrderVo> queryPageList(MovementDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<MovementDocVo> queryPageList(MovementDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
-        Page<MovementOrderVo> result = movementOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<MovementDocVo> result = movementOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询移库单列表
      */
-    public List<MovementOrderVo> queryList(MovementDocBo bo) {
+    public List<MovementDocVo> queryList(MovementDocBo bo) {
         LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
         return movementOrderMapper.selectVoList(lqw);
     }
@@ -135,7 +135,7 @@ public class MovementOrderService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        MovementOrderVo movementOrderVo = queryById(id);
+        MovementDocVo movementOrderVo = queryById(id);
         if (movementOrderVo == null) {
             throw new BaseException("移库单不存在");
         }

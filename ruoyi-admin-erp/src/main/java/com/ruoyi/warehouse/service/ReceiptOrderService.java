@@ -19,7 +19,7 @@ import com.ruoyi.warehouse.domain.bo.ReceiptDocBo;
 import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDocDetail;
-import com.ruoyi.warehouse.domain.vo.ReceiptOrderVo;
+import com.ruoyi.warehouse.domain.vo.ReceiptDocVo;
 import com.ruoyi.warehouse.mapper.ReceiptOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,8 +48,8 @@ public class ReceiptOrderService {
     /**
      * 查询入库单
      */
-    public ReceiptOrderVo queryById(Long id){
-        ReceiptOrderVo receiptOrderVo = receiptOrderMapper.selectVoById(id);
+    public ReceiptDocVo queryById(Long id){
+        ReceiptDocVo receiptOrderVo = receiptOrderMapper.selectVoById(id);
         Assert.notNull(receiptOrderVo, "入库单不存在");
         receiptOrderVo.setDetails(receiptOrderDetailService.queryByReceiptOrderId(id));
         return receiptOrderVo;
@@ -58,16 +58,16 @@ public class ReceiptOrderService {
     /**
      * 查询入库单列表
      */
-    public TableDataInfo<ReceiptOrderVo> queryPageList(ReceiptDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ReceiptDocVo> queryPageList(ReceiptDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherReceiptDoc> lqw = buildQueryWrapper(bo);
-        Page<ReceiptOrderVo> result = receiptOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<ReceiptDocVo> result = receiptOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询入库单列表
      */
-    public List<ReceiptOrderVo> queryList(ReceiptDocBo bo) {
+    public List<ReceiptDocVo> queryList(ReceiptDocBo bo) {
         LambdaQueryWrapper<OtherReceiptDoc> lqw = buildQueryWrapper(bo);
         return receiptOrderMapper.selectVoList(lqw);
     }
@@ -172,7 +172,7 @@ public class ReceiptOrderService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        ReceiptOrderVo receiptOrderVo = queryById(id);
+        ReceiptDocVo receiptOrderVo = queryById(id);
         Assert.notNull(receiptOrderVo, "入库单不存在");
         if (ServiceConstants.ReceiptOrderStatus.FINISH.equals(receiptOrderVo.getOrderStatus())) {
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"入库单【" + receiptOrderVo.getOrderNo() + "】已入库，无法删除！");
