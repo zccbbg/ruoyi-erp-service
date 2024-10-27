@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.entity;
+package com.ruoyi.base.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -8,31 +8,35 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 
 @Data
-@EqualsAndHashCode(callSuper=true)
-public class BaseDocDetail extends BaseEntity {
+@EqualsAndHashCode(callSuper = true)
+public class BaseDoc extends BaseEntity {
+
     /**
      *
      */
     @TableId(value = "id")
     private Long id;
     /**
-     * 入库单号
+     * 编号
      */
-    private Long docId;
+    private String docNo;
+
     /**
-     * 规格id
+     * 商品总数
      */
-    private Long skuId;
+    private BigDecimal totalQuantity;
     /**
-     * 入库数量
+     * 单据总金额
      */
-    private BigDecimal quantity;
+    private BigDecimal totalAmount;
     /**
-     * 金额
+     * 单据状态
      */
-    private BigDecimal amount;
+    private Integer docStatus;
+
     /**
      * 备注
      */
     private String remark;
+
 }

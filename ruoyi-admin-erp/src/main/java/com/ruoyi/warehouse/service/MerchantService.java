@@ -10,7 +10,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.MerchantBo;
-import com.ruoyi.warehouse.domain.entity.Merchant;
+import com.ruoyi.basic.domain.entity.Merchant;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import com.ruoyi.warehouse.domain.vo.MerchantVo;
 import com.ruoyi.warehouse.mapper.MerchantMapper;

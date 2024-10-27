@@ -4,7 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import com.ruoyi.warehouse.domain.entity.ItemSku;
+import com.ruoyi.basic.domain.entity.ItemSku;
 
 import java.io.Serial;
 import java.io.Serializable;

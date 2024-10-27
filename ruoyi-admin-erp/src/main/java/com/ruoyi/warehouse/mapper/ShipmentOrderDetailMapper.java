@@ -1,6 +1,6 @@
 package com.ruoyi.warehouse.mapper;
 
-import com.ruoyi.warehouse.domain.entity.OtherShipmentDetail;
+import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.warehouse.domain.vo.ShipmentOrderDetailVo;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 
@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-08-01
  */
-public interface ShipmentOrderDetailMapper extends BaseMapperPlus<OtherShipmentDetail, ShipmentOrderDetailVo> {
+public interface ShipmentOrderDetailMapper extends BaseMapperPlus<OtherShipmentDocDetail, ShipmentOrderDetailVo> {
 
 }

@@ -3,7 +3,7 @@ package com.ruoyi.warehouse.domain.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.mybatis.core.domain.BaseVo;
-import com.ruoyi.warehouse.domain.entity.ItemBrand;
+import com.ruoyi.basic.domain.entity.ItemBrand;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 

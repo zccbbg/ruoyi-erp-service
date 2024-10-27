@@ -2,7 +2,7 @@ package com.ruoyi.warehouse.mapper;
 
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.warehouse.domain.vo.MerchantVo;
-import com.ruoyi.warehouse.domain.entity.Merchant;
+import com.ruoyi.basic.domain.entity.Merchant;
 
 /**
  * 往来单位Mapper接口

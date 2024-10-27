@@ -1,6 +1,7 @@
 package com.ruoyi.warehouse.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ruoyi.base.domain.entity.BaseDoc;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("wms_shipment_order")
-public class OtherShipment extends BaseDoc {
+public class OtherShipmentDoc extends BaseDoc {
     /**
      * 仓库id
      */

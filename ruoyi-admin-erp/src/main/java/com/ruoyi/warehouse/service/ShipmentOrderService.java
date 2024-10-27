@@ -16,8 +16,8 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.ShipmentOrderBo;
 import com.ruoyi.warehouse.domain.bo.ShipmentOrderDetailBo;
-import com.ruoyi.warehouse.domain.entity.OtherShipment;
-import com.ruoyi.warehouse.domain.entity.OtherShipmentDetail;
+import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
+import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.warehouse.domain.vo.ShipmentOrderVo;
 import com.ruoyi.warehouse.mapper.ShipmentOrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class ShipmentOrderService {
      * 查询出库单列表
      */
     public TableDataInfo<ShipmentOrderVo> queryPageList(ShipmentOrderBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<OtherShipment> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
         Page<ShipmentOrderVo> result = shipmentOrderMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -68,20 +68,20 @@ public class ShipmentOrderService {
      * 查询出库单列表
      */
     public List<ShipmentOrderVo> queryList(ShipmentOrderBo bo) {
-        LambdaQueryWrapper<OtherShipment> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
         return shipmentOrderMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherShipment> buildQueryWrapper(ShipmentOrderBo bo) {
+    private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(ShipmentOrderBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<OtherShipment> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipment::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getOptType() != null, OtherShipment::getOptType, bo.getOptType());
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipment::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getMerchantId() != null, OtherShipment::getMerchantId, bo.getMerchantId());
-        lqw.eq(bo.getTotalAmount() != null, OtherShipment::getTotalAmount, bo.getTotalAmount());
-        lqw.eq(bo.getTotalQuantity() != null, OtherShipment::getTotalQuantity, bo.getTotalQuantity());
-        lqw.eq(bo.getOrderStatus() != null, OtherShipment::getOrderStatus, bo.getOrderStatus());
+        LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipmentDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(bo.getOptType() != null, OtherShipmentDoc::getOptType, bo.getOptType());
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipmentDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(bo.getMerchantId() != null, OtherShipmentDoc::getMerchantId, bo.getMerchantId());
+        lqw.eq(bo.getTotalAmount() != null, OtherShipmentDoc::getTotalAmount, bo.getTotalAmount());
+        lqw.eq(bo.getTotalQuantity() != null, OtherShipmentDoc::getTotalQuantity, bo.getTotalQuantity());
+        lqw.eq(bo.getOrderStatus() != null, OtherShipmentDoc::getOrderStatus, bo.getOrderStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -94,19 +94,19 @@ public class ShipmentOrderService {
         // 校验出库单号唯一性
         validateShipmentOrderNo(bo.getOrderNo());
         // 创建出库单
-        OtherShipment add = MapstructUtils.convert(bo, OtherShipment.class);
+        OtherShipmentDoc add = MapstructUtils.convert(bo, OtherShipmentDoc.class);
         shipmentOrderMapper.insert(add);
         bo.setId(add.getId());
         List<ShipmentOrderDetailBo> detailBoList = bo.getDetails();
-        List<OtherShipmentDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDetail.class);
+        List<OtherShipmentDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
         shipmentOrderDetailService.saveDetails(addDetailList);
     }
 
     public void validateShipmentOrderNo(String shipmentOrderNo) {
-        LambdaQueryWrapper<OtherShipment> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherShipment::getOrderNo, shipmentOrderNo);
-        OtherShipment shipmentOrder = shipmentOrderMapper.selectOne(receiptOrderLqw);
+        LambdaQueryWrapper<OtherShipmentDoc> receiptOrderLqw = Wrappers.lambdaQuery();
+        receiptOrderLqw.eq(OtherShipmentDoc::getOrderNo, shipmentOrderNo);
+        OtherShipmentDoc shipmentOrder = shipmentOrderMapper.selectOne(receiptOrderLqw);
         Assert.isNull(shipmentOrder, "出库单号重复，请手动修改");
     }
 
@@ -117,10 +117,10 @@ public class ShipmentOrderService {
     @Transactional
     public void updateByBo(ShipmentOrderBo bo) {
         // 更新出库单
-        OtherShipment update = MapstructUtils.convert(bo, OtherShipment.class);
+        OtherShipmentDoc update = MapstructUtils.convert(bo, OtherShipmentDoc.class);
         shipmentOrderMapper.updateById(update);
         // 保存出库单明细
-        List<OtherShipmentDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherShipmentDetail.class);
+        List<OtherShipmentDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherShipmentDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
         shipmentOrderDetailService.saveDetails(detailList);
     }

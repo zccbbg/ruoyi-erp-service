@@ -1,6 +1,6 @@
 package com.ruoyi.warehouse.domain.bo;
 
-import com.ruoyi.warehouse.domain.entity.ItemBrand;
+import com.ruoyi.basic.domain.entity.ItemBrand;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;

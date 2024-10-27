@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ruoyi.warehouse.domain.entity.ItemSku;
+import com.ruoyi.basic.domain.entity.ItemSku;
 
 import java.math.BigDecimal;
 

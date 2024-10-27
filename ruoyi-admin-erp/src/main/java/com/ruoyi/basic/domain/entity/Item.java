@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.entity;
+package com.ruoyi.basic.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,8 +10,8 @@ import java.io.Serial;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_warehouse")
-public class Warehouse extends BaseEntity {
+@TableName("wms_item")
+public class Item extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -25,16 +25,27 @@ public class Warehouse extends BaseEntity {
     /**
      * 编号
      */
-    private String warehouseCode;
+    private String itemCode;
 
     /**
      * 名称
      */
-    private String warehouseName;
+    private String itemName;
+
     /**
-     * 排序
+     * 分类
      */
-    private Long orderNum;
+    private String itemCategory;
+
+    /**
+     * 单位类别
+     */
+    private String unit;
+
+    /**
+     * 品牌
+     */
+    private Long itemBrand;
 
     /**
      * 备注

@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.entity;
+package com.ruoyi.basic.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,47 +10,36 @@ import java.io.Serial;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_item")
-public class Item extends BaseEntity {
+@TableName("wms_item_category")
+public class ItemCategory extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     *
+     * 物料类型id
      */
     @TableId(value = "id")
     private Long id;
 
     /**
-     * 编号
+     * 父物料类型id
      */
-    private String itemCode;
+    private Long parentId;
 
     /**
-     * 名称
+     * 物料类型名称
      */
-    private String itemName;
+    private String categoryName;
 
     /**
-     * 分类
+     * 显示顺序
      */
-    private String itemCategory;
+    private Long orderNum;
 
     /**
-     * 单位类别
+     * 物料类型状态（0停用 1正常）
      */
-    private String unit;
-
-    /**
-     * 品牌
-     */
-    private Long itemBrand;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
+    private String status;
 
 }

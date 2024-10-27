@@ -2,7 +2,7 @@ package com.ruoyi.warehouse.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.warehouse.domain.entity.Item;
+import com.ruoyi.basic.domain.entity.Item;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 

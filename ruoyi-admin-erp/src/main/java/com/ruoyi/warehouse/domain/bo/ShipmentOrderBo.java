@@ -2,7 +2,7 @@ package com.ruoyi.warehouse.domain.bo;
 
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
-import com.ruoyi.warehouse.domain.entity.OtherShipment;
+import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = OtherShipment.class, reverseConvertGenerate = false)
+@AutoMapper(target = OtherShipmentDoc.class, reverseConvertGenerate = false)
 public class ShipmentOrderBo extends BaseOrderBo<ShipmentOrderDetailBo> {
     /**
      * 入库类型

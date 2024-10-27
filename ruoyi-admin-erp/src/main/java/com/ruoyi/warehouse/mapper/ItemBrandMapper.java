@@ -1,6 +1,6 @@
 package com.ruoyi.warehouse.mapper;
 
-import com.ruoyi.warehouse.domain.entity.ItemBrand;
+import com.ruoyi.basic.domain.entity.ItemBrand;
 import com.ruoyi.warehouse.domain.vo.ItemBrandVo;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 

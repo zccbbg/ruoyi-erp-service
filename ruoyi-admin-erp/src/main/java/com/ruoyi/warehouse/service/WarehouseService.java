@@ -13,7 +13,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.WarehouseBo;
-import com.ruoyi.warehouse.domain.entity.Warehouse;
+import com.ruoyi.basic.domain.entity.Warehouse;
 import com.ruoyi.warehouse.domain.vo.WarehouseVo;
 import com.ruoyi.warehouse.mapper.WarehouseMapper;
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ruoyi.warehouse.domain.entity.ItemCategory;
+import com.ruoyi.basic.domain.entity.ItemCategory;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.entity;
+package com.ruoyi.basic.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;

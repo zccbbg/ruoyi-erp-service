@@ -10,13 +10,13 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.ItemCategoryBo;
-import com.ruoyi.warehouse.domain.entity.Item;
+import com.ruoyi.basic.domain.entity.Item;
 import com.ruoyi.warehouse.domain.vo.ItemCategoryVo;
 import com.ruoyi.warehouse.domain.vo.ItemTypeTreeSelectVo;
 import com.ruoyi.warehouse.mapper.ItemCategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.ruoyi.warehouse.domain.entity.ItemCategory;
+import com.ruoyi.basic.domain.entity.ItemCategory;
 import com.ruoyi.warehouse.mapper.ItemMapper;
 
 import java.util.ArrayList;

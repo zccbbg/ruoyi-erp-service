@@ -12,7 +12,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.warehouse.domain.bo.ItemSkuBo;
-import com.ruoyi.warehouse.domain.entity.ItemSku;
+import com.ruoyi.basic.domain.entity.ItemSku;
 import com.ruoyi.warehouse.domain.vo.BaseOrderDetailVo;
 import com.ruoyi.warehouse.domain.vo.ItemSkuMapVo;
 import com.ruoyi.warehouse.domain.vo.ItemSkuVo;

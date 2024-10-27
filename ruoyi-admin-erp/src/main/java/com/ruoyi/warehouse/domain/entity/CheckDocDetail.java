@@ -1,6 +1,7 @@
 package com.ruoyi.warehouse.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ruoyi.base.domain.entity.BaseDocDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

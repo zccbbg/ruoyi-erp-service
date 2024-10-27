@@ -6,7 +6,7 @@ import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.convert.ExcelDictConvert;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import com.ruoyi.warehouse.domain.entity.Merchant;
+import com.ruoyi.basic.domain.entity.Merchant;
 
 import java.io.Serial;
 import java.io.Serializable;
