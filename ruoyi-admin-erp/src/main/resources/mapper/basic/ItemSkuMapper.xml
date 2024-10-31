@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.basic.mapper.ItemSkuMapper">
+<mapper namespace="com.ruoyi.erp.basic.mapper.ItemSkuMapper">
 
-    <resultMap id="itemSkuMapVo" type="com.ruoyi.basic.domain.vo.ItemSkuMapVo">
-        <association property="item" javaType="com.ruoyi.basic.domain.vo.ItemVo">
+    <resultMap id="itemSkuMapVo" type="com.ruoyi.erp.basic.domain.vo.ItemSkuMapVo">
+        <association property="item" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
             <id property="id" column="item_id"/> <!-- 映射 item 的 id -->
         </association>
-        <association property="itemSku" javaType="com.ruoyi.basic.domain.vo.ItemSkuVo">
+        <association property="itemSku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
             <id property="id" column="sku_id"/> <!-- 映射 item 的 id -->
         </association>
     </resultMap>
