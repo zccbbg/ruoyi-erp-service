@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.CheckDocDetailVo;
-import com.ruoyi.warehouse.service.CheckOrderDetailService;
+import com.ruoyi.warehouse.service.CheckDocDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping("/wms/checkOrderDetail")
 public class CheckOrderDetailController extends BaseController {
 
-    private final CheckOrderDetailService checkOrderDetailService;
+    private final CheckDocDetailService checkDocDetailService;
 
     /**
      * 查询库存盘点单据详情列表
@@ -43,7 +43,7 @@ public class CheckOrderDetailController extends BaseController {
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list")
     public TableDataInfo<CheckDocDetailVo> list(CheckDocDetailBo bo, PageQuery pageQuery) {
-        return checkOrderDetailService.queryPageList(bo, pageQuery);
+        return checkDocDetailService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class CheckOrderDetailController extends BaseController {
     @Log(title = "库存盘点单据详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(CheckDocDetailBo bo, HttpServletResponse response) {
-        List<CheckDocDetailVo> list = checkOrderDetailService.queryList(bo);
+        List<CheckDocDetailVo> list = checkDocDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "库存盘点单据详情", CheckDocDetailVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class CheckOrderDetailController extends BaseController {
     @GetMapping("/{id}")
     public R<CheckDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(checkOrderDetailService.queryById(id));
+        return R.ok(checkDocDetailService.queryById(id));
     }
 
     /**
@@ -77,7 +77,7 @@ public class CheckOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody CheckDocDetailBo bo) {
-        checkOrderDetailService.insertByBo(bo);
+        checkDocDetailService.insertByBo(bo);
         return R.ok();
     }
 
@@ -89,7 +89,7 @@ public class CheckOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody CheckDocDetailBo bo) {
-        checkOrderDetailService.updateByBo(bo);
+        checkDocDetailService.updateByBo(bo);
         return R.ok();
     }
 
@@ -103,7 +103,7 @@ public class CheckOrderDetailController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
-        checkOrderDetailService.deleteByIds(List.of(ids));
+        checkDocDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
 
@@ -113,6 +113,6 @@ public class CheckOrderDetailController extends BaseController {
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list/{checkOrderId}")
     public R<List<CheckDocDetailVo>> listByCheckOrderId(@NotNull @PathVariable Long checkOrderId) {
-        return R.ok(checkOrderDetailService.queryByCheckOrderId(checkOrderId));
+        return R.ok(checkDocDetailService.queryByCheckOrderId(checkOrderId));
     }
 }

@@ -38,10 +38,10 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Service
-public class ReceiptOrderService {
+public class OtherReceiptDocService {
 
     private final ReceiptOrderMapper receiptOrderMapper;
-    private final ReceiptOrderDetailService receiptOrderDetailService;
+    private final OtherReceiptDocDetailService otherReceiptDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
 
@@ -51,7 +51,7 @@ public class ReceiptOrderService {
     public ReceiptDocVo queryById(Long id){
         ReceiptDocVo receiptOrderVo = receiptOrderMapper.selectVoById(id);
         Assert.notNull(receiptOrderVo, "入库单不存在");
-        receiptOrderVo.setDetails(receiptOrderDetailService.queryByReceiptOrderId(id));
+        receiptOrderVo.setDetails(otherReceiptDocDetailService.queryByReceiptOrderId(id));
         return receiptOrderVo;
     }
 
@@ -102,7 +102,7 @@ public class ReceiptOrderService {
             it.setOrderId(add.getId());
         });
         // 创建入库单明细
-        receiptOrderDetailService.saveDetails(addDetailList);
+        otherReceiptDocDetailService.saveDetails(addDetailList);
     }
 
     /**
@@ -149,7 +149,7 @@ public class ReceiptOrderService {
         // 保存入库单明细
         List<OtherReceiptDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherReceiptDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
-        receiptOrderDetailService.saveDetails(detailList);
+        otherReceiptDocDetailService.saveDetails(detailList);
     }
 
     /**

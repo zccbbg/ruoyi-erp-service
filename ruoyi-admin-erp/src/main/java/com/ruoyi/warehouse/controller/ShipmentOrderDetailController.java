@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.ShipmentDocDetailVo;
-import com.ruoyi.warehouse.service.ShipmentOrderDetailService;
+import com.ruoyi.warehouse.service.OtherShipmentDocDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping("/wms/shipmentOrderDetail")
 public class ShipmentOrderDetailController extends BaseController {
 
-    private final ShipmentOrderDetailService shipmentOrderDetailService;
+    private final OtherShipmentDocDetailService otherShipmentDocDetailService;
 
     /**
      * 查询出库单详情列表
@@ -43,7 +43,7 @@ public class ShipmentOrderDetailController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list")
     public TableDataInfo<ShipmentDocDetailVo> list(ShipmentDocDetailBo bo, PageQuery pageQuery) {
-        return shipmentOrderDetailService.queryPageList(bo, pageQuery);
+        return otherShipmentDocDetailService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ShipmentOrderDetailController extends BaseController {
     @Log(title = "出库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ShipmentDocDetailBo bo, HttpServletResponse response) {
-        List<ShipmentDocDetailVo> list = shipmentOrderDetailService.queryList(bo);
+        List<ShipmentDocDetailVo> list = otherShipmentDocDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "出库单详情", ShipmentDocDetailVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class ShipmentOrderDetailController extends BaseController {
     @GetMapping("/{id}")
     public R<ShipmentDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(shipmentOrderDetailService.queryById(id));
+        return R.ok(otherShipmentDocDetailService.queryById(id));
     }
 
     /**
@@ -77,7 +77,7 @@ public class ShipmentOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ShipmentDocDetailBo bo) {
-        shipmentOrderDetailService.insertByBo(bo);
+        otherShipmentDocDetailService.insertByBo(bo);
         return R.ok();
     }
 
@@ -89,7 +89,7 @@ public class ShipmentOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody ShipmentDocDetailBo bo) {
-        shipmentOrderDetailService.updateByBo(bo);
+        otherShipmentDocDetailService.updateByBo(bo);
         return R.ok();
     }
 
@@ -103,7 +103,7 @@ public class ShipmentOrderDetailController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
-        shipmentOrderDetailService.deleteByIds(List.of(ids));
+        otherShipmentDocDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
 
@@ -114,6 +114,6 @@ public class ShipmentOrderDetailController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list/{shipmentOrderId}")
     public R<List<ShipmentDocDetailVo>> listByShipmentOrderId(@NotNull @PathVariable Long shipmentOrderId) {
-        return R.ok(shipmentOrderDetailService.queryByShipmentOrderId(shipmentOrderId));
+        return R.ok(otherShipmentDocDetailService.queryByShipmentOrderId(shipmentOrderId));
     }
 }

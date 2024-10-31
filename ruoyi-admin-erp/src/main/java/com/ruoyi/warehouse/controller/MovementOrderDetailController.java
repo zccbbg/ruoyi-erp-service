@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.MovementDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.MovementDocDetailVo;
-import com.ruoyi.warehouse.service.MovementOrderDetailService;
+import com.ruoyi.warehouse.service.MovementDocDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping("/wms/movementOrderDetail")
 public class MovementOrderDetailController extends BaseController {
 
-    private final MovementOrderDetailService movementOrderDetailService;
+    private final MovementDocDetailService movementDocDetailService;
 
     /**
      * 查询库存移动详情列表
@@ -43,7 +43,7 @@ public class MovementOrderDetailController extends BaseController {
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list")
     public TableDataInfo<MovementDocDetailVo> list(MovementDocDetailBo bo, PageQuery pageQuery) {
-        return movementOrderDetailService.queryPageList(bo, pageQuery);
+        return movementDocDetailService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class MovementOrderDetailController extends BaseController {
     @Log(title = "库存移动详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(MovementDocDetailBo bo, HttpServletResponse response) {
-        List<MovementDocDetailVo> list = movementOrderDetailService.queryList(bo);
+        List<MovementDocDetailVo> list = movementDocDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "库存移动详情", MovementDocDetailVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class MovementOrderDetailController extends BaseController {
     @GetMapping("/{id}")
     public R<MovementDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(movementOrderDetailService.queryById(id));
+        return R.ok(movementDocDetailService.queryById(id));
     }
 
     /**
@@ -77,7 +77,7 @@ public class MovementOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementDocDetailBo bo) {
-        movementOrderDetailService.insertByBo(bo);
+        movementDocDetailService.insertByBo(bo);
         return R.ok();
     }
 
@@ -89,7 +89,7 @@ public class MovementOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody MovementDocDetailBo bo) {
-        movementOrderDetailService.updateByBo(bo);
+        movementDocDetailService.updateByBo(bo);
         return R.ok();
     }
 
@@ -103,7 +103,7 @@ public class MovementOrderDetailController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
-        movementOrderDetailService.deleteByIds(List.of(ids));
+        movementDocDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
 
@@ -113,6 +113,6 @@ public class MovementOrderDetailController extends BaseController {
     @SaCheckPermission("wms:movement:all")
     @GetMapping("/list/{movementOrderId}")
     public R<List<MovementDocDetailVo>> listByMovementOrderId(@NotNull @PathVariable Long movementOrderId) {
-        return R.ok(movementOrderDetailService.queryByMovementOrderId(movementOrderId));
+        return R.ok(movementDocDetailService.queryByMovementOrderId(movementOrderId));
     }
 }

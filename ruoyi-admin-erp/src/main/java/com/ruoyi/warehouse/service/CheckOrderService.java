@@ -39,7 +39,7 @@ import java.util.Objects;
 public class CheckOrderService {
 
     private final CheckOrderMapper checkOrderMapper;
-    private final CheckOrderDetailService checkOrderDetailService;
+    private final CheckDocDetailService checkDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
 
@@ -51,7 +51,7 @@ public class CheckOrderService {
         if (checkOrderVo == null) {
             throw new BaseException("盘库单不存在");
         }
-        checkOrderVo.setDetails(checkOrderDetailService.queryByCheckOrderId(id));
+        checkOrderVo.setDetails(checkDocDetailService.queryByCheckOrderId(id));
         return checkOrderVo;
     }
 
@@ -96,7 +96,7 @@ public class CheckOrderService {
         // 创建盘库单明细
         List<CheckDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
-        checkOrderDetailService.saveDetails(addDetailList);
+        checkDocDetailService.saveDetails(addDetailList);
     }
 
     private void validateCheckOrderNo(String checkOrderNo) {
@@ -118,7 +118,7 @@ public class CheckOrderService {
         // 保存盘库单明细
         List<CheckDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
-        checkOrderDetailService.saveDetails(detailList);
+        checkDocDetailService.saveDetails(detailList);
     }
 
     public void deleteById(Long id) {

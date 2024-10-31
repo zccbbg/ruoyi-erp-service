@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.warehouse.domain.bo.ReceiptDocBo;
 import com.ruoyi.warehouse.domain.vo.ReceiptDocVo;
-import com.ruoyi.warehouse.service.ReceiptOrderService;
+import com.ruoyi.warehouse.service.OtherReceiptDocService;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping("/wms/receiptOrder")
 public class ReceiptOrderController extends BaseController {
 
-    private final ReceiptOrderService receiptOrderService;
+    private final OtherReceiptDocService otherReceiptDocService;
 
     /**
      * 查询入库单列表
@@ -43,7 +43,7 @@ public class ReceiptOrderController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list")
     public TableDataInfo<ReceiptDocVo> list(ReceiptDocBo bo, PageQuery pageQuery) {
-        return receiptOrderService.queryPageList(bo, pageQuery);
+        return otherReceiptDocService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ReceiptOrderController extends BaseController {
     @Log(title = "入库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ReceiptDocBo bo, HttpServletResponse response) {
-        List<ReceiptDocVo> list = receiptOrderService.queryList(bo);
+        List<ReceiptDocVo> list = otherReceiptDocService.queryList(bo);
         ExcelUtil.exportExcel(list, "入库单", ReceiptDocVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class ReceiptOrderController extends BaseController {
     @GetMapping("/{id}")
     public R<ReceiptDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(receiptOrderService.queryById(id));
+        return R.ok(otherReceiptDocService.queryById(id));
     }
 
     /**
@@ -78,7 +78,7 @@ public class ReceiptOrderController extends BaseController {
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.PENDING);
-        receiptOrderService.insertByBo(bo);
+        otherReceiptDocService.insertByBo(bo);
         return R.ok();
     }
 
@@ -91,7 +91,7 @@ public class ReceiptOrderController extends BaseController {
     @PostMapping("/warehousing")
     public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody ReceiptDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.FINISH);
-        receiptOrderService.receive(bo);
+        otherReceiptDocService.receive(bo);
         return R.ok();
     }
 
@@ -103,7 +103,7 @@ public class ReceiptOrderController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody ReceiptDocBo bo) {
-        receiptOrderService.updateByBo(bo);
+        otherReceiptDocService.updateByBo(bo);
         return R.ok();
     }
 
@@ -117,7 +117,7 @@ public class ReceiptOrderController extends BaseController {
     @DeleteMapping("/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空")
                           @PathVariable Long id) {
-        receiptOrderService.deleteById(id);
+        otherReceiptDocService.deleteById(id);
         return R.ok();
     }
 }

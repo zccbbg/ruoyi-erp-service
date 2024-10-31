@@ -38,7 +38,7 @@ import java.util.Objects;
 public class MovementOrderService {
 
     private final MovementOrderMapper movementOrderMapper;
-    private final MovementOrderDetailService movementOrderDetailService;
+    private final MovementDocDetailService movementDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
 
@@ -51,7 +51,7 @@ public class MovementOrderService {
         if (movementOrderVo == null) {
             throw new BaseException("移库单不存在");
         }
-        movementOrderVo.setDetails(movementOrderDetailService.queryByMovementOrderId(id));
+        movementOrderVo.setDetails(movementDocDetailService.queryByMovementOrderId(id));
         return movementOrderVo;
     }
 
@@ -100,7 +100,7 @@ public class MovementOrderService {
         addDetailList.forEach(it -> {
             it.setOrderId(add.getId());
         });
-        movementOrderDetailService.saveDetails(addDetailList);
+        movementDocDetailService.saveDetails(addDetailList);
     }
 
     private void validateMovementOrderNo(String movementOrderNo) {
@@ -122,7 +122,7 @@ public class MovementOrderService {
         // 2.保存移库单明细
         List<MovementDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
-        movementOrderDetailService.saveDetails(detailList);
+        movementDocDetailService.saveDetails(detailList);
     }
 
     /**

@@ -31,7 +31,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMapper, OtherReceiptDocDetail> {
+public class OtherReceiptDocDetailService extends ServiceImpl<ReceiptOrderDetailMapper, OtherReceiptDocDetail> {
 
     private final ReceiptOrderDetailMapper receiptOrderDetailMapper;
     private final ItemSkuService itemSkuService;

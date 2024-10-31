@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailMapper, MovementDocDetail> {
+public class MovementDocDetailService extends ServiceImpl<MovementOrderDetailMapper, MovementDocDetail> {
 
     private final MovementOrderDetailMapper movementOrderDetailMapper;
     private final ItemSkuService itemSkuService;

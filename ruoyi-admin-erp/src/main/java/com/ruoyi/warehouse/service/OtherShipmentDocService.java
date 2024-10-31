@@ -36,10 +36,10 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Service
-public class ShipmentOrderService {
+public class OtherShipmentDocService {
 
     private final ShipmentOrderMapper shipmentOrderMapper;
-    private final ShipmentOrderDetailService shipmentOrderDetailService;
+    private final OtherShipmentDocDetailService otherShipmentDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
 
@@ -51,7 +51,7 @@ public class ShipmentOrderService {
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
-        shipmentOrderVo.setDetails(shipmentOrderDetailService.queryByShipmentOrderId(shipmentOrderVo.getId()));
+        shipmentOrderVo.setDetails(otherShipmentDocDetailService.queryByShipmentOrderId(shipmentOrderVo.getId()));
         return shipmentOrderVo;
     }
 
@@ -100,7 +100,7 @@ public class ShipmentOrderService {
         List<ShipmentDocDetailBo> detailBoList = bo.getDetails();
         List<OtherShipmentDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
-        shipmentOrderDetailService.saveDetails(addDetailList);
+        otherShipmentDocDetailService.saveDetails(addDetailList);
     }
 
     public void validateShipmentOrderNo(String shipmentOrderNo) {
@@ -122,7 +122,7 @@ public class ShipmentOrderService {
         // 保存出库单明细
         List<OtherShipmentDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherShipmentDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
-        shipmentOrderDetailService.saveDetails(detailList);
+        otherShipmentDocDetailService.saveDetails(detailList);
     }
 
     /**

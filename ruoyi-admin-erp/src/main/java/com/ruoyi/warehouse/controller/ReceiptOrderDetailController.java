@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
 import com.ruoyi.warehouse.domain.vo.ReceiptDocDetailVo;
-import com.ruoyi.warehouse.service.ReceiptOrderDetailService;
+import com.ruoyi.warehouse.service.OtherReceiptDocDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping("/wms/receiptOrderDetail")
 public class ReceiptOrderDetailController extends BaseController {
 
-    private final ReceiptOrderDetailService receiptOrderDetailService;
+    private final OtherReceiptDocDetailService otherReceiptDocDetailService;
 
     /**
      * 查询入库单详情列表
@@ -43,7 +43,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list")
     public TableDataInfo<ReceiptDocDetailVo> list(ReceiptDocDetailBo bo, PageQuery pageQuery) {
-        return receiptOrderDetailService.queryPageList(bo, pageQuery);
+        return otherReceiptDocDetailService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @Log(title = "入库单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ReceiptDocDetailBo bo, HttpServletResponse response) {
-        List<ReceiptDocDetailVo> list = receiptOrderDetailService.queryList(bo);
+        List<ReceiptDocDetailVo> list = otherReceiptDocDetailService.queryList(bo);
         ExcelUtil.exportExcel(list, "入库单详情", ReceiptDocDetailVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @GetMapping("/{id}")
     public R<ReceiptDocDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(receiptOrderDetailService.queryById(id));
+        return R.ok(otherReceiptDocDetailService.queryById(id));
     }
 
     /**
@@ -77,7 +77,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptDocDetailBo bo) {
-        receiptOrderDetailService.insertByBo(bo);
+        otherReceiptDocDetailService.insertByBo(bo);
         return R.ok();
     }
 
@@ -89,7 +89,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody ReceiptDocDetailBo bo) {
-        receiptOrderDetailService.updateByBo(bo);
+        otherReceiptDocDetailService.updateByBo(bo);
         return R.ok();
     }
 
@@ -103,7 +103,7 @@ public class ReceiptOrderDetailController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
-        receiptOrderDetailService.deleteByIds(List.of(ids));
+        otherReceiptDocDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
 
@@ -113,6 +113,6 @@ public class ReceiptOrderDetailController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @GetMapping("/list/{receiptOrderId}")
     public R<List<ReceiptDocDetailVo>> listByReceiptOrderId(@NotNull @PathVariable Long receiptOrderId) {
-        return R.ok(receiptOrderDetailService.queryByReceiptOrderId(receiptOrderId));
+        return R.ok(otherReceiptDocDetailService.queryByReceiptOrderId(receiptOrderId));
     }
 }

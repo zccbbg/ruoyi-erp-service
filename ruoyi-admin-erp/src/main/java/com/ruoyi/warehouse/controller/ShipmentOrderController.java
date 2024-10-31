@@ -14,7 +14,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
 import com.ruoyi.warehouse.domain.vo.ShipmentDocVo;
-import com.ruoyi.warehouse.service.ShipmentOrderService;
+import com.ruoyi.warehouse.service.OtherShipmentDocService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ import java.util.List;
 @RequestMapping("/wms/shipmentOrder")
 public class ShipmentOrderController extends BaseController {
 
-    private final ShipmentOrderService shipmentOrderService;
+    private final OtherShipmentDocService otherShipmentDocService;
 
     /**
      * 查询出库单列表
@@ -43,7 +43,7 @@ public class ShipmentOrderController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list")
     public TableDataInfo<ShipmentDocVo> list(ShipmentDocBo bo, PageQuery pageQuery) {
-        return shipmentOrderService.queryPageList(bo, pageQuery);
+        return otherShipmentDocService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ShipmentOrderController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ShipmentDocBo bo, HttpServletResponse response) {
-        List<ShipmentDocVo> list = shipmentOrderService.queryList(bo);
+        List<ShipmentDocVo> list = otherShipmentDocService.queryList(bo);
         ExcelUtil.exportExcel(list, "出库单", ShipmentDocVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class ShipmentOrderController extends BaseController {
     @GetMapping("/{id}")
     public R<ShipmentDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(shipmentOrderService.queryById(id));
+        return R.ok(otherShipmentDocService.queryById(id));
     }
 
     /**
@@ -77,7 +77,7 @@ public class ShipmentOrderController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ShipmentDocBo bo) {
-        shipmentOrderService.insertByBo(bo);
+        otherShipmentDocService.insertByBo(bo);
         return R.ok();
     }
 
@@ -89,7 +89,7 @@ public class ShipmentOrderController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody ShipmentDocBo bo) {
-        shipmentOrderService.updateByBo(bo);
+        otherShipmentDocService.updateByBo(bo);
         return R.ok();
     }
 
@@ -102,7 +102,7 @@ public class ShipmentOrderController extends BaseController {
     @PutMapping("/shipment")
     public R<Void> shipment(@Validated(AddGroup.class) @RequestBody ShipmentDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ShipmentOrderStatus.FINISH);
-        shipmentOrderService.shipment(bo);
+        otherShipmentDocService.shipment(bo);
         return R.ok();
     }
 
@@ -116,7 +116,7 @@ public class ShipmentOrderController extends BaseController {
     @DeleteMapping("/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空")
                           @PathVariable Long id) {
-        shipmentOrderService.deleteById(id);
+        otherShipmentDocService.deleteById(id);
         return R.ok();
     }
 }

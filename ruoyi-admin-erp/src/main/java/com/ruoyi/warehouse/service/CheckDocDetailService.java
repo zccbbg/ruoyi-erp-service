@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper, CheckDocDetail> {
+public class CheckDocDetailService extends ServiceImpl<CheckOrderDetailMapper, CheckDocDetail> {
 
     private final CheckOrderDetailMapper checkOrderDetailMapper;
     private final ItemSkuService itemSkuService;

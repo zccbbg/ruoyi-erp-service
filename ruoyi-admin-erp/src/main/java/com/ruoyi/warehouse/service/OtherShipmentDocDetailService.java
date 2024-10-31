@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailMapper, OtherShipmentDocDetail> {
+public class OtherShipmentDocDetailService extends ServiceImpl<ShipmentOrderDetailMapper, OtherShipmentDocDetail> {
 
     private final ShipmentOrderDetailMapper shipmentOrderDetailMapper;
     private final ItemSkuService itemSkuService;
