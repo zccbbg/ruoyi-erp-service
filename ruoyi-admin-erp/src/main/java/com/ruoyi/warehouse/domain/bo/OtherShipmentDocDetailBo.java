@@ -20,6 +20,6 @@ import lombok.EqualsAndHashCode;
     @AutoMapper(target = OtherShipmentDocDetail.class, reverseConvertGenerate = false),
     @AutoMapper(target = InventoryBo.class, reverseConvertGenerate = false)
 })
-public class ShipmentDocDetailBo extends BaseDocDetailBo {
+public class OtherShipmentDocDetailBo extends BaseDocDetailBo {
 
 }

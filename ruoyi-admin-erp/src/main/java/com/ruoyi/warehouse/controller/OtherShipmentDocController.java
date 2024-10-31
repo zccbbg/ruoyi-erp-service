@@ -12,8 +12,8 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
-import com.ruoyi.warehouse.domain.vo.ShipmentDocVo;
+import com.ruoyi.warehouse.domain.bo.OtherShipmentDocBo;
+import com.ruoyi.warehouse.domain.vo.OtherShipmentDocVo;
 import com.ruoyi.warehouse.service.OtherShipmentDocService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class OtherShipmentDocController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list")
-    public TableDataInfo<ShipmentDocVo> list(ShipmentDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<OtherShipmentDocVo> list(OtherShipmentDocBo bo, PageQuery pageQuery) {
         return otherShipmentDocService.queryPageList(bo, pageQuery);
     }
 
@@ -52,9 +52,9 @@ public class OtherShipmentDocController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @Log(title = "出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(ShipmentDocBo bo, HttpServletResponse response) {
-        List<ShipmentDocVo> list = otherShipmentDocService.queryList(bo);
-        ExcelUtil.exportExcel(list, "出库单", ShipmentDocVo.class, response);
+    public void export(OtherShipmentDocBo bo, HttpServletResponse response) {
+        List<OtherShipmentDocVo> list = otherShipmentDocService.queryList(bo);
+        ExcelUtil.exportExcel(list, "出库单", OtherShipmentDocVo.class, response);
     }
 
     /**
@@ -64,7 +64,7 @@ public class OtherShipmentDocController extends BaseController {
      */
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/{id}")
-    public R<ShipmentDocVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<OtherShipmentDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(otherShipmentDocService.queryById(id));
     }
@@ -76,7 +76,7 @@ public class OtherShipmentDocController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ShipmentDocBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody OtherShipmentDocBo bo) {
         otherShipmentDocService.insertByBo(bo);
         return R.ok();
     }
@@ -88,7 +88,7 @@ public class OtherShipmentDocController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ShipmentDocBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody OtherShipmentDocBo bo) {
         otherShipmentDocService.updateByBo(bo);
         return R.ok();
     }
@@ -100,7 +100,7 @@ public class OtherShipmentDocController extends BaseController {
     @Log(title = "出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping("/shipment")
-    public R<Void> shipment(@Validated(AddGroup.class) @RequestBody ShipmentDocBo bo) {
+    public R<Void> shipment(@Validated(AddGroup.class) @RequestBody OtherShipmentDocBo bo) {
         bo.setOrderStatus(ServiceConstants.ShipmentOrderStatus.FINISH);
         otherShipmentDocService.shipment(bo);
         return R.ok();

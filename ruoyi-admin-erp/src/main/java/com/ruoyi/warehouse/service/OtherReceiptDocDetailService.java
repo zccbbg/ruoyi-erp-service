@@ -9,10 +9,10 @@ import com.ruoyi.basic.service.ItemSkuService;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.ReceiptDocDetailBo;
+import com.ruoyi.warehouse.domain.bo.OtherReceiptDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDocDetail;
-import com.ruoyi.warehouse.domain.vo.ReceiptDocDetailVo;
-import com.ruoyi.warehouse.mapper.ReceiptOrderDetailMapper;
+import com.ruoyi.warehouse.domain.vo.OtherReceiptDocDetailVo;
+import com.ruoyi.warehouse.mapper.OtherReceiptDocDetailMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,36 +31,36 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class OtherReceiptDocDetailService extends ServiceImpl<ReceiptOrderDetailMapper, OtherReceiptDocDetail> {
+public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDetailMapper, OtherReceiptDocDetail> {
 
-    private final ReceiptOrderDetailMapper receiptOrderDetailMapper;
+    private final OtherReceiptDocDetailMapper otherReceiptDocDetailMapper;
     private final ItemSkuService itemSkuService;
 
     /**
      * 查询入库单详情
      */
-    public ReceiptDocDetailVo queryById(Long id){
-        return receiptOrderDetailMapper.selectVoById(id);
+    public OtherReceiptDocDetailVo queryById(Long id){
+        return otherReceiptDocDetailMapper.selectVoById(id);
     }
 
     /**
      * 查询入库单详情列表
      */
-    public TableDataInfo<ReceiptDocDetailVo> queryPageList(ReceiptDocDetailBo bo, PageQuery pageQuery) {
+    public TableDataInfo<OtherReceiptDocDetailVo> queryPageList(OtherReceiptDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = buildQueryWrapper(bo);
-        Page<ReceiptDocDetailVo> result = receiptOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<OtherReceiptDocDetailVo> result = otherReceiptDocDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询入库单详情列表
      */
-    public List<ReceiptDocDetailVo> queryList(ReceiptDocDetailBo bo) {
+    public List<OtherReceiptDocDetailVo> queryList(OtherReceiptDocDetailBo bo) {
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = buildQueryWrapper(bo);
-        return receiptOrderDetailMapper.selectVoList(lqw);
+        return otherReceiptDocDetailMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherReceiptDocDetail> buildQueryWrapper(ReceiptDocDetailBo bo) {
+    private LambdaQueryWrapper<OtherReceiptDocDetail> buildQueryWrapper(OtherReceiptDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, OtherReceiptDocDetail::getOrderId, bo.getOrderId());
@@ -74,24 +74,24 @@ public class OtherReceiptDocDetailService extends ServiceImpl<ReceiptOrderDetail
     /**
      * 新增入库单详情
      */
-    public void insertByBo(ReceiptDocDetailBo bo) {
+    public void insertByBo(OtherReceiptDocDetailBo bo) {
         OtherReceiptDocDetail add = MapstructUtils.convert(bo, OtherReceiptDocDetail.class);
-        receiptOrderDetailMapper.insert(add);
+        otherReceiptDocDetailMapper.insert(add);
     }
 
     /**
      * 修改入库单详情
      */
-    public void updateByBo(ReceiptDocDetailBo bo) {
+    public void updateByBo(OtherReceiptDocDetailBo bo) {
         OtherReceiptDocDetail update = MapstructUtils.convert(bo, OtherReceiptDocDetail.class);
-        receiptOrderDetailMapper.updateById(update);
+        otherReceiptDocDetailMapper.updateById(update);
     }
 
     /**
      * 批量删除入库单详情
      */
     public void deleteByIds(Collection<Long> ids) {
-        receiptOrderDetailMapper.deleteBatchIds(ids);
+        otherReceiptDocDetailMapper.deleteBatchIds(ids);
     }
 
     /**
@@ -100,7 +100,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<ReceiptOrderDetail
     public void deleteByReceiptOrderId(@NotNull Long receiptOrderId) {
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(OtherReceiptDocDetail::getOrderId, receiptOrderId);
-        receiptOrderDetailMapper.delete(lqw);
+        otherReceiptDocDetailMapper.delete(lqw);
     }
 
     @Transactional
@@ -111,10 +111,10 @@ public class OtherReceiptDocDetailService extends ServiceImpl<ReceiptOrderDetail
         saveOrUpdateBatch(list);
     }
 
-    public List<ReceiptDocDetailVo> queryByReceiptOrderId(Long receiptOrderId) {
-        ReceiptDocDetailBo bo = new ReceiptDocDetailBo();
+    public List<OtherReceiptDocDetailVo> queryByReceiptOrderId(Long receiptOrderId) {
+        OtherReceiptDocDetailBo bo = new OtherReceiptDocDetailBo();
         bo.setOrderId(receiptOrderId);
-        List<ReceiptDocDetailVo> details = queryList(bo);
+        List<OtherReceiptDocDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }

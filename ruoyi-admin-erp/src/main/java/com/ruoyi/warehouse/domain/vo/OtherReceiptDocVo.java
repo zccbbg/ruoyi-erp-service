@@ -3,22 +3,22 @@ package com.ruoyi.warehouse.domain.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.base.domain.vo.BaseDocVo;
-import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
+import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 出库单视图对象 wms_shipment_order
+ * 入库单视图对象 wms_receipt_order
  *
  * @author zcc
- * @date 2024-08-01
+ * @date 2024-07-19
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-@AutoMapper(target = OtherShipmentDoc.class)
-public class ShipmentDocVo extends BaseDocVo<ShipmentDocDetailVo> {
+@AutoMapper(target = OtherReceiptDoc.class)
+public class OtherReceiptDocVo extends BaseDocVo<OtherReceiptDocDetailVo> {
 
     /**
      * 入库类型

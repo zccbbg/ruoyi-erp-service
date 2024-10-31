@@ -14,12 +14,12 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.warehouse.domain.bo.ShipmentDocBo;
-import com.ruoyi.warehouse.domain.bo.ShipmentDocDetailBo;
+import com.ruoyi.warehouse.domain.bo.OtherShipmentDocBo;
+import com.ruoyi.warehouse.domain.bo.OtherShipmentDocDetailBo;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
 import com.ruoyi.warehouse.domain.entity.OtherShipmentDocDetail;
-import com.ruoyi.warehouse.domain.vo.ShipmentDocVo;
-import com.ruoyi.warehouse.mapper.ShipmentOrderMapper;
+import com.ruoyi.warehouse.domain.vo.OtherShipmentDocVo;
+import com.ruoyi.warehouse.mapper.OtherShipmentDocMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,7 @@ import java.util.Objects;
 @Service
 public class OtherShipmentDocService {
 
-    private final ShipmentOrderMapper shipmentOrderMapper;
+    private final OtherShipmentDocMapper otherShipmentDocMapper;
     private final OtherShipmentDocDetailService otherShipmentDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
@@ -46,8 +46,8 @@ public class OtherShipmentDocService {
     /**
      * 查询出库单
      */
-    public ShipmentDocVo queryById(Long id){
-        ShipmentDocVo shipmentOrderVo = shipmentOrderMapper.selectVoById(id);
+    public OtherShipmentDocVo queryById(Long id){
+        OtherShipmentDocVo shipmentOrderVo = otherShipmentDocMapper.selectVoById(id);
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
@@ -58,21 +58,21 @@ public class OtherShipmentDocService {
     /**
      * 查询出库单列表
      */
-    public TableDataInfo<ShipmentDocVo> queryPageList(ShipmentDocBo bo, PageQuery pageQuery) {
+    public TableDataInfo<OtherShipmentDocVo> queryPageList(OtherShipmentDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
-        Page<ShipmentDocVo> result = shipmentOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<OtherShipmentDocVo> result = otherShipmentDocMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
     /**
      * 查询出库单列表
      */
-    public List<ShipmentDocVo> queryList(ShipmentDocBo bo) {
+    public List<OtherShipmentDocVo> queryList(OtherShipmentDocBo bo) {
         LambdaQueryWrapper<OtherShipmentDoc> lqw = buildQueryWrapper(bo);
-        return shipmentOrderMapper.selectVoList(lqw);
+        return otherShipmentDocMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(ShipmentDocBo bo) {
+    private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(OtherShipmentDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipmentDoc::getOrderNo, bo.getOrderNo());
@@ -90,14 +90,14 @@ public class OtherShipmentDocService {
      * 暂存出库单
      */
     @Transactional
-    public void insertByBo(ShipmentDocBo bo) {
+    public void insertByBo(OtherShipmentDocBo bo) {
         // 校验出库单号唯一性
         validateShipmentOrderNo(bo.getOrderNo());
         // 创建出库单
         OtherShipmentDoc add = MapstructUtils.convert(bo, OtherShipmentDoc.class);
-        shipmentOrderMapper.insert(add);
+        otherShipmentDocMapper.insert(add);
         bo.setId(add.getId());
-        List<ShipmentDocDetailBo> detailBoList = bo.getDetails();
+        List<OtherShipmentDocDetailBo> detailBoList = bo.getDetails();
         List<OtherShipmentDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
         otherShipmentDocDetailService.saveDetails(addDetailList);
@@ -106,7 +106,7 @@ public class OtherShipmentDocService {
     public void validateShipmentOrderNo(String shipmentOrderNo) {
         LambdaQueryWrapper<OtherShipmentDoc> receiptOrderLqw = Wrappers.lambdaQuery();
         receiptOrderLqw.eq(OtherShipmentDoc::getOrderNo, shipmentOrderNo);
-        OtherShipmentDoc shipmentOrder = shipmentOrderMapper.selectOne(receiptOrderLqw);
+        OtherShipmentDoc shipmentOrder = otherShipmentDocMapper.selectOne(receiptOrderLqw);
         Assert.isNull(shipmentOrder, "出库单号重复，请手动修改");
     }
 
@@ -115,10 +115,10 @@ public class OtherShipmentDocService {
      * 修改出库单
      */
     @Transactional
-    public void updateByBo(ShipmentDocBo bo) {
+    public void updateByBo(OtherShipmentDocBo bo) {
         // 更新出库单
         OtherShipmentDoc update = MapstructUtils.convert(bo, OtherShipmentDoc.class);
-        shipmentOrderMapper.updateById(update);
+        otherShipmentDocMapper.updateById(update);
         // 保存出库单明细
         List<OtherShipmentDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherShipmentDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
@@ -130,11 +130,11 @@ public class OtherShipmentDocService {
      */
     public void deleteById(Long id) {
         validateIdBeforeDelete(id);
-        shipmentOrderMapper.deleteById(id);
+        otherShipmentDocMapper.deleteById(id);
     }
 
     public void validateIdBeforeDelete(Long id) {
-        ShipmentDocVo shipmentOrderVo = queryById(id);
+        OtherShipmentDocVo shipmentOrderVo = queryById(id);
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
@@ -148,7 +148,7 @@ public class OtherShipmentDocService {
      * @param bo
      */
     @Transactional
-    public void shipment(ShipmentDocBo bo) {
+    public void shipment(OtherShipmentDocBo bo) {
         // 1.校验商品明细不能为空！
         validateBeforeShipment(bo);
         // 2. 保存入库单和入库单明细
@@ -165,7 +165,7 @@ public class OtherShipmentDocService {
     }
 
 
-    private void validateBeforeShipment(ShipmentDocBo bo) {
+    private void validateBeforeShipment(OtherShipmentDocBo bo) {
         if (CollUtil.isEmpty(bo.getDetails())) {
             throw new BaseException("商品明细不能为空！");
         }

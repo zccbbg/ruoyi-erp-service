@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
     @AutoMapper(target = OtherReceiptDocDetail.class, reverseConvertGenerate = false),
     @AutoMapper(target = Inventory.class, reverseConvertGenerate = false)
 })
-public class ReceiptDocDetailBo extends BaseDocDetailBo {
+public class OtherReceiptDocDetailBo extends BaseDocDetailBo {
 
 
 }

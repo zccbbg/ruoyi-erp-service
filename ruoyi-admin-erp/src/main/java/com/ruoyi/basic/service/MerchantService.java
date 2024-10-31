@@ -14,7 +14,7 @@ import com.ruoyi.basic.domain.entity.Merchant;
 import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import com.ruoyi.basic.domain.vo.MerchantVo;
 import com.ruoyi.basic.mapper.MerchantMapper;
-import com.ruoyi.warehouse.mapper.ReceiptOrderMapper;
+import com.ruoyi.warehouse.mapper.OtherReceiptDocMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ import java.util.Map;
 public class MerchantService {
 
     private final MerchantMapper merchantMapper;
-    private final ReceiptOrderMapper receiptOrderMapper;
+    private final OtherReceiptDocMapper otherReceiptDocMapper;
 
     /**
      * 查询往来单位
@@ -95,7 +95,7 @@ public class MerchantService {
     private void validateIdBeforeDelete(Long id) {
         LambdaQueryWrapper<OtherReceiptDoc> receiptOrderLqw = Wrappers.lambdaQuery();
         receiptOrderLqw.eq(OtherReceiptDoc::getMerchantId, id);
-        Long receiptOrderCount = receiptOrderMapper.selectCount(receiptOrderLqw);
+        Long receiptOrderCount = otherReceiptDocMapper.selectCount(receiptOrderLqw);
         if (receiptOrderCount != null && receiptOrderCount > 0) {
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"该企业已有业务关联，无法删除！");
         }

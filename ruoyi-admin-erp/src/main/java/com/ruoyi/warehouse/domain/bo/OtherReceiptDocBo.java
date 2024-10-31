@@ -3,27 +3,28 @@ package com.ruoyi.warehouse.domain.bo;
 import com.ruoyi.base.domain.bo.BaseDocBo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
-import com.ruoyi.warehouse.domain.entity.OtherShipmentDoc;
+import com.ruoyi.warehouse.domain.entity.OtherReceiptDoc;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 出库单业务对象 wms_shipment_order
+ * 入库单业务对象 wms_receipt_order
  *
  * @author zcc
- * @date 2024-08-01
+ * @date 2024-07-19
  */
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = OtherShipmentDoc.class, reverseConvertGenerate = false)
-public class ShipmentDocBo extends BaseDocBo<ShipmentDocDetailBo> {
+@AutoMapper(target = OtherReceiptDoc.class, reverseConvertGenerate = false)
+public class OtherReceiptDocBo extends BaseDocBo<OtherReceiptDocDetailBo> {
+
     /**
      * 入库类型
      */
-    @NotNull(message = "出库类型不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "入库类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long optType;
 
     /**
@@ -39,4 +40,5 @@ public class ShipmentDocBo extends BaseDocBo<ShipmentDocDetailBo> {
      */
     @NotNull(message = "仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long warehouseId;
+
 }
