@@ -33,7 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/wms/movementOrderDetail")
-public class MovementOrderDetailController extends BaseController {
+public class MovementDocDetailController extends BaseController {
 
     private final MovementDocDetailService movementDocDetailService;
 

@@ -33,7 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/wms/receiptOrderDetail")
-public class ReceiptOrderDetailController extends BaseController {
+public class OtherReceiptDocDetailController extends BaseController {
 
     private final OtherReceiptDocDetailService otherReceiptDocDetailService;
 

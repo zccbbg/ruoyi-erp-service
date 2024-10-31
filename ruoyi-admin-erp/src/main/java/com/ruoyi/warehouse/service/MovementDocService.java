@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Service
-public class MovementOrderService {
+public class MovementDocService {
 
     private final MovementOrderMapper movementOrderMapper;
     private final MovementDocDetailService movementDocDetailService;

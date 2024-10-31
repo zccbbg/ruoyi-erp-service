@@ -33,7 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/wms/shipmentOrder")
-public class ShipmentOrderController extends BaseController {
+public class OtherShipmentDocController extends BaseController {
 
     private final OtherShipmentDocService otherShipmentDocService;
 

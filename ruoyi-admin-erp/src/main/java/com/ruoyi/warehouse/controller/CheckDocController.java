@@ -33,7 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/wms/checkOrder")
-public class CheckOrderController extends BaseController {
+public class CheckDocController extends BaseController {
 
     private final CheckOrderService checkOrderService;
 
