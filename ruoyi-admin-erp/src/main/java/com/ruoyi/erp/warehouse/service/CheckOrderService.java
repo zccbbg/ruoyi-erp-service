@@ -16,7 +16,7 @@ import com.ruoyi.erp.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.vo.CheckDocVo;
 import com.ruoyi.erp.warehouse.domain.entity.CheckDoc;
 import com.ruoyi.erp.warehouse.domain.entity.CheckDocDetail;
-import com.ruoyi.erp.warehouse.mapper.CheckOrderMapper;
+import com.ruoyi.erp.warehouse.mapper.CheckDocMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ import java.util.Objects;
 @Service
 public class CheckOrderService {
 
-    private final CheckOrderMapper checkOrderMapper;
+    private final CheckDocMapper checkDocMapper;
     private final CheckDocDetailService checkDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
@@ -47,7 +47,7 @@ public class CheckOrderService {
      * 查询库存盘点单据
      */
     public CheckDocVo queryById(Long id){
-        CheckDocVo checkOrderVo = checkOrderMapper.selectVoById(id);
+        CheckDocVo checkOrderVo = checkDocMapper.selectVoById(id);
         if (checkOrderVo == null) {
             throw new BaseException("盘库单不存在");
         }
@@ -60,7 +60,7 @@ public class CheckOrderService {
      */
     public TableDataInfo<CheckDocVo> queryPageList(CheckDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
-        Page<CheckDocVo> result = checkOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<CheckDocVo> result = checkDocMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
@@ -69,7 +69,7 @@ public class CheckOrderService {
      */
     public List<CheckDocVo> queryList(CheckDocBo bo) {
         LambdaQueryWrapper<CheckDoc> lqw = buildQueryWrapper(bo);
-        return checkOrderMapper.selectVoList(lqw);
+        return checkDocMapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckDocBo bo) {
@@ -92,7 +92,7 @@ public class CheckOrderService {
         validateCheckOrderNo(bo.getOrderNo());
         // 创建盘库单
         CheckDoc add = MapstructUtils.convert(bo, CheckDoc.class);
-        checkOrderMapper.insert(add);
+        checkDocMapper.insert(add);
         // 创建盘库单明细
         List<CheckDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
         addDetailList.forEach(it -> it.setOrderId(add.getId()));
@@ -102,7 +102,7 @@ public class CheckOrderService {
     private void validateCheckOrderNo(String checkOrderNo) {
         LambdaQueryWrapper<CheckDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
         lambdaQueryWrapper.eq(CheckDoc::getOrderNo, checkOrderNo);
-        if (checkOrderMapper.exists(lambdaQueryWrapper)) {
+        if (checkDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("盘库单号重复，请手动修改");
         }
     }
@@ -114,7 +114,7 @@ public class CheckOrderService {
     public void updateByBo(CheckDocBo bo) {
         // 更新盘库单
         CheckDoc update = MapstructUtils.convert(bo, CheckDoc.class);
-        checkOrderMapper.updateById(update);
+        checkDocMapper.updateById(update);
         // 保存盘库单明细
         List<CheckDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
@@ -123,7 +123,7 @@ public class CheckOrderService {
 
     public void deleteById(Long id) {
         validateIdBeforeDelete(id);
-        checkOrderMapper.deleteById(id);
+        checkDocMapper.deleteById(id);
     }
 
     private void validateIdBeforeDelete(Long id) {
@@ -140,7 +140,7 @@ public class CheckOrderService {
      * 批量删除库存盘点单据
      */
     public void deleteByIds(Collection<Long> ids) {
-        checkOrderMapper.deleteBatchIds(ids);
+        checkDocMapper.deleteBatchIds(ids);
     }
 
     /**

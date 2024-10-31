@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-08-13
  */
-public interface CheckOrderDetailMapper extends BaseMapperPlus<CheckDocDetail, CheckDocDetailVo> {
+public interface CheckDocDetailMapper extends BaseMapperPlus<CheckDocDetail, CheckDocDetailVo> {
 
 }

@@ -11,7 +11,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.vo.CheckDocDetailVo;
-import com.ruoyi.erp.warehouse.mapper.CheckOrderDetailMapper;
+import com.ruoyi.erp.warehouse.mapper.CheckDocDetailMapper;
 import com.ruoyi.erp.warehouse.domain.entity.CheckDocDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,16 +29,16 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class CheckDocDetailService extends ServiceImpl<CheckOrderDetailMapper, CheckDocDetail> {
+public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, CheckDocDetail> {
 
-    private final CheckOrderDetailMapper checkOrderDetailMapper;
+    private final CheckDocDetailMapper checkDocDetailMapper;
     private final ItemSkuService itemSkuService;
 
     /**
      * 查询库存盘点单据详情
      */
     public CheckDocDetailVo queryById(Long id){
-        return checkOrderDetailMapper.selectVoById(id);
+        return checkDocDetailMapper.selectVoById(id);
     }
 
     /**
@@ -46,7 +46,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckOrderDetailMapper, C
      */
     public TableDataInfo<CheckDocDetailVo> queryPageList(CheckDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
-        Page<CheckDocDetailVo> result = checkOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<CheckDocDetailVo> result = checkDocDetailMapper.selectVoPage(pageQuery.build(), lqw);
         if (CollUtil.isEmpty(result.getRecords())) {
             return TableDataInfo.build(result);
         }
@@ -59,13 +59,13 @@ public class CheckDocDetailService extends ServiceImpl<CheckOrderDetailMapper, C
      */
     public List<CheckDocDetailVo> queryList(CheckDocDetailBo bo) {
         LambdaQueryWrapper<CheckDocDetail> lqw = buildQueryWrapper(bo);
-        return checkOrderDetailMapper.selectVoList(lqw);
+        return checkDocDetailMapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<CheckDocDetail> buildQueryWrapper(CheckDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, CheckDocDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getOrderId() != null, CheckDocDetail::getDocId, bo.getOrderId());
         lqw.eq(bo.getSkuId() != null, CheckDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, CheckDocDetail::getQuantity, bo.getQuantity());
         lqw.eq(bo.getCheckQuantity() != null, CheckDocDetail::getCheckQuantity, bo.getCheckQuantity());
@@ -79,7 +79,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckOrderDetailMapper, C
      */
     public void insertByBo(CheckDocDetailBo bo) {
         CheckDocDetail add = MapstructUtils.convert(bo, CheckDocDetail.class);
-        checkOrderDetailMapper.insert(add);
+        checkDocDetailMapper.insert(add);
     }
 
     /**
@@ -87,14 +87,14 @@ public class CheckDocDetailService extends ServiceImpl<CheckOrderDetailMapper, C
      */
     public void updateByBo(CheckDocDetailBo bo) {
         CheckDocDetail update = MapstructUtils.convert(bo, CheckDocDetail.class);
-        checkOrderDetailMapper.updateById(update);
+        checkDocDetailMapper.updateById(update);
     }
 
     /**
      * 批量删除库存盘点单据详情
      */
     public void deleteByIds(Collection<Long> ids) {
-        checkOrderDetailMapper.deleteBatchIds(ids);
+        checkDocDetailMapper.deleteBatchIds(ids);
     }
 
     @Transactional

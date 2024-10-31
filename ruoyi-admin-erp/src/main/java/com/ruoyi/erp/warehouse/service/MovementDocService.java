@@ -16,7 +16,7 @@ import com.ruoyi.erp.warehouse.domain.bo.MovementDocBo;
 import com.ruoyi.erp.warehouse.domain.entity.MovementDoc;
 import com.ruoyi.erp.warehouse.domain.entity.MovementDocDetail;
 import com.ruoyi.erp.warehouse.domain.vo.MovementDocVo;
-import com.ruoyi.erp.warehouse.mapper.MovementOrderMapper;
+import com.ruoyi.erp.warehouse.mapper.MovementDocMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ import java.util.Objects;
 @Service
 public class MovementDocService {
 
-    private final MovementOrderMapper movementOrderMapper;
+    private final MovementDocMapper movementDocMapper;
     private final MovementDocDetailService movementDocDetailService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
@@ -47,7 +47,7 @@ public class MovementDocService {
      * 查询移库单
      */
     public MovementDocVo queryById(Long id) {
-        MovementDocVo movementOrderVo = movementOrderMapper.selectVoById(id);
+        MovementDocVo movementOrderVo = movementDocMapper.selectVoById(id);
         if (movementOrderVo == null) {
             throw new BaseException("移库单不存在");
         }
@@ -60,7 +60,7 @@ public class MovementDocService {
      */
     public TableDataInfo<MovementDocVo> queryPageList(MovementDocBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
-        Page<MovementDocVo> result = movementOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<MovementDocVo> result = movementDocMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
@@ -69,7 +69,7 @@ public class MovementDocService {
      */
     public List<MovementDocVo> queryList(MovementDocBo bo) {
         LambdaQueryWrapper<MovementDoc> lqw = buildQueryWrapper(bo);
-        return movementOrderMapper.selectVoList(lqw);
+        return movementDocMapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementDocBo bo) {
@@ -93,7 +93,7 @@ public class MovementDocService {
         validateMovementOrderNo(bo.getOrderNo());
         // 2.创建移库单
         MovementDoc add = MapstructUtils.convert(bo, MovementDoc.class);
-        movementOrderMapper.insert(add);
+        movementDocMapper.insert(add);
         bo.setId(add.getId());
         // 3.创建移库单明细
         List<MovementDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
@@ -106,7 +106,7 @@ public class MovementDocService {
     private void validateMovementOrderNo(String movementOrderNo) {
         LambdaQueryWrapper<MovementDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
         lambdaQueryWrapper.eq(MovementDoc::getOrderNo, movementOrderNo);
-        if (movementOrderMapper.exists(lambdaQueryWrapper)) {
+        if (movementDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("移库单号重复，请手动修改");
         }
     }
@@ -118,7 +118,7 @@ public class MovementDocService {
     public void updateByBo(MovementDocBo bo) {
         // 1.更新移库单
         MovementDoc update = MapstructUtils.convert(bo, MovementDoc.class);
-        movementOrderMapper.updateById(update);
+        movementDocMapper.updateById(update);
         // 2.保存移库单明细
         List<MovementDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         detailList.forEach(it -> it.setOrderId(bo.getId()));
@@ -131,7 +131,7 @@ public class MovementDocService {
      */
     public void deleteById(Long id) {
         validateIdBeforeDelete(id);
-        movementOrderMapper.deleteById(id);
+        movementDocMapper.deleteById(id);
     }
 
     private void validateIdBeforeDelete(Long id) {
@@ -148,7 +148,7 @@ public class MovementDocService {
      * 批量删除移库单
      */
     public void deleteByIds(Collection<Long> ids) {
-        movementOrderMapper.deleteBatchIds(ids);
+        movementDocMapper.deleteBatchIds(ids);
     }
 
     /**

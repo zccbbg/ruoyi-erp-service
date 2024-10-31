@@ -12,7 +12,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.warehouse.domain.bo.MovementDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.entity.MovementDocDetail;
 import com.ruoyi.erp.warehouse.domain.vo.MovementDocDetailVo;
-import com.ruoyi.erp.warehouse.mapper.MovementOrderDetailMapper;
+import com.ruoyi.erp.warehouse.mapper.MovementDocDetailMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,16 +30,16 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class MovementDocDetailService extends ServiceImpl<MovementOrderDetailMapper, MovementDocDetail> {
+public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMapper, MovementDocDetail> {
 
-    private final MovementOrderDetailMapper movementOrderDetailMapper;
+    private final MovementDocDetailMapper movementDocDetailMapper;
     private final ItemSkuService itemSkuService;
 
     /**
      * 查询库存移动详情
      */
     public MovementDocDetailVo queryById(Long id){
-        return movementOrderDetailMapper.selectVoById(id);
+        return movementDocDetailMapper.selectVoById(id);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementOrderDetailMap
      */
     public TableDataInfo<MovementDocDetailVo> queryPageList(MovementDocDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementDocDetail> lqw = buildQueryWrapper(bo);
-        Page<MovementDocDetailVo> result = movementOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<MovementDocDetailVo> result = movementDocDetailMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
@@ -56,13 +56,13 @@ public class MovementDocDetailService extends ServiceImpl<MovementOrderDetailMap
      */
     public List<MovementDocDetailVo> queryList(MovementDocDetailBo bo) {
         LambdaQueryWrapper<MovementDocDetail> lqw = buildQueryWrapper(bo);
-        return movementOrderDetailMapper.selectVoList(lqw);
+        return movementDocDetailMapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<MovementDocDetail> buildQueryWrapper(MovementDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, MovementDocDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getOrderId() != null, MovementDocDetail::getDocId, bo.getOrderId());
         lqw.eq(bo.getSkuId() != null, MovementDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, MovementDocDetail::getQuantity, bo.getQuantity());
         lqw.eq(bo.getSourceWarehouseId() != null, MovementDocDetail::getSourceWarehouseId, bo.getSourceWarehouseId());
@@ -75,7 +75,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementOrderDetailMap
      */
     public void insertByBo(MovementDocDetailBo bo) {
         MovementDocDetail add = MapstructUtils.convert(bo, MovementDocDetail.class);
-        movementOrderDetailMapper.insert(add);
+        movementDocDetailMapper.insert(add);
     }
 
     /**
@@ -83,14 +83,14 @@ public class MovementDocDetailService extends ServiceImpl<MovementOrderDetailMap
      */
     public void updateByBo(MovementDocDetailBo bo) {
         MovementDocDetail update = MapstructUtils.convert(bo, MovementDocDetail.class);
-        movementOrderDetailMapper.updateById(update);
+        movementDocDetailMapper.updateById(update);
     }
 
     /**
      * 批量删除库存移动详情
      */
     public void deleteByIds(Collection<Long> ids) {
-        movementOrderDetailMapper.deleteBatchIds(ids);
+        movementDocDetailMapper.deleteBatchIds(ids);
     }
 
     @Transactional

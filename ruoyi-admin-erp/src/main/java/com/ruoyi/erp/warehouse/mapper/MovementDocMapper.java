@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-08-09
  */
-public interface MovementOrderMapper extends BaseMapperPlus<MovementDoc, MovementDocVo> {
+public interface MovementDocMapper extends BaseMapperPlus<MovementDoc, MovementDocVo> {
 
 }
