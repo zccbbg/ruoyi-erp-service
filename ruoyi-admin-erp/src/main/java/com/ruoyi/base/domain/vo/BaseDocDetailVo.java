@@ -2,8 +2,8 @@ package com.ruoyi.base.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.warehouse.domain.vo.ItemSkuVo;
-import com.ruoyi.warehouse.domain.vo.ItemVo;
+import com.ruoyi.basic.domain.vo.ItemSkuVo;
+import com.ruoyi.basic.domain.vo.ItemVo;
 import lombok.Data;
 
 import java.io.Serial;

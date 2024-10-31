@@ -3,6 +3,8 @@ package com.ruoyi.warehouse.domain.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.basic.domain.vo.ItemSkuVo;
+import com.ruoyi.basic.domain.vo.ItemVo;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.convert.ExcelDictConvert;
 import com.ruoyi.warehouse.domain.entity.InventoryHistory;

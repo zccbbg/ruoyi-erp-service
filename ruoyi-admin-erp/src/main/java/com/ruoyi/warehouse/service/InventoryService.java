@@ -16,7 +16,7 @@ import com.ruoyi.warehouse.domain.bo.CheckDocDetailBo;
 import com.ruoyi.warehouse.domain.bo.InventoryBo;
 import com.ruoyi.warehouse.domain.entity.Inventory;
 import com.ruoyi.warehouse.domain.vo.InventoryVo;
-import com.ruoyi.warehouse.domain.vo.ItemSkuMapVo;
+import com.ruoyi.basic.domain.vo.ItemSkuMapVo;
 import com.ruoyi.warehouse.mapper.InventoryMapper;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;

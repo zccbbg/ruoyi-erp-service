@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.bo;
+package com.ruoyi.basic.domain.bo;
 
 import com.ruoyi.basic.domain.entity.ItemBrand;
 import com.ruoyi.common.core.validate.AddGroup;

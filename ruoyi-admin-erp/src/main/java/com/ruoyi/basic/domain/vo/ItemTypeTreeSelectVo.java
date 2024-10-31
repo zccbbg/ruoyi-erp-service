@@ -1,4 +1,4 @@
-package com.ruoyi.warehouse.domain.vo;
+package com.ruoyi.basic.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

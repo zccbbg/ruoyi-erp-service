@@ -17,8 +17,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.warehouse.domain.bo.WarehouseBo;
-import com.ruoyi.warehouse.domain.vo.WarehouseVo;
+import com.ruoyi.basic.domain.bo.WarehouseBo;
+import com.ruoyi.basic.domain.vo.WarehouseVo;
 
 import java.util.List;
 

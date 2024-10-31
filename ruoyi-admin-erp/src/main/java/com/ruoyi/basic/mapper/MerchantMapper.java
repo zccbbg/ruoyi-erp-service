@@ -1,7 +1,7 @@
 package com.ruoyi.basic.mapper;
 
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.warehouse.domain.vo.MerchantVo;
+import com.ruoyi.basic.domain.vo.MerchantVo;
 import com.ruoyi.basic.domain.entity.Merchant;
 
 /**

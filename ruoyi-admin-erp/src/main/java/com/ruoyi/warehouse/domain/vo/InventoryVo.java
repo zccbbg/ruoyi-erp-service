@@ -2,6 +2,8 @@ package com.ruoyi.warehouse.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.ruoyi.basic.domain.vo.ItemSkuVo;
+import com.ruoyi.basic.domain.vo.ItemVo;
 import com.ruoyi.warehouse.domain.entity.Inventory;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
