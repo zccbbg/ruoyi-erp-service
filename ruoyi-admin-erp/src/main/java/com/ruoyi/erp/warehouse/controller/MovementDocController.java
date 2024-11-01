@@ -77,7 +77,7 @@ public class MovementDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
-        bo.setDocStatus(ServiceConstants.Status.PENDING);
+        bo.setBizStatus(ServiceConstants.Status.PENDING);
         movementDocService.insertByBo(bo);
         return R.ok();
     }
