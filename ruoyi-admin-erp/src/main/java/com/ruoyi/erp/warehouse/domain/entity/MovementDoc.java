@@ -15,7 +15,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_movement_order")
+@TableName("wms_movement_doc")
 public class MovementDoc extends BaseDoc {
 
     @Serial

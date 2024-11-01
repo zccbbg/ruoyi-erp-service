@@ -10,7 +10,7 @@ import java.io.Serial;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_warehouse")
+@TableName("basic_warehouse")
 public class Warehouse extends BaseEntity {
 
     @Serial

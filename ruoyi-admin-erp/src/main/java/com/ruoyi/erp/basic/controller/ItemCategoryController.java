@@ -29,7 +29,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/itemCategory")
+@RequestMapping("/basic/itemCategory")
 public class ItemCategoryController extends BaseController {
 
     private final ItemCategoryService itemCategoryService;

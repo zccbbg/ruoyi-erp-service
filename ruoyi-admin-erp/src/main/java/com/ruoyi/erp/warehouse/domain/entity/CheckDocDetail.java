@@ -15,7 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_check_order_detail")
+@TableName("wms_check_doc_detail")
 public class CheckDocDetail extends BaseDocDetail {
 
     /**

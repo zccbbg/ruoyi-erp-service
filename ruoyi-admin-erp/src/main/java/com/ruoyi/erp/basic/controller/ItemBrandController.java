@@ -31,7 +31,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/itemBrand")
+@RequestMapping("/basic/itemBrand")
 public class ItemBrandController extends BaseController {
 
     private final ItemBrandService itemBrandService;

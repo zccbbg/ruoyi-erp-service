@@ -16,7 +16,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_merchant")
+@TableName("basic_merchant")
 public class Merchant extends BaseEntity {
 
     @Serial

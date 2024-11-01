@@ -16,7 +16,7 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_item_brand")
+@TableName("basic_item_brand")
 public class ItemBrand extends BaseEntity {
 
     @Serial

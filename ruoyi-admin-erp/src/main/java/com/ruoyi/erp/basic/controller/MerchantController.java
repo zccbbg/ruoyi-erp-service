@@ -31,7 +31,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/merchant")
+@RequestMapping("/basic/merchant")
 public class MerchantController extends BaseController {
 
     private final MerchantService merchantService;

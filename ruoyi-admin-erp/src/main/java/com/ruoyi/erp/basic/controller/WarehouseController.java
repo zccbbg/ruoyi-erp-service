@@ -25,7 +25,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/warehouse")
+@RequestMapping("/basic/warehouse")
 public class WarehouseController extends BaseController {
 
     private final WarehouseService warehouseService;

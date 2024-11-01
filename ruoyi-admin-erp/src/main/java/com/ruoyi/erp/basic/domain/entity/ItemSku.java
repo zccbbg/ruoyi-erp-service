@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_item_sku")
+@TableName("basic_item_sku")
 public class ItemSku extends BaseEntity {
 
     @Serial

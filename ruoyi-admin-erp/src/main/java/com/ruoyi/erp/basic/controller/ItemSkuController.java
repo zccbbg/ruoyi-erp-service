@@ -26,7 +26,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/itemSku")
+@RequestMapping("/basic/itemSku")
 public class ItemSkuController extends BaseController {
 
     private final ItemSkuService itemSkuService;

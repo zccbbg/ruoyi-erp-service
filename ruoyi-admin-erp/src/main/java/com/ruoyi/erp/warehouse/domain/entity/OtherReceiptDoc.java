@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("wms_receipt_order")
+@TableName("wms_receipt_doc")
 public class OtherReceiptDoc extends BaseDoc {
     /**
      * 仓库id
