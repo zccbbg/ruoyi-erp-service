@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/movementOrderDetail")
+@RequestMapping("/wms/movementDocDetail")
 public class MovementDocDetailController extends BaseController {
 
     private final MovementDocDetailService movementDocDetailService;
@@ -111,8 +111,8 @@ public class MovementDocDetailController extends BaseController {
      * 根据移库单id查询移库单详情列表
      */
     @SaCheckPermission("wms:movement:all")
-    @GetMapping("/list/{movementOrderId}")
-    public R<List<MovementDocDetailVo>> listByMovementOrderId(@NotNull @PathVariable Long movementOrderId) {
-        return R.ok(movementDocDetailService.queryByMovementOrderId(movementOrderId));
+    @GetMapping("/list/{movementDocId}")
+    public R<List<MovementDocDetailVo>> listByMovementDocId(@NotNull @PathVariable Long movementDocId) {
+        return R.ok(movementDocDetailService.queryByMovementDocId(movementDocId));
     }
 }

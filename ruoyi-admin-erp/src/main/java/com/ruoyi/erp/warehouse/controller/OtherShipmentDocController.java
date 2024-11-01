@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/shipmentOrder")
+@RequestMapping("/wms/shipmentDoc")
 public class OtherShipmentDocController extends BaseController {
 
     private final OtherShipmentDocService otherShipmentDocService;
@@ -101,7 +101,7 @@ public class OtherShipmentDocController extends BaseController {
     @RepeatSubmit()
     @PutMapping("/shipment")
     public R<Void> shipment(@Validated(AddGroup.class) @RequestBody OtherShipmentDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.ShipmentOrderStatus.FINISH);
+        bo.setBizStatus(ServiceConstants.Status.FINISH);
         otherShipmentDocService.shipment(bo);
         return R.ok();
     }

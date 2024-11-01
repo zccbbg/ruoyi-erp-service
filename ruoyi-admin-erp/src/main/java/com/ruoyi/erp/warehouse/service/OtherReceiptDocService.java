@@ -51,7 +51,7 @@ public class OtherReceiptDocService {
     public OtherReceiptDocVo queryById(Long id){
         OtherReceiptDocVo receiptDocVo = otherReceiptDocMapper.selectVoById(id);
         Assert.notNull(receiptDocVo, "入库单不存在");
-        receiptDocVo.setDetails(otherReceiptDocDetailService.queryByReceiptOrderId(id));
+        receiptDocVo.setDetails(otherReceiptDocDetailService.queryByReceiptDocId(id));
         return receiptDocVo;
     }
 

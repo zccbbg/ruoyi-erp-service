@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/receiptOrder")
+@RequestMapping("/wms/receiptDoc")
 public class OtherReceiptDocController extends BaseController {
 
     private final OtherReceiptDocService otherReceiptDocService;
@@ -77,7 +77,7 @@ public class OtherReceiptDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody OtherReceiptDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.PENDING);
+        bo.setBizStatus(ServiceConstants.Status.PENDING);
         otherReceiptDocService.insertByBo(bo);
         return R.ok();
     }
@@ -90,7 +90,7 @@ public class OtherReceiptDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/warehousing")
     public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody OtherReceiptDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.FINISH);
+        bo.setBizStatus(ServiceConstants.Status.FINISH);
         otherReceiptDocService.receive(bo);
         return R.ok();
     }

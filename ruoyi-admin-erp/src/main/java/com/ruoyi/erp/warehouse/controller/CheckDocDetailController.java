@@ -111,8 +111,8 @@ public class CheckDocDetailController extends BaseController {
      * 根据盘库单id查询盘库单详情列表
      */
     @SaCheckPermission("wms:check:all")
-    @GetMapping("/list/{checkOrderId}")
-    public R<List<CheckDocDetailVo>> listByCheckOrderId(@NotNull @PathVariable Long checkOrderId) {
-        return R.ok(checkDocDetailService.queryByCheckOrderId(checkOrderId));
+    @GetMapping("/list/{checkDocId}")
+    public R<List<CheckDocDetailVo>> listByCheckDocId(@NotNull @PathVariable Long checkDocId) {
+        return R.ok(checkDocDetailService.queryByCheckDocId(checkDocId));
     }
 }

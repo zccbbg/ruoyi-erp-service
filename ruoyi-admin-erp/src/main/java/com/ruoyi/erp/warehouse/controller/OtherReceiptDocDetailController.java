@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/receiptOrderDetail")
+@RequestMapping("/wms/receiptDocDetail")
 public class OtherReceiptDocDetailController extends BaseController {
 
     private final OtherReceiptDocDetailService otherReceiptDocDetailService;
@@ -111,8 +111,8 @@ public class OtherReceiptDocDetailController extends BaseController {
      * 根据入库单id查询入库单详情列表
      */
     @SaCheckPermission("wms:receipt:all")
-    @GetMapping("/list/{receiptOrderId}")
-    public R<List<OtherReceiptDocDetailVo>> listByReceiptOrderId(@NotNull @PathVariable Long receiptOrderId) {
-        return R.ok(otherReceiptDocDetailService.queryByReceiptOrderId(receiptOrderId));
+    @GetMapping("/list/{receiptDocId}")
+    public R<List<OtherReceiptDocDetailVo>> listByReceiptDocId(@NotNull @PathVariable Long receiptDocId) {
+        return R.ok(otherReceiptDocDetailService.queryByReceiptDocId(receiptDocId));
     }
 }

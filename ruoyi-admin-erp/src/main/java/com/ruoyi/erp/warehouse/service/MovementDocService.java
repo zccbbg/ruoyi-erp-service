@@ -51,7 +51,7 @@ public class MovementDocService {
         if (movementOrderVo == null) {
             throw new BaseException("移库单不存在");
         }
-        movementOrderVo.setDetails(movementDocDetailService.queryByMovementOrderId(id));
+        movementOrderVo.setDetails(movementDocDetailService.queryByMovementDocId(id));
         return movementOrderVo;
     }
 

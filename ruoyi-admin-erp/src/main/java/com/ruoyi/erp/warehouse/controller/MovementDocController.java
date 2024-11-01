@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/movementOrder")
+@RequestMapping("/wms/movementDoc")
 public class MovementDocController extends BaseController {
 
     private final MovementDocService movementDocService;
@@ -77,7 +77,7 @@ public class MovementDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.MovementOrderStatus.PENDING);
+        bo.setDocStatus(ServiceConstants.Status.PENDING);
         movementDocService.insertByBo(bo);
         return R.ok();
     }
@@ -102,7 +102,7 @@ public class MovementDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/move")
     public R<Void> move(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.MovementOrderStatus.FINISH);
+        bo.setBizStatus(ServiceConstants.Status.FINISH);
         movementDocService.move(bo);
         return R.ok();
     }

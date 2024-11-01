@@ -106,7 +106,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMappe
      * @param movementDocId
      * @return
      */
-    public List<MovementDocDetailVo> queryByMovementOrderId(Long movementDocId) {
+    public List<MovementDocDetailVo> queryByMovementDocId(Long movementDocId) {
         MovementDocDetailBo bo = new MovementDocDetailBo();
         bo.setPid(movementDocId);
         List<MovementDocDetailVo> details = queryList(bo);

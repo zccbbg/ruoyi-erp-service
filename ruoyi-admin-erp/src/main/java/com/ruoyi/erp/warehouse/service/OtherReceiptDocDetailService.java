@@ -97,9 +97,9 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
     /**
      * 根据入库单id删除入库单详情
      */
-    public void deleteByReceiptOrderId(@NotNull Long receiptOrderId) {
+    public void deleteByReceiptDocId(@NotNull Long receiptDocId) {
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(OtherReceiptDocDetail::getOrderId, receiptOrderId);
+        lqw.eq(OtherReceiptDocDetail::getPid, receiptDocId);
         otherReceiptDocDetailMapper.delete(lqw);
     }
 
@@ -111,9 +111,9 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
         saveOrUpdateBatch(list);
     }
 
-    public List<OtherReceiptDocDetailVo> queryByReceiptOrderId(Long receiptOrderId) {
+    public List<OtherReceiptDocDetailVo> queryByReceiptDocId(Long receiptDocId) {
         OtherReceiptDocDetailBo bo = new OtherReceiptDocDetailBo();
-        bo.setPid(receiptOrderId);
+        bo.setPid(receiptDocId);
         List<OtherReceiptDocDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
