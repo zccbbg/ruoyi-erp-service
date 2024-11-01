@@ -16,16 +16,14 @@ public class BaseDocDetailVo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     /**
-     *
+     * id
      */
-    @ExcelProperty(value = "")
     private Long id;
 
     /**
-     * 入库单号
+     * 父id
      */
-    @ExcelProperty(value = "订单单号")
-    private Long orderId;
+    private Long pid;
 
     /**
      * 规格id

@@ -15,12 +15,12 @@ public class BaseDocDetailBo extends BaseEntity {
     /**
      * 入库单号
      */
-    @NotNull(message = "单号不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long orderId;
+    @NotNull(message = "父id不能为空", groups = { AddGroup.class, EditGroup.class })
+    private Long pid;
     /**
      *
      */
-    @NotNull(message = "不能为空", groups = { EditGroup.class })
+    @NotNull(message = "id不能为空", groups = { EditGroup.class })
     private Long id;
 
     /**

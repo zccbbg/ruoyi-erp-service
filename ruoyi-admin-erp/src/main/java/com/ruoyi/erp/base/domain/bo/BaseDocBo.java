@@ -17,14 +17,14 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
     /**
      *
      */
-    @NotNull(message = "不能为空", groups = { EditGroup.class })
+    @NotNull(message = "id不能为空", groups = { EditGroup.class })
     private Long id;
 
     /**
      * 业务单号
      */
-    @NotBlank(message = "入库单号单号不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String orderNo;
+    @NotBlank(message = "编号", groups = { AddGroup.class, EditGroup.class })
+    private String bizNo;
 
     /**
      * 商品总数
@@ -37,9 +37,9 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
     private BigDecimal totalAmount;
 
     /**
-     * 订单状态
+     * 单据状态
      */
-    private Integer orderStatus;
+    private Integer bizStatus;
 
     /**
      * 备注

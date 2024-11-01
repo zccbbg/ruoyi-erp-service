@@ -23,7 +23,7 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
      * 入库单号
      */
     @ExcelProperty(value = "订单号")
-    private String orderNo;
+    private String docNo;
 
     /**
      * 商品总数
@@ -41,7 +41,7 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
      * 入库状态
      */
     @ExcelProperty(value = "订单状态")
-    private Integer orderStatus;
+    private Integer docStatus;
 
     /**
      * 仓库id

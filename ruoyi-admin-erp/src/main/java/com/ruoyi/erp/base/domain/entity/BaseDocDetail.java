@@ -16,9 +16,9 @@ public class BaseDocDetail extends BaseEntity {
     @TableId(value = "id")
     private Long id;
     /**
-     * 入库单号
+     * 父id
      */
-    private Long docId;
+    private Long pid;
     /**
      * 规格id
      */

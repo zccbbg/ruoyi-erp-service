@@ -19,7 +19,7 @@ public class BaseDoc extends BaseEntity {
     /**
      * 编号
      */
-    private String docNo;
+    private String bizNo;
 
     /**
      * 商品总数
@@ -32,7 +32,7 @@ public class BaseDoc extends BaseEntity {
     /**
      * 单据状态
      */
-    private Integer docStatus;
+    private Integer bizStatus;
 
     /**
      * 备注
