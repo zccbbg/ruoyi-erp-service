@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @AutoMapper(target = OtherShipmentDoc.class, reverseConvertGenerate = false)
 public class OtherShipmentDocBo extends BaseDocBo<OtherShipmentDocDetailBo> {
     /**
-     * 入库类型
+     * 出库类型
      */
     @NotNull(message = "出库类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long optType;

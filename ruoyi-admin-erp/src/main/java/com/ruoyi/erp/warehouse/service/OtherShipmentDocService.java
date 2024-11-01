@@ -51,7 +51,7 @@ public class OtherShipmentDocService {
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
-        shipmentOrderVo.setDetails(otherShipmentDocDetailService.queryByShipmentOrderId(shipmentOrderVo.getId()));
+        shipmentOrderVo.setDetails(otherShipmentDocDetailService.queryByShipmentDocId(shipmentOrderVo.getId()));
         return shipmentOrderVo;
     }
 
@@ -75,13 +75,12 @@ public class OtherShipmentDocService {
     private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(OtherShipmentDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipmentDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), OtherShipmentDoc::getBizNo, bo.getBizNo());
         lqw.eq(bo.getOptType() != null, OtherShipmentDoc::getOptType, bo.getOptType());
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherShipmentDoc::getOrderNo, bo.getOrderNo());
         lqw.eq(bo.getMerchantId() != null, OtherShipmentDoc::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getTotalAmount() != null, OtherShipmentDoc::getTotalAmount, bo.getTotalAmount());
         lqw.eq(bo.getTotalQuantity() != null, OtherShipmentDoc::getTotalQuantity, bo.getTotalQuantity());
-        lqw.eq(bo.getOrderStatus() != null, OtherShipmentDoc::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getBizStatus() != null, OtherShipmentDoc::getBizStatus, bo.getBizStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -92,20 +91,20 @@ public class OtherShipmentDocService {
     @Transactional
     public void insertByBo(OtherShipmentDocBo bo) {
         // 校验出库单号唯一性
-        validateShipmentOrderNo(bo.getOrderNo());
+        validateShipmentOrderNo(bo.getBizNo());
         // 创建出库单
         OtherShipmentDoc add = MapstructUtils.convert(bo, OtherShipmentDoc.class);
         otherShipmentDocMapper.insert(add);
         bo.setId(add.getId());
         List<OtherShipmentDocDetailBo> detailBoList = bo.getDetails();
         List<OtherShipmentDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDocDetail.class);
-        addDetailList.forEach(it -> it.setOrderId(add.getId()));
+        addDetailList.forEach(it -> it.setPid(add.getId()));
         otherShipmentDocDetailService.saveDetails(addDetailList);
     }
 
     public void validateShipmentOrderNo(String shipmentOrderNo) {
         LambdaQueryWrapper<OtherShipmentDoc> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherShipmentDoc::getOrderNo, shipmentOrderNo);
+        receiptOrderLqw.eq(OtherShipmentDoc::getBizNo, shipmentOrderNo);
         OtherShipmentDoc shipmentOrder = otherShipmentDocMapper.selectOne(receiptOrderLqw);
         Assert.isNull(shipmentOrder, "出库单号重复，请手动修改");
     }
@@ -121,7 +120,7 @@ public class OtherShipmentDocService {
         otherShipmentDocMapper.updateById(update);
         // 保存出库单明细
         List<OtherShipmentDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherShipmentDocDetail.class);
-        detailList.forEach(it -> it.setOrderId(bo.getId()));
+        detailList.forEach(it -> it.setPid(bo.getId()));
         otherShipmentDocDetailService.saveDetails(detailList);
     }
 
@@ -138,8 +137,8 @@ public class OtherShipmentDocService {
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
-        if (ServiceConstants.ShipmentOrderStatus.FINISH.equals(shipmentOrderVo.getOrderStatus())) {
-            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"出库单【" + shipmentOrderVo.getOrderNo() + "】已出库，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(shipmentOrderVo.getBizStatus())) {
+            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"出库单【" + shipmentOrderVo.getBizNo() + "】已出库，无法删除！");
         }
     }
 
@@ -161,7 +160,7 @@ public class OtherShipmentDocService {
         inventoryService.subtract(bo.getDetails());
 
         // 4.创建库存记录
-        inventoryHistoryService.saveInventoryHistory(bo,ServiceConstants.InventoryHistoryOrderType.SHIPMENT,false);
+        inventoryHistoryService.saveInventoryHistory(bo,ServiceConstants.InventoryHistoryBizType.SHIPMENT,false);
     }
 
 

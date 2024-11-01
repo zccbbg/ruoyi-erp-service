@@ -114,6 +114,6 @@ public class OtherShipmentDocDetailController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @GetMapping("/list/{shipmentOrderId}")
     public R<List<OtherShipmentDocDetailVo>> listByShipmentOrderId(@NotNull @PathVariable Long shipmentOrderId) {
-        return R.ok(otherShipmentDocDetailService.queryByShipmentOrderId(shipmentOrderId));
+        return R.ok(otherShipmentDocDetailService.queryByShipmentDocId(shipmentOrderId));
     }
 }

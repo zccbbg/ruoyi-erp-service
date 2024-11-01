@@ -62,7 +62,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMappe
     private LambdaQueryWrapper<MovementDocDetail> buildQueryWrapper(MovementDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, MovementDocDetail::getDocId, bo.getOrderId());
+        lqw.eq(bo.getPid() != null, MovementDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, MovementDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, MovementDocDetail::getQuantity, bo.getQuantity());
         lqw.eq(bo.getSourceWarehouseId() != null, MovementDocDetail::getSourceWarehouseId, bo.getSourceWarehouseId());
@@ -103,12 +103,12 @@ public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMappe
 
     /**
      * 根据移库单id查询移库单详情
-     * @param movementOrderId
+     * @param movementDocId
      * @return
      */
-    public List<MovementDocDetailVo> queryByMovementOrderId(Long movementOrderId) {
+    public List<MovementDocDetailVo> queryByMovementOrderId(Long movementDocId) {
         MovementDocDetailBo bo = new MovementDocDetailBo();
-        bo.setOrderId(movementOrderId);
+        bo.setPid(movementDocId);
         List<MovementDocDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();

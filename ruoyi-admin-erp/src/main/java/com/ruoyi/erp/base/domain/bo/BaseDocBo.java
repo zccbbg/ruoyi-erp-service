@@ -21,7 +21,7 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
     private Long id;
 
     /**
-     * 业务单号
+     * 编号
      */
     @NotBlank(message = "编号", groups = { AddGroup.class, EditGroup.class })
     private String bizNo;

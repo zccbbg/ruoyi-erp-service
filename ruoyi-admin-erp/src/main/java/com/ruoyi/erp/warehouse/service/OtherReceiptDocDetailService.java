@@ -63,7 +63,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
     private LambdaQueryWrapper<OtherReceiptDocDetail> buildQueryWrapper(OtherReceiptDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, OtherReceiptDocDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getPid() != null, OtherReceiptDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, OtherReceiptDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, OtherReceiptDocDetail::getQuantity, bo.getQuantity());
         lqw.eq(bo.getAmount() != null, OtherReceiptDocDetail::getAmount, bo.getAmount());
@@ -113,7 +113,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
 
     public List<OtherReceiptDocDetailVo> queryByReceiptOrderId(Long receiptOrderId) {
         OtherReceiptDocDetailBo bo = new OtherReceiptDocDetailBo();
-        bo.setOrderId(receiptOrderId);
+        bo.setPid(receiptOrderId);
         List<OtherReceiptDocDetailVo> details = queryList(bo);
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();

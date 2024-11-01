@@ -75,10 +75,10 @@ public class MovementDocService {
     private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), MovementDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), MovementDoc::getBizNo, bo.getBizNo());
         lqw.eq(bo.getSourceWarehouseId() != null, MovementDoc::getSourceWarehouseId, bo.getSourceWarehouseId());
         lqw.eq(bo.getTargetWarehouseId() != null, MovementDoc::getTargetWarehouseId, bo.getTargetWarehouseId());
-        lqw.eq(bo.getOrderStatus() != null, MovementDoc::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getBizStatus() != null, MovementDoc::getBizStatus, bo.getBizStatus());
         lqw.eq(bo.getTotalQuantity() != null, MovementDoc::getTotalQuantity, bo.getTotalQuantity());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
@@ -90,7 +90,7 @@ public class MovementDocService {
     @Transactional
     public void insertByBo(MovementDocBo bo) {
         // 1.校验移库单号唯一性
-        validateMovementOrderNo(bo.getOrderNo());
+        validateMovementBizNo(bo.getBizNo());
         // 2.创建移库单
         MovementDoc add = MapstructUtils.convert(bo, MovementDoc.class);
         movementDocMapper.insert(add);
@@ -98,14 +98,14 @@ public class MovementDocService {
         // 3.创建移库单明细
         List<MovementDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         addDetailList.forEach(it -> {
-            it.setOrderId(add.getId());
+            it.setPid(add.getId());
         });
         movementDocDetailService.saveDetails(addDetailList);
     }
 
-    private void validateMovementOrderNo(String movementOrderNo) {
+    private void validateMovementBizNo(String movementBizNo) {
         LambdaQueryWrapper<MovementDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(MovementDoc::getOrderNo, movementOrderNo);
+        lambdaQueryWrapper.eq(MovementDoc::getBizNo, movementBizNo);
         if (movementDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("移库单号重复，请手动修改");
         }
@@ -121,7 +121,7 @@ public class MovementDocService {
         movementDocMapper.updateById(update);
         // 2.保存移库单明细
         List<MovementDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
-        detailList.forEach(it -> it.setOrderId(bo.getId()));
+        detailList.forEach(it -> it.setPid(bo.getId()));
         movementDocDetailService.saveDetails(detailList);
     }
 
@@ -135,12 +135,12 @@ public class MovementDocService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        MovementDocVo movementOrderVo = queryById(id);
-        if (movementOrderVo == null) {
+        MovementDocVo movementBizVo = queryById(id);
+        if (movementBizVo == null) {
             throw new BaseException("移库单不存在");
         }
-        if (ServiceConstants.MovementOrderStatus.FINISH.equals(movementOrderVo.getOrderStatus())) {
-            throw new ServiceException("移库单【" + movementOrderVo.getOrderNo() + "】已移库，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(movementBizVo.getBizStatus())) {
+            throw new ServiceException("移库单【" + movementBizVo.getBizNo() + "】已移库，无法删除！");
         }
     }
 
@@ -177,8 +177,8 @@ public class MovementDocService {
 
 
         // 6.创建库存记录流水
-        inventoryHistoryService.saveInventoryHistory(shipmentBo, ServiceConstants.InventoryHistoryOrderType.MOVEMENT,false);
-        inventoryHistoryService.saveInventoryHistory(receiptBo, ServiceConstants.InventoryHistoryOrderType.MOVEMENT,true);
+        inventoryHistoryService.saveInventoryHistory(shipmentBo, ServiceConstants.InventoryHistoryBizType.MOVEMENT,false);
+        inventoryHistoryService.saveInventoryHistory(receiptBo, ServiceConstants.InventoryHistoryBizType.MOVEMENT,true);
     }
 
     private MovementDocBo getReceiptBo(MovementDocBo bo) {

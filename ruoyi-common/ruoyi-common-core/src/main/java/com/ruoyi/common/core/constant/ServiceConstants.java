@@ -1,28 +1,11 @@
 package com.ruoyi.common.core.constant;
 
 public class ServiceConstants {
-    /**
-     * 入库单状态
-     */
-    public class ReceiptOrderStatus {
-        public static final Integer INVALID = -1;
-        public static final Integer PENDING = 0;
-        public static final Integer FINISH = 1;
-    }
-
-    /**
-     * 出库单状态
-     */
-    public class ShipmentOrderStatus {
-        public static final Integer INVALID = -1;
-        public static final Integer PENDING = 0;
-        public static final Integer FINISH = 1;
-    }
 
     /**
      * 库存记录操作类型
      */
-    public class InventoryHistoryOrderType {
+    public class InventoryHistoryBizType {
         public static final Integer RECEIPT = 1;
         public static final Integer SHIPMENT = 2;
         public static final Integer MOVEMENT = 3;
@@ -30,18 +13,9 @@ public class ServiceConstants {
     }
 
     /**
-     * 移库单状态
-     */
-    public class MovementOrderStatus {
-        public static final Integer INVALID = -1;
-        public static final Integer PENDING = 0;
-        public static final Integer FINISH = 1;
-    }
-
-    /**
      * 盘库单状态
      */
-    public class CheckOrderStatus {
+    public class Status {
         public static final Integer INVALID = -1;
         public static final Integer PENDING = 0;
         public static final Integer FINISH = 1;

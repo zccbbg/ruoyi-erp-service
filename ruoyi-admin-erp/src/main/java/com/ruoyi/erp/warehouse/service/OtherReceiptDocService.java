@@ -49,10 +49,10 @@ public class OtherReceiptDocService {
      * 查询入库单
      */
     public OtherReceiptDocVo queryById(Long id){
-        OtherReceiptDocVo receiptOrderVo = otherReceiptDocMapper.selectVoById(id);
-        Assert.notNull(receiptOrderVo, "入库单不存在");
-        receiptOrderVo.setDetails(otherReceiptDocDetailService.queryByReceiptOrderId(id));
-        return receiptOrderVo;
+        OtherReceiptDocVo receiptDocVo = otherReceiptDocMapper.selectVoById(id);
+        Assert.notNull(receiptDocVo, "入库单不存在");
+        receiptDocVo.setDetails(otherReceiptDocDetailService.queryByReceiptOrderId(id));
+        return receiptDocVo;
     }
 
     /**
@@ -75,12 +75,12 @@ public class OtherReceiptDocService {
     private LambdaQueryWrapper<OtherReceiptDoc> buildQueryWrapper(OtherReceiptDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceiptDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), OtherReceiptDoc::getBizNo, bo.getBizNo());
         lqw.eq(bo.getOptType() != null, OtherReceiptDoc::getOptType, bo.getOptType());
         lqw.eq(bo.getMerchantId() != null, OtherReceiptDoc::getMerchantId, bo.getMerchantId());
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), OtherReceiptDoc::getOrderNo, bo.getOrderNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), OtherReceiptDoc::getBizNo, bo.getBizNo());
         lqw.eq(bo.getTotalAmount() != null, OtherReceiptDoc::getTotalAmount, bo.getTotalAmount());
-        lqw.eq(bo.getOrderStatus() != null, OtherReceiptDoc::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getBizStatus() != null, OtherReceiptDoc::getBizStatus, bo.getBizStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -91,7 +91,7 @@ public class OtherReceiptDocService {
     @Transactional
     public void insertByBo(OtherReceiptDocBo bo) {
         // 校验入库单号唯一性
-        validateReceiptOrderNo(bo.getOrderNo());
+        validateReceiptBizNo(bo.getBizNo());
         // 创建入库单
         OtherReceiptDoc add = MapstructUtils.convert(bo, OtherReceiptDoc.class);
         otherReceiptDocMapper.insert(add);
@@ -99,7 +99,7 @@ public class OtherReceiptDocService {
         List<OtherReceiptDocDetailBo> detailBoList = bo.getDetails();
         List<OtherReceiptDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherReceiptDocDetail.class);
         addDetailList.forEach(it -> {
-            it.setOrderId(add.getId());
+            it.setPid(add.getId());
         });
         // 创建入库单明细
         otherReceiptDocDetailService.saveDetails(addDetailList);
@@ -129,7 +129,7 @@ public class OtherReceiptDocService {
         inventoryService.add(bo.getDetails());
 
         // 4.保存库存记录
-        inventoryHistoryService.saveInventoryHistory(bo,ServiceConstants.InventoryHistoryOrderType.RECEIPT,true);
+        inventoryHistoryService.saveInventoryHistory(bo,ServiceConstants.InventoryHistoryBizType.RECEIPT,true);
     }
 
     private void validateBeforeReceive(OtherReceiptDocBo bo) {
@@ -148,7 +148,7 @@ public class OtherReceiptDocService {
         otherReceiptDocMapper.updateById(update);
         // 保存入库单明细
         List<OtherReceiptDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherReceiptDocDetail.class);
-        detailList.forEach(it -> it.setOrderId(bo.getId()));
+        detailList.forEach(it -> it.setPid(bo.getId()));
         otherReceiptDocDetailService.saveDetails(detailList);
     }
 
@@ -159,7 +159,7 @@ public class OtherReceiptDocService {
     public void editToInvalid(Long id) {
         LambdaUpdateWrapper<OtherReceiptDoc> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(OtherReceiptDoc::getId, id);
-        wrapper.set(OtherReceiptDoc::getOrderStatus, ServiceConstants.ReceiptOrderStatus.INVALID);
+        wrapper.set(OtherReceiptDoc::getBizStatus, ServiceConstants.Status.INVALID);
         otherReceiptDocMapper.update(null, wrapper);
     }
 
@@ -172,10 +172,10 @@ public class OtherReceiptDocService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        OtherReceiptDocVo receiptOrderVo = queryById(id);
-        Assert.notNull(receiptOrderVo, "入库单不存在");
-        if (ServiceConstants.ReceiptOrderStatus.FINISH.equals(receiptOrderVo.getOrderStatus())) {
-            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"入库单【" + receiptOrderVo.getOrderNo() + "】已入库，无法删除！");
+        OtherReceiptDocVo receiptBizVo = queryById(id);
+        Assert.notNull(receiptBizVo, "入库单不存在");
+        if (ServiceConstants.Status.FINISH.equals(receiptBizVo.getBizStatus())) {
+            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"入库单【" + receiptBizVo.getBizNo() + "】已入库，无法删除！");
         }
     }
 
@@ -186,10 +186,10 @@ public class OtherReceiptDocService {
         otherReceiptDocMapper.deleteBatchIds(ids);
     }
 
-    public void validateReceiptOrderNo(String receiptOrderNo) {
-        LambdaQueryWrapper<OtherReceiptDoc> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherReceiptDoc::getOrderNo, receiptOrderNo);
-        OtherReceiptDoc receiptOrder = otherReceiptDocMapper.selectOne(receiptOrderLqw);
-        Assert.isNull(receiptOrder, "入库单号重复，请手动修改");
+    public void validateReceiptBizNo(String receiptBizNo) {
+        LambdaQueryWrapper<OtherReceiptDoc> receiptDocLqw = Wrappers.lambdaQuery();
+        receiptDocLqw.eq(OtherReceiptDoc::getBizNo, receiptBizNo);
+        OtherReceiptDoc receiptDoc = otherReceiptDocMapper.selectOne(receiptDocLqw);
+        Assert.isNull(receiptDoc, "入库单号重复，请手动修改");
     }
 }

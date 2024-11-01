@@ -31,15 +31,15 @@ public class InventoryHistory extends BaseHistoryEntity {
     /**
      * 操作id（出库、入库、库存移动表单id）
      */
-    private Long orderId;
+    private Long bizId;
     /**
      * 操作单号（入库、出库、移库、盘库单号）
      */
-    private String orderNo;
+    private String bizNo;
     /**
      * 订单类型
      */
-    private Integer orderType;
+    private Integer bizType;
     /**
      * 物料ID
      */

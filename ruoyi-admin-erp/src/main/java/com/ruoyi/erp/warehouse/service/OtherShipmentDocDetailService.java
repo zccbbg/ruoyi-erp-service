@@ -61,7 +61,7 @@ public class OtherShipmentDocDetailService extends ServiceImpl<OtherShipmentDocD
     private LambdaQueryWrapper<OtherShipmentDocDetail> buildQueryWrapper(OtherShipmentDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, OtherShipmentDocDetail::getOrderId, bo.getOrderId());
+        lqw.eq(bo.getPid() != null, OtherShipmentDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, OtherShipmentDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, OtherShipmentDocDetail::getQuantity, bo.getQuantity());
         lqw.eq(bo.getAmount() != null, OtherShipmentDocDetail::getAmount, bo.getAmount());
@@ -100,9 +100,9 @@ public class OtherShipmentDocDetailService extends ServiceImpl<OtherShipmentDocD
         saveOrUpdateBatch(list);
     }
 
-    public List<OtherShipmentDocDetailVo> queryByShipmentOrderId(Long shipmentOrderId) {
+    public List<OtherShipmentDocDetailVo> queryByShipmentDocId(Long shipmentDocId) {
         OtherShipmentDocDetailBo bo = new OtherShipmentDocDetailBo();
-        bo.setOrderId(shipmentOrderId);
+        bo.setPid(shipmentDocId);
         List<OtherShipmentDocDetailVo> details = queryList(bo);
         itemSkuService.setItemSkuMap(details);
         return details;

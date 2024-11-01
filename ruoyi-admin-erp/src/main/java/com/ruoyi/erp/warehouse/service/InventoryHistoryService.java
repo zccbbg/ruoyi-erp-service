@@ -37,9 +37,9 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
         List<InventoryHistory> inventoryHistoryList = new LinkedList<>();
         bo.getDetails().forEach(detail -> {
             InventoryHistory inventoryHistory = new InventoryHistory();
-            inventoryHistory.setOrderId(bo.getId());
-            inventoryHistory.setOrderNo(bo.getOrderNo());
-            inventoryHistory.setOrderType(orderType);
+            inventoryHistory.setBizId(bo.getId());
+            inventoryHistory.setBizNo(bo.getBizNo());
+            inventoryHistory.setBizType(orderType);
             inventoryHistory.setSkuId(detail.getSkuId());
             if(isAdd){
                 inventoryHistory.setQuantity(detail.getQuantity());
@@ -81,8 +81,8 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
     private LambdaQueryWrapper<InventoryHistory> buildQueryWrapper(InventoryHistoryBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<InventoryHistory> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, InventoryHistory::getOrderId, bo.getOrderId());
-        lqw.eq(bo.getOrderType() != null, InventoryHistory::getOrderType, bo.getOrderType());
+        lqw.eq(bo.getBizId() != null, InventoryHistory::getBizId, bo.getBizId());
+        lqw.eq(bo.getBizType() != null, InventoryHistory::getBizType, bo.getBizType());
         lqw.eq(bo.getSkuId() != null, InventoryHistory::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, InventoryHistory::getQuantity, bo.getQuantity());
         lqw.eq(bo.getWarehouseId() != null, InventoryHistory::getWarehouseId, bo.getWarehouseId());

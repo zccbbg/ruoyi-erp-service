@@ -14,16 +14,15 @@ import java.util.List;
 @ExcelIgnoreUnannotated
 public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
     /**
-     *
+     * id
      */
-    @ExcelProperty(value = "")
     private Long id;
 
     /**
-     * 入库单号
+     * 单据编号
      */
-    @ExcelProperty(value = "订单号")
-    private String docNo;
+    @ExcelProperty(value = "单据编号")
+    private String bizNo;
 
     /**
      * 商品总数
@@ -34,14 +33,14 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
     /**
      * 订单金额
      */
-    @ExcelProperty(value = "订单总金额")
+    @ExcelProperty(value = "单据总金额")
     private BigDecimal totalAmount;
 
     /**
      * 入库状态
      */
-    @ExcelProperty(value = "订单状态")
-    private Integer docStatus;
+    @ExcelProperty(value = "单据状态")
+    private Integer bizStatus;
 
     /**
      * 仓库id
