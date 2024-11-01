@@ -65,7 +65,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
     private LambdaQueryWrapper<CheckDocDetail> buildQueryWrapper(CheckDocDetailBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDocDetail> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getOrderId() != null, CheckDocDetail::getDocId, bo.getOrderId());
+        lqw.eq(bo.getPid() != null, CheckDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, CheckDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, CheckDocDetail::getQuantity, bo.getQuantity());
         lqw.eq(bo.getCheckQuantity() != null, CheckDocDetail::getCheckQuantity, bo.getCheckQuantity());
@@ -105,9 +105,9 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
         saveOrUpdateBatch(list);
     }
 
-    public List<CheckDocDetailVo> queryByCheckOrderId(Long checkOrderId) {
+    public List<CheckDocDetailVo> queryByCheckDocId(Long checkDocId) {
         CheckDocDetailBo bo = new CheckDocDetailBo();
-        bo.setOrderId(checkOrderId);
+        bo.setPid(checkDocId);
         List<CheckDocDetailVo> details = queryList(bo);
         itemSkuService.setItemSkuMap(details);
         return details;
