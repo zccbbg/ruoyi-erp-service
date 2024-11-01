@@ -14,7 +14,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.erp.warehouse.domain.bo.CheckDocBo;
 import com.ruoyi.erp.warehouse.domain.vo.CheckDocVo;
-import com.ruoyi.erp.warehouse.service.CheckOrderService;
+import com.ruoyi.erp.warehouse.service.CheckDocService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +32,10 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/checkOrder")
+@RequestMapping("/wms/checkDoc")
 public class CheckDocController extends BaseController {
 
-    private final CheckOrderService checkOrderService;
+    private final CheckDocService checkDocService;
 
     /**
      * 查询库存盘点单据列表
@@ -43,7 +43,7 @@ public class CheckDocController extends BaseController {
     @SaCheckPermission("wms:check:all")
     @GetMapping("/list")
     public TableDataInfo<CheckDocVo> list(CheckDocBo bo, PageQuery pageQuery) {
-        return checkOrderService.queryPageList(bo, pageQuery);
+        return checkDocService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +53,7 @@ public class CheckDocController extends BaseController {
     @Log(title = "库存盘点单据", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(CheckDocBo bo, HttpServletResponse response) {
-        List<CheckDocVo> list = checkOrderService.queryList(bo);
+        List<CheckDocVo> list = checkDocService.queryList(bo);
         ExcelUtil.exportExcel(list, "库存盘点单据", CheckDocVo.class, response);
     }
 
@@ -66,7 +66,7 @@ public class CheckDocController extends BaseController {
     @GetMapping("/{id}")
     public R<CheckDocVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(checkOrderService.queryById(id));
+        return R.ok(checkDocService.queryById(id));
     }
 
     /**
@@ -77,8 +77,8 @@ public class CheckDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody CheckDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.CheckOrderStatus.PENDING);
-        checkOrderService.insertByBo(bo);
+        bo.setBizStatus(ServiceConstants.Status.PENDING);
+        checkDocService.insertByBo(bo);
         return R.ok();
     }
 
@@ -90,7 +90,7 @@ public class CheckDocController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody CheckDocBo bo) {
-        checkOrderService.updateByBo(bo);
+        checkDocService.updateByBo(bo);
         return R.ok();
     }
 
@@ -102,8 +102,8 @@ public class CheckDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/check")
     public R<Void> check(@Validated(AddGroup.class) @RequestBody CheckDocBo bo) {
-        bo.setOrderStatus(ServiceConstants.CheckOrderStatus.FINISH);
-        checkOrderService.check(bo);
+        bo.setBizStatus(ServiceConstants.Status.FINISH);
+        checkDocService.check(bo);
         return R.ok();
     }
 
@@ -117,7 +117,7 @@ public class CheckDocController extends BaseController {
     @DeleteMapping("/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空")
                           @PathVariable Long id) {
-        checkOrderService.deleteById(id);
+        checkDocService.deleteById(id);
         return R.ok();
     }
 }
