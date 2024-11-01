@@ -36,7 +36,7 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Service
-public class CheckOrderService {
+public class CheckDocService {
 
     private final CheckDocMapper checkDocMapper;
     private final CheckDocDetailService checkDocDetailService;
@@ -47,12 +47,12 @@ public class CheckOrderService {
      * 查询库存盘点单据
      */
     public CheckDocVo queryById(Long id){
-        CheckDocVo checkOrderVo = checkDocMapper.selectVoById(id);
-        if (checkOrderVo == null) {
+        CheckDocVo checkDocVo = checkDocMapper.selectVoById(id);
+        if (checkDocVo == null) {
             throw new BaseException("盘库单不存在");
         }
-        checkOrderVo.setDetails(checkDocDetailService.queryByCheckOrderId(id));
-        return checkOrderVo;
+        checkDocVo.setDetails(checkDocDetailService.queryByCheckDocId(id));
+        return checkDocVo;
     }
 
     /**
@@ -75,8 +75,8 @@ public class CheckOrderService {
     private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), CheckDoc::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getOrderStatus() != null, CheckDoc::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), CheckDoc::getBizNo, bo.getBizNo());
+        lqw.eq(bo.getBizStatus() != null, CheckDoc::getBizStatus, bo.getBizStatus());
         lqw.eq(bo.getTotalQuantity() != null, CheckDoc::getTotalQuantity, bo.getTotalQuantity());
         lqw.eq(bo.getWarehouseId() != null, CheckDoc::getWarehouseId, bo.getWarehouseId());
         lqw.orderByDesc(BaseEntity::getCreateTime);
@@ -89,19 +89,19 @@ public class CheckOrderService {
     @Transactional
     public void insertByBo(CheckDocBo bo) {
         // 校验盘库单号唯一性
-        validateCheckOrderNo(bo.getOrderNo());
+        validateCheckBizNo(bo.getBizNo());
         // 创建盘库单
         CheckDoc add = MapstructUtils.convert(bo, CheckDoc.class);
         checkDocMapper.insert(add);
         // 创建盘库单明细
         List<CheckDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
-        addDetailList.forEach(it -> it.setOrderId(add.getId()));
+        addDetailList.forEach(it -> it.setPid(add.getId()));
         checkDocDetailService.saveDetails(addDetailList);
     }
 
-    private void validateCheckOrderNo(String checkOrderNo) {
+    private void validateCheckBizNo(String checkBizNo) {
         LambdaQueryWrapper<CheckDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(CheckDoc::getOrderNo, checkOrderNo);
+        lambdaQueryWrapper.eq(CheckDoc::getBizNo, checkBizNo);
         if (checkDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("盘库单号重复，请手动修改");
         }
@@ -117,7 +117,7 @@ public class CheckOrderService {
         checkDocMapper.updateById(update);
         // 保存盘库单明细
         List<CheckDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), CheckDocDetail.class);
-        detailList.forEach(it -> it.setOrderId(bo.getId()));
+        detailList.forEach(it -> it.setPid(bo.getId()));
         checkDocDetailService.saveDetails(detailList);
     }
 
@@ -127,12 +127,12 @@ public class CheckOrderService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        CheckDocVo checkOrderVo = queryById(id);
-        if (checkOrderVo == null) {
+        CheckDocVo checkDocVo = queryById(id);
+        if (checkDocVo == null) {
             throw new BaseException("盘库单不存在");
         }
-        if (ServiceConstants.CheckOrderStatus.FINISH.equals(checkOrderVo.getOrderStatus())) {
-            throw new ServiceException("盘库单【" + checkOrderVo.getOrderNo() + "】已盘库完成，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(checkDocVo.getBizStatus())) {
+            throw new ServiceException("盘库单【" + checkDocVo.getBizNo() + "】已盘库完成，无法删除！");
         }
     }
 
@@ -149,7 +149,7 @@ public class CheckOrderService {
     @Transactional
     public void check(CheckDocBo bo) {
         List<CheckDocDetailBo> details = bo.getDetails();
-        // 保存盘库单 check order
+        // 保存盘库单 check Doc
         if (Objects.isNull(bo.getId())) {
             insertByBo(bo);
         } else {
@@ -158,11 +158,11 @@ public class CheckOrderService {
         // 保存库存 inventory
         inventoryService.updateInventory(details);
         // 新增库存记录 inventory history
-        CheckDocBo filterBo = this.filterCheckOrderDetail(bo);
-        inventoryHistoryService.saveInventoryHistory(filterBo, ServiceConstants.InventoryHistoryOrderType.CHECK, true);
+        CheckDocBo filterBo = this.filterCheckDocDetail(bo);
+        inventoryHistoryService.saveInventoryHistory(filterBo, ServiceConstants.InventoryHistoryBizType.CHECK, true);
     }
 
-    private CheckDocBo filterCheckOrderDetail(CheckDocBo bo) {
+    private CheckDocBo filterCheckDocDetail(CheckDocBo bo) {
         CheckDocBo filterBo = SerializationUtils.clone(bo);
         List<CheckDocDetailBo> details = filterBo.getDetails().stream().filter(detail -> {
             BigDecimal result = detail.getCheckQuantity().subtract(detail.getQuantity());
