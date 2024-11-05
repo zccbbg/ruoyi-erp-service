@@ -77,7 +77,7 @@ public class MovementDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.PENDING);
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         movementDocService.insertByBo(bo);
         return R.ok();
     }
@@ -102,7 +102,7 @@ public class MovementDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/move")
     public R<Void> move(@Validated(AddGroup.class) @RequestBody MovementDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.FINISH);
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
         movementDocService.move(bo);
         return R.ok();
     }

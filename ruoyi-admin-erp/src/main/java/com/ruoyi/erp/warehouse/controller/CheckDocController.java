@@ -77,7 +77,7 @@ public class CheckDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody CheckDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.PENDING);
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         checkDocService.insertByBo(bo);
         return R.ok();
     }
@@ -102,7 +102,7 @@ public class CheckDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/check")
     public R<Void> check(@Validated(AddGroup.class) @RequestBody CheckDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.FINISH);
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
         checkDocService.check(bo);
         return R.ok();
     }

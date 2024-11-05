@@ -101,7 +101,7 @@ public class OtherShipmentDocController extends BaseController {
     @RepeatSubmit()
     @PutMapping("/shipment")
     public R<Void> shipment(@Validated(AddGroup.class) @RequestBody OtherShipmentDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.FINISH);
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
         otherShipmentDocService.shipment(bo);
         return R.ok();
     }

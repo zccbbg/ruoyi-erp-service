@@ -77,7 +77,7 @@ public class OtherReceiptDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody OtherReceiptDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.PENDING);
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         otherReceiptDocService.insertByBo(bo);
         return R.ok();
     }
@@ -90,7 +90,7 @@ public class OtherReceiptDocController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/warehousing")
     public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody OtherReceiptDocBo bo) {
-        bo.setBizStatus(ServiceConstants.Status.FINISH);
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
         otherReceiptDocService.receive(bo);
         return R.ok();
     }
