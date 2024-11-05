@@ -24,7 +24,7 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
      * 编号
      */
     @NotBlank(message = "编号", groups = { AddGroup.class, EditGroup.class })
-    private String bizNo;
+    private String docCode;
 
     /**
      * 商品总数
@@ -39,7 +39,7 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
     /**
      * 单据状态
      */
-    private Integer bizStatus;
+    private Integer checkedStatus;
 
     /**
      * 备注

@@ -75,10 +75,10 @@ public class MovementDocService {
     private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), MovementDoc::getBizNo, bo.getBizNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), MovementDoc::getDocCode, bo.getDocCode());
         lqw.eq(bo.getSourceWarehouseId() != null, MovementDoc::getSourceWarehouseId, bo.getSourceWarehouseId());
         lqw.eq(bo.getTargetWarehouseId() != null, MovementDoc::getTargetWarehouseId, bo.getTargetWarehouseId());
-        lqw.eq(bo.getBizStatus() != null, MovementDoc::getBizStatus, bo.getBizStatus());
+        lqw.eq(bo.getCheckedStatus() != null, MovementDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getTotalQuantity() != null, MovementDoc::getTotalQuantity, bo.getTotalQuantity());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
@@ -90,7 +90,7 @@ public class MovementDocService {
     @Transactional
     public void insertByBo(MovementDocBo bo) {
         // 1.校验移库单号唯一性
-        validateMovementBizNo(bo.getBizNo());
+        validateMovementBizNo(bo.getDocCode());
         // 2.创建移库单
         MovementDoc add = MapstructUtils.convert(bo, MovementDoc.class);
         movementDocMapper.insert(add);
@@ -105,7 +105,7 @@ public class MovementDocService {
 
     private void validateMovementBizNo(String movementBizNo) {
         LambdaQueryWrapper<MovementDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(MovementDoc::getBizNo, movementBizNo);
+        lambdaQueryWrapper.eq(MovementDoc::getDocCode, movementBizNo);
         if (movementDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("移库单号重复，请手动修改");
         }
@@ -139,8 +139,8 @@ public class MovementDocService {
         if (movementBizVo == null) {
             throw new BaseException("移库单不存在");
         }
-        if (ServiceConstants.Status.FINISH.equals(movementBizVo.getBizStatus())) {
-            throw new ServiceException("移库单【" + movementBizVo.getBizNo() + "】已移库，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(movementBizVo.getCheckedStatus())) {
+            throw new ServiceException("移库单【" + movementBizVo.getDocCode() + "】已移库，无法删除！");
         }
     }
 

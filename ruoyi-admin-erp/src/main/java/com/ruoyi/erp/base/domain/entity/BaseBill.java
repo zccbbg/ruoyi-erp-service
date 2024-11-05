@@ -20,7 +20,7 @@ public class BaseBill extends BaseEntity {
     /**
      * 单据编号
      */
-    private String bizNo;
+    private String billCode;
     /**
      * 审核状态
      */

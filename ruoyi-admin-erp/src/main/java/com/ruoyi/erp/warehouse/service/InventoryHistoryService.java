@@ -38,7 +38,7 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
         bo.getDetails().forEach(detail -> {
             InventoryHistory inventoryHistory = new InventoryHistory();
             inventoryHistory.setBizId(bo.getId());
-            inventoryHistory.setBizNo(bo.getBizNo());
+            inventoryHistory.setBizNo(bo.getDocCode());
             inventoryHistory.setBizType(orderType);
             inventoryHistory.setSkuId(detail.getSkuId());
             if(isAdd){

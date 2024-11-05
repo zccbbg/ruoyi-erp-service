@@ -22,7 +22,7 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
      * 单据编号
      */
     @ExcelProperty(value = "单据编号")
-    private String bizNo;
+    private String docCode;
 
     /**
      * 商品总数
@@ -39,8 +39,8 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
     /**
      * 入库状态
      */
-    @ExcelProperty(value = "单据状态")
-    private Integer bizStatus;
+    @ExcelProperty(value = "审核状态")
+    private Integer checkedStatus;
 
     /**
      * 仓库id

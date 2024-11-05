@@ -75,12 +75,11 @@ public class OtherReceiptDocService {
     private LambdaQueryWrapper<OtherReceiptDoc> buildQueryWrapper(OtherReceiptDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), OtherReceiptDoc::getBizNo, bo.getBizNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), OtherReceiptDoc::getDocCode, bo.getDocCode());
         lqw.eq(bo.getOptType() != null, OtherReceiptDoc::getOptType, bo.getOptType());
         lqw.eq(bo.getMerchantId() != null, OtherReceiptDoc::getMerchantId, bo.getMerchantId());
-        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), OtherReceiptDoc::getBizNo, bo.getBizNo());
         lqw.eq(bo.getTotalAmount() != null, OtherReceiptDoc::getTotalAmount, bo.getTotalAmount());
-        lqw.eq(bo.getBizStatus() != null, OtherReceiptDoc::getBizStatus, bo.getBizStatus());
+        lqw.eq(bo.getCheckedStatus() != null, OtherReceiptDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -91,7 +90,7 @@ public class OtherReceiptDocService {
     @Transactional
     public void insertByBo(OtherReceiptDocBo bo) {
         // 校验入库单号唯一性
-        validateReceiptBizNo(bo.getBizNo());
+        validateReceiptBizNo(bo.getDocCode());
         // 创建入库单
         OtherReceiptDoc add = MapstructUtils.convert(bo, OtherReceiptDoc.class);
         otherReceiptDocMapper.insert(add);
@@ -159,7 +158,7 @@ public class OtherReceiptDocService {
     public void editToInvalid(Long id) {
         LambdaUpdateWrapper<OtherReceiptDoc> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(OtherReceiptDoc::getId, id);
-        wrapper.set(OtherReceiptDoc::getBizStatus, ServiceConstants.Status.INVALID);
+        wrapper.set(OtherReceiptDoc::getCheckedStatus, ServiceConstants.Status.INVALID);
         otherReceiptDocMapper.update(null, wrapper);
     }
 
@@ -174,8 +173,8 @@ public class OtherReceiptDocService {
     private void validateIdBeforeDelete(Long id) {
         OtherReceiptDocVo receiptBizVo = queryById(id);
         Assert.notNull(receiptBizVo, "入库单不存在");
-        if (ServiceConstants.Status.FINISH.equals(receiptBizVo.getBizStatus())) {
-            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"入库单【" + receiptBizVo.getBizNo() + "】已入库，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(receiptBizVo.getCheckedStatus())) {
+            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"入库单【" + receiptBizVo.getDocCode() + "】已入库，无法删除！");
         }
     }
 
@@ -188,7 +187,7 @@ public class OtherReceiptDocService {
 
     public void validateReceiptBizNo(String receiptBizNo) {
         LambdaQueryWrapper<OtherReceiptDoc> receiptDocLqw = Wrappers.lambdaQuery();
-        receiptDocLqw.eq(OtherReceiptDoc::getBizNo, receiptBizNo);
+        receiptDocLqw.eq(OtherReceiptDoc::getDocCode, receiptBizNo);
         OtherReceiptDoc receiptDoc = otherReceiptDocMapper.selectOne(receiptDocLqw);
         Assert.isNull(receiptDoc, "入库单号重复，请手动修改");
     }

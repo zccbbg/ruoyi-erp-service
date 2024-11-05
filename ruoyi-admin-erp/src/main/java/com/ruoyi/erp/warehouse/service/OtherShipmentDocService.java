@@ -75,12 +75,12 @@ public class OtherShipmentDocService {
     private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(OtherShipmentDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), OtherShipmentDoc::getBizNo, bo.getBizNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), OtherShipmentDoc::getDocCode, bo.getDocCode());
         lqw.eq(bo.getOptType() != null, OtherShipmentDoc::getOptType, bo.getOptType());
         lqw.eq(bo.getMerchantId() != null, OtherShipmentDoc::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getTotalAmount() != null, OtherShipmentDoc::getTotalAmount, bo.getTotalAmount());
         lqw.eq(bo.getTotalQuantity() != null, OtherShipmentDoc::getTotalQuantity, bo.getTotalQuantity());
-        lqw.eq(bo.getBizStatus() != null, OtherShipmentDoc::getBizStatus, bo.getBizStatus());
+        lqw.eq(bo.getCheckedStatus() != null, OtherShipmentDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -91,7 +91,7 @@ public class OtherShipmentDocService {
     @Transactional
     public void insertByBo(OtherShipmentDocBo bo) {
         // 校验出库单号唯一性
-        validateShipmentOrderNo(bo.getBizNo());
+        validateShipmentOrderNo(bo.getDocCode());
         // 创建出库单
         OtherShipmentDoc add = MapstructUtils.convert(bo, OtherShipmentDoc.class);
         otherShipmentDocMapper.insert(add);
@@ -104,7 +104,7 @@ public class OtherShipmentDocService {
 
     public void validateShipmentOrderNo(String shipmentOrderNo) {
         LambdaQueryWrapper<OtherShipmentDoc> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherShipmentDoc::getBizNo, shipmentOrderNo);
+        receiptOrderLqw.eq(OtherShipmentDoc::getDocCode, shipmentOrderNo);
         OtherShipmentDoc shipmentOrder = otherShipmentDocMapper.selectOne(receiptOrderLqw);
         Assert.isNull(shipmentOrder, "出库单号重复，请手动修改");
     }
@@ -137,8 +137,8 @@ public class OtherShipmentDocService {
         if (shipmentOrderVo == null) {
             throw new BaseException("出库单不存在");
         }
-        if (ServiceConstants.Status.FINISH.equals(shipmentOrderVo.getBizStatus())) {
-            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"出库单【" + shipmentOrderVo.getBizNo() + "】已出库，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(shipmentOrderVo.getDocCode())) {
+            throw new ServiceException("删除失败", HttpStatus.CONFLICT,"出库单【" + shipmentOrderVo.getDocCode() + "】已出库，无法删除！");
         }
     }
 

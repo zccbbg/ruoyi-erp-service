@@ -75,8 +75,8 @@ public class CheckDocService {
     private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getBizNo()), CheckDoc::getBizNo, bo.getBizNo());
-        lqw.eq(bo.getBizStatus() != null, CheckDoc::getBizStatus, bo.getBizStatus());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), CheckDoc::getDocCode, bo.getDocCode());
+        lqw.eq(bo.getCheckedStatus() != null, CheckDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getTotalQuantity() != null, CheckDoc::getTotalQuantity, bo.getTotalQuantity());
         lqw.eq(bo.getWarehouseId() != null, CheckDoc::getWarehouseId, bo.getWarehouseId());
         lqw.orderByDesc(BaseEntity::getCreateTime);
@@ -89,7 +89,7 @@ public class CheckDocService {
     @Transactional
     public void insertByBo(CheckDocBo bo) {
         // 校验盘库单号唯一性
-        validateCheckBizNo(bo.getBizNo());
+        validateDocCode(bo.getDocCode());
         // 创建盘库单
         CheckDoc add = MapstructUtils.convert(bo, CheckDoc.class);
         checkDocMapper.insert(add);
@@ -99,9 +99,9 @@ public class CheckDocService {
         checkDocDetailService.saveDetails(addDetailList);
     }
 
-    private void validateCheckBizNo(String checkBizNo) {
+    private void validateDocCode(String docCode) {
         LambdaQueryWrapper<CheckDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(CheckDoc::getBizNo, checkBizNo);
+        lambdaQueryWrapper.eq(CheckDoc::getDocCode, docCode);
         if (checkDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("盘库单号重复，请手动修改");
         }
@@ -131,8 +131,8 @@ public class CheckDocService {
         if (checkDocVo == null) {
             throw new BaseException("盘库单不存在");
         }
-        if (ServiceConstants.Status.FINISH.equals(checkDocVo.getBizStatus())) {
-            throw new ServiceException("盘库单【" + checkDocVo.getBizNo() + "】已盘库完成，无法删除！");
+        if (ServiceConstants.Status.FINISH.equals(checkDocVo.getCheckedStatus())) {
+            throw new ServiceException("盘库单【" + checkDocVo.getDocCode() + "】已盘库完成，无法删除！");
         }
     }
 

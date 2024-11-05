@@ -19,7 +19,7 @@ public class BaseDoc extends BaseEntity {
     /**
      * 编号
      */
-    private String bizNo;
+    private String docCode;
 
     /**
      * 商品总数
@@ -30,9 +30,9 @@ public class BaseDoc extends BaseEntity {
      */
     private BigDecimal totalAmount;
     /**
-     * 单据状态
+     * 审核状态
      */
-    private Integer bizStatus;
+    private Integer checkedStatus;
 
     /**
      * 备注
