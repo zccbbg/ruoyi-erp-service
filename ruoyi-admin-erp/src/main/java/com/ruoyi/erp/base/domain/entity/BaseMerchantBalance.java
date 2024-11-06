@@ -22,12 +22,17 @@ public class BaseMerchantBalance extends BaseEntity {
     private Long merchantId;
 
     /**
-     * 预付款
+     * 剩余预付费金额
      */
     private BigDecimal prepayAmount;
 
     /**
-     * 剩余金额
+     * 剩余待支付金额
      */
     private BigDecimal dueAmount;
+
+    /**
+     * 剩余待退款金额
+     */
+    private BigDecimal dueRefundAmount;
 }
