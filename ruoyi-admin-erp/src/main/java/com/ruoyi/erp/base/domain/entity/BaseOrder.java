@@ -34,8 +34,4 @@ public class BaseOrder extends BaseBill{
      * 已抵扣定金
      */
     private BigDecimal deductedDepositAmount;
-
-    private BigDecimal paidAmount;
-
-    private BigDecimal dueAmount;
 }

@@ -19,4 +19,8 @@ public class BaseTrade extends BaseBill{
     private BigDecimal deductedRefundAmount;
 
     private BigDecimal deductedDepositAmount;
+
+    private BigDecimal paidAmount;
+
+    private BigDecimal dueAmount;
 }
