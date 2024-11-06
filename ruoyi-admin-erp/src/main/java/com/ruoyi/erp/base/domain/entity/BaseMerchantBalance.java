@@ -1,10 +1,15 @@
-package com.ruoyi.erp.balance.domain.entity;
+package com.ruoyi.erp.base.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.ruoyi.common.mybatis.core.domain.BaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
-public class MerchantBalance {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class BaseMerchantBalance extends BaseEntity {
     /**
      * id
      */
@@ -25,9 +30,4 @@ public class MerchantBalance {
      * 剩余金额
      */
     private BigDecimal dueAmount;
-
-    /**
-     * 账户类型：供应商或客户
-     */
-    private String balanceType;
 }

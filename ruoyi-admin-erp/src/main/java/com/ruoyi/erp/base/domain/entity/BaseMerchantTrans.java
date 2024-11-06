@@ -1,4 +1,4 @@
-package com.ruoyi.erp.balance.domain.entity;
+package com.ruoyi.erp.base.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("bal_merchant_trans")
-public class MerchantTrans extends BaseEntity {
+public class BaseMerchantTrans extends BaseEntity {
     /**
      * id
      */
