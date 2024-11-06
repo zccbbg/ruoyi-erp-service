@@ -1,4 +1,4 @@
-package com.ruoyi.erp.balance.domain.entity;
+package com.ruoyi.erp.purchase.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.erp.base.domain.entity.BaseMerchantTrans;
@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("bal_customer_trans")
-public class CustomerTrans extends BaseMerchantTrans {
+@TableName("purchase_supplier_trans")
+public class SupplierTrans extends BaseMerchantTrans {
 }
