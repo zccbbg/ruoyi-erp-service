@@ -56,6 +56,11 @@ public class BaseMerchantTrans extends BaseEntity {
     private BigDecimal deductedRefundAmount;
 
     /**
+     * 退款金额
+     */
+    private BigDecimal refundAmount;
+
+    /**
      * 预付款抵扣
      */
     private BigDecimal deductedPrepayAmount;
@@ -67,7 +72,7 @@ public class BaseMerchantTrans extends BaseEntity {
 
     /**
      * 实际金额
-     * 实际金额= 总金额-优惠金额-退款抵扣-预付款抵扣
+     * 实际金额= 总金额-优惠金额-退款抵扣-预付款抵扣-退款金额
      */
     private BigDecimal actualAmount;
 
@@ -79,7 +84,7 @@ public class BaseMerchantTrans extends BaseEntity {
     /**
      * 预付金额
      */
-    private BigDecimal prepayAmount;
+    private BigDecimal prepaidAmount;
 
     /**
      * 支付金额=实际金额+预付金额
