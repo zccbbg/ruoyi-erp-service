@@ -1,4 +1,4 @@
-package com.ruoyi.erp.purchase.domain.entity;
+package com.ruoyi.erp.sales.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.erp.base.domain.entity.BaseTrade;
@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("purchase_receipt_trade")
-public class PurchaseReceiptTrade extends BaseTrade {
+@TableName("sales_shipment_trade")
+public class SalesShipmentTrade extends BaseTrade {
 }
