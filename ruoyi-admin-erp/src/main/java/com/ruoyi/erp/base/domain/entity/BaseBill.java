@@ -45,10 +45,6 @@ public class BaseBill extends BaseEntity {
     private BigDecimal goodsQuantity;
 
     /**
-     * 已处理数量（入库单就是已入库数量，出库单就是已出库数量）
-     */
-    private BigDecimal processedQuantity;
-    /**
      * 商品金额（未优惠）
      */
     private BigDecimal goodsAmount;
@@ -63,33 +59,11 @@ public class BaseBill extends BaseEntity {
     private String remark;
 
     /**
-     * 交货日期
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime deliveryDate;
-
-    /**
-     * 库存状态
-     */
-    private Integer stockStatus;
-
-
-    /**
      * 优惠金额
      */
     private BigDecimal discountAmount;
     /**
-     * 实际金额(货品金额+其他费用-优惠金额)
+     * 实际金额(货品金额+其他费用-优惠金额-退货抵扣)
      */
     private BigDecimal actualAmount;
-
-    /**
-     * 已支付定金
-     */
-    private BigDecimal payedDepositAmount;
-
-    /**
-     * 已抵扣定金
-     */
-    private BigDecimal deductedDepositAmount;
 }
