@@ -16,9 +16,15 @@ public class BaseTrade extends BaseBill{
 
     private BigDecimal refundAmount;
 
+    /**
+     * 退款抵扣
+     */
     private BigDecimal deductedRefundAmount;
 
-    private BigDecimal deductedDepositAmount;
+    /**
+     * 预付款抵扣
+     */
+    private BigDecimal deductedPrepayAmount;
 
     private BigDecimal paidAmount;
 

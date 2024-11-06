@@ -11,18 +11,18 @@ public class BaseRefund extends BaseBill{
     private Long tradeId;
 
     /**
-     * 已付金额
+     * 已支付退款金额
      */
-    private BigDecimal paidAmount;
+    private BigDecimal paidRefundAmount;
 
     /**
-     * 已抵扣金额
+     * 已抵扣退款金额
      */
-    private BigDecimal deductedAmount;
+    private BigDecimal deductedRefundAmount;
 
     /**
      * 未付金额
-     * 未付金额=实际金额-已付金额-已抵扣金额
+     * 未付金额=实际金额-已付退款金额-已抵扣退款金额
      */
     private BigDecimal dueAmount;
 }

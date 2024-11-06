@@ -22,7 +22,7 @@ public class MerchantTrans extends BaseEntity {
     /**
      * 单据编号
      */
-    private String billCode;
+    private String transCode;
     /**
      * 审核状态
      */
@@ -46,7 +46,45 @@ public class MerchantTrans extends BaseEntity {
 
     private String remark;
 
+    /**
+     * 总金额
+     */
+    private BigDecimal totalAmount;
+
+    /**
+     * 退款抵扣
+     */
+    private BigDecimal deductedRefundAmount;
+
+    /**
+     * 预付款抵扣
+     */
+    private BigDecimal deductedPrepayAmount;
+
+    /**
+     * 优惠金额
+     */
+    private BigDecimal discountAmount;
+
+    /**
+     * 实际金额
+     * 实际金额= 总金额-优惠金额-退款抵扣-预付款抵扣
+     */
     private BigDecimal actualAmount;
 
+    /**
+     * 交易类型
+     */
+    private String transType;
+
+    /**
+     * 预付金额
+     */
+    private BigDecimal prepayAmount;
+
+    /**
+     * 支付金额=实际金额+预付金额
+     */
+    private BigDecimal paidAmount;
 
 }

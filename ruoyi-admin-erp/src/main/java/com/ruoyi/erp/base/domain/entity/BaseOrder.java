@@ -26,12 +26,7 @@ public class BaseOrder extends BaseBill{
     private BigDecimal processedQuantity;
 
     /**
-     * 已支付定金
+     * 预付款金额
      */
-    private BigDecimal payedDepositAmount;
-
-    /**
-     * 已抵扣定金
-     */
-    private BigDecimal deductedDepositAmount;
+    private BigDecimal prepayAmount;
 }
