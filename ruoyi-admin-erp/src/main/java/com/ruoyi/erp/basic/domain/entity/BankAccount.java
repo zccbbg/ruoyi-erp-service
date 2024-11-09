@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("basic_account")
-public class Account extends BaseEntity {
+@TableName("basic_bank_account")
+public class BankAccount extends BaseEntity {
 }
