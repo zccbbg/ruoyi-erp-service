@@ -1,7 +1,6 @@
 package com.ruoyi.erp.base.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseMerchantTrans extends BaseEntity {
+public class BaseTrans extends BaseEntity {
     /**
      * id
      */
@@ -21,7 +20,7 @@ public class BaseMerchantTrans extends BaseEntity {
     /**
      * 单据编号
      */
-    private String transCode;
+    private String code;
     /**
      * 审核状态
      */

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseMerchantBalance extends BaseEntity {
+public class BaseBalance extends BaseEntity {
     /**
      * id
      */

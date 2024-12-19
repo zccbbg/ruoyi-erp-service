@@ -19,7 +19,7 @@ public class BaseDoc extends BaseEntity {
     /**
      * 编号
      */
-    private String docCode;
+    private String code;
 
     /**
      * 商品总数

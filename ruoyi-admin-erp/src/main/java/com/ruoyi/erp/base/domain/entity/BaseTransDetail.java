@@ -1,4 +1,4 @@
 package com.ruoyi.erp.base.domain.entity;
 
-public class BaseMerchantTransDetail {
+public class BaseTransDetail {
 }

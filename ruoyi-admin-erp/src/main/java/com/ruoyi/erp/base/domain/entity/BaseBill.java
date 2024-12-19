@@ -20,7 +20,7 @@ public class BaseBill extends BaseEntity {
     /**
      * 单据编号
      */
-    private String billCode;
+    private String code;
     /**
      * 审核状态
      */
@@ -63,7 +63,7 @@ public class BaseBill extends BaseEntity {
      */
     private BigDecimal discountAmount;
     /**
-     * 实际金额(货品金额+其他费用-优惠金额-退货抵扣)
+     * 实际金额(货品金额+其他费用-优惠金额)
      */
     private BigDecimal actualAmount;
 }
