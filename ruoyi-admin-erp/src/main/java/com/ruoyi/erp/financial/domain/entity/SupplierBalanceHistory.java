@@ -1,4 +1,4 @@
-package com.ruoyi.erp.purchase.domain.entity;
+package com.ruoyi.erp.financial.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.erp.base.domain.entity.BaseBalanceHistory;
