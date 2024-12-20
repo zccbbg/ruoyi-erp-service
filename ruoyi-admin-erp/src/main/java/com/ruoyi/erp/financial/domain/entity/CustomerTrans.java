@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sales_customer_trans")
+@TableName("financial_customer_trans")
 public class CustomerTrans extends BaseTrans {
 }

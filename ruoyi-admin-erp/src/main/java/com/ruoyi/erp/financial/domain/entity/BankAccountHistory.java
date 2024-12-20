@@ -1,4 +1,4 @@
-package com.ruoyi.erp.basic.domain.entity;
+package com.ruoyi.erp.financial.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.mybatis.core.domain.BaseHistoryEntity;
@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("basic_bank_account_history")
+@TableName("financial_bank_account_history")
 public class BankAccountHistory extends BaseHistoryEntity {
 }

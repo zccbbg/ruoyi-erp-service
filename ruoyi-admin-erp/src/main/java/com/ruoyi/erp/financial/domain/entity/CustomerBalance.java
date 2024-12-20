@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sales_customer_balance")
+@TableName("financial_customer_balance")
 public class CustomerBalance extends BaseBalance {
 }
