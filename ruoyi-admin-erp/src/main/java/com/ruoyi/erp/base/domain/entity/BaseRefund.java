@@ -13,12 +13,12 @@ public class BaseRefund extends BaseBill{
     /**
      * 已支付退款金额
      */
-    private BigDecimal paidRefundAmount;
+    private BigDecimal paidAmount;
 
     /**
      * 已抵扣退款金额
      */
-    private BigDecimal deductedRefundAmount;
+    private BigDecimal deductedAmount;
 
     /**
      * 未付金额
