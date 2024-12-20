@@ -5,11 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.erp.warehouse.mapper.InventoryHistoryMapper">
 
     <resultMap id="inventoryHistoryVoMap" type="com.ruoyi.erp.warehouse.domain.vo.InventoryHistoryVo">
-        <association property="itemSku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
-            <id property="id" column="sku_id"/> <!-- 映射 itemSku 的 id -->
+        <association property="sku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
+            <id property="id" column="sku_id"/> <!-- 映射 sku 的 id -->
         </association>
-        <association property="item" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
-            <id property="id" column="item_id"/> <!-- 映射 item 的 id -->
+        <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
+            <id property="id" column="item_id"/> <!-- 映射 goods 的 id -->
         </association>
     </resultMap>
 
@@ -18,11 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         history.*,
         sku.id as sku_id,
         sku.*,
-        item.id as item_id,
-        item.*
+        goods.id as item_id,
+        goods.*
         from wms_inventory_history history
         left join wms_item_sku sku on history.sku_id=sku.id
-        left join wms_item item on sku.item_id=item.id
+        left join wms_item goods on sku.item_id=goods.id
         <where>
             <if test="bo.orderType != null">
                 history.order_type=#{bo.orderType}
@@ -31,10 +31,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and history.order_no=#{bo.orderNo}
             </if>
             <if test="bo.itemName != null and bo.itemName != ''">
-                and item.item_name like concat('%', #{bo.itemName}, '%')
+                and goods.item_name like concat('%', #{bo.itemName}, '%')
             </if>
             <if test="bo.itemCode != null and bo.itemCode != ''">
-                and item.item_code like concat('%', #{bo.itemCode}, '%')
+                and goods.item_code like concat('%', #{bo.itemCode}, '%')
             </if>
             <if test="bo.skuName != null and bo.skuName != ''">
                 and sku.sku_name like concat('%', #{bo.skuName}, '%')

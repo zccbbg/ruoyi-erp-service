@@ -5,11 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.erp.basic.mapper.ItemSkuMapper">
 
     <resultMap id="itemSkuMapVo" type="com.ruoyi.erp.basic.domain.vo.ItemSkuMapVo">
-        <association property="item" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
-            <id property="id" column="item_id"/> <!-- 映射 item 的 id -->
+        <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
+            <id property="id" column="item_id"/> <!-- 映射 goods 的 id -->
         </association>
-        <association property="itemSku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
-            <id property="id" column="sku_id"/> <!-- 映射 item 的 id -->
+        <association property="sku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
+            <id property="id" column="sku_id"/> <!-- 映射 goods 的 id -->
         </association>
     </resultMap>
 
@@ -17,12 +17,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
             sku.id as sku_id,
             sku.*,
-            item.id as item_id,
-            item.*
+            goods.id as item_id,
+            goods.*
         from wms_item_sku sku
-        inner join wms_item item on sku.item_id=item.id
+        inner join wms_item goods on sku.item_id=goods.id
         where sku.id in
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
+        <foreach collection="ids" goods="id" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
@@ -31,10 +31,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
         sku.id as sku_id,
         sku.*,
-        item.id as item_id,
-        item.*
+        goods.id as item_id,
+        goods.*
         from wms_item_sku sku
-        inner join wms_item item on sku.item_id=item.id
+        inner join wms_item goods on sku.item_id=goods.id
         where sku.id = #{id}
     </select>
 
@@ -42,20 +42,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select
             sku.id as sku_id,
             sku.*,
-            item.id as item_id,
-            item.*
+            goods.id as item_id,
+            goods.*
         from wms_item_sku sku
-        inner join wms_item item on sku.item_id=item.id
-        inner join wms_item_category category on item.item_category=category.id
+        inner join wms_item goods on sku.item_id=goods.id
+        inner join wms_item_category category on goods.item_category=category.id
         <where>
             <if test="bo.itemName != null and bo.itemName != ''">
-                and item.item_name like concat('%', #{bo.itemName}, '%')
+                and goods.item_name like concat('%', #{bo.itemName}, '%')
             </if>
             <if test="bo.itemCode != null and bo.itemCode != ''">
-                and item.item_code like concat('%', #{bo.itemCode}, '%')
+                and goods.item_code like concat('%', #{bo.itemCode}, '%')
             </if>
             <if test="bo.itemBrand != null">
-                and item.item_brand=#{bo.itemBrand}
+                and goods.item_brand=#{bo.itemBrand}
             </if>
             <if test="bo.skuName != null and bo.skuName != ''">
                 and sku.sku_name like concat('%', #{bo.skuName}, '%')

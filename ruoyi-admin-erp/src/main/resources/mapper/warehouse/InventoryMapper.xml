@@ -5,11 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.erp.warehouse.mapper.InventoryMapper">
 
     <resultMap id="inventoryVoMap" type="com.ruoyi.erp.warehouse.domain.vo.InventoryVo">
-        <association property="itemSku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
-            <id property="id" column="sku_id"/> <!-- 映射 itemSku 的 id -->
+        <association property="sku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
+            <id property="id" column="sku_id"/> <!-- 映射 sku 的 id -->
         </association>
-        <association property="item" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
-            <id property="id" column="item_id"/> <!-- 映射 item 的 id -->
+        <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
+            <id property="id" column="item_id"/> <!-- 映射 goods 的 id -->
         </association>
     </resultMap>
 
@@ -18,17 +18,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         inventory.*,
         sku.id as sku_id,
         sku.*,
-        item.id as item_id,
-        item.*
+        goods.id as item_id,
+        goods.*
         from wms_inventory inventory
         inner join wms_item_sku sku on inventory.sku_id=sku.id
-        inner join wms_item item on sku.item_id=item.id
+        inner join wms_item goods on sku.item_id=goods.id
         <where>
             <if test="bo.itemName != null and bo.itemName != ''">
-                item.item_name like concat('%', #{bo.itemName}, '%')
+                goods.item_name like concat('%', #{bo.itemName}, '%')
             </if>
             <if test="bo.itemCode != null and bo.itemCode != ''">
-                and item.item_code like concat('%', #{bo.itemCode}, '%')
+                and goods.item_code like concat('%', #{bo.itemCode}, '%')
             </if>
             <if test="bo.skuName != null and bo.skuName != ''">
                 and sku.sku_name like concat('%', #{bo.skuName}, '%')
@@ -37,10 +37,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and sku.sku_code like concat('%', #{bo.skuCode}, '%')
             </if>
             <if test="bo.itemCategory != null">
-                and item.item_category=#{bo.itemCategory}
+                and goods.item_category=#{bo.itemCategory}
             </if>
             <if test="bo.itemId != null">
-                and item.id=#{bo.itemId}
+                and goods.id=#{bo.itemId}
             </if>
             <if test="bo.warehouseId != null">
                 and inventory.warehouse_id=#{bo.warehouseId}

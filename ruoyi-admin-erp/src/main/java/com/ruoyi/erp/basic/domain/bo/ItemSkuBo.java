@@ -8,13 +8,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ruoyi.erp.basic.domain.entity.ItemSku;
+import com.ruoyi.erp.basic.domain.entity.Sku;
 
 import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = ItemSku.class, reverseConvertGenerate = false)
+@AutoMapper(target = Sku.class, reverseConvertGenerate = false)
 public class ItemSkuBo extends BaseEntity {
 
     /**

@@ -16,8 +16,8 @@ import java.io.Serial;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("basic_item_brand")
-public class ItemBrand extends BaseEntity {
+@TableName("basic_brand")
+public class Brand extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID=1L;

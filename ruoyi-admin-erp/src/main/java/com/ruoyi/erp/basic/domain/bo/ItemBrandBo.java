@@ -1,6 +1,6 @@
 package com.ruoyi.erp.basic.domain.bo;
 
-import com.ruoyi.erp.basic.domain.entity.ItemBrand;
+import com.ruoyi.erp.basic.domain.entity.Brand;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -19,7 +19,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = ItemBrand.class, reverseConvertGenerate = false)
+@AutoMapper(target = Brand.class, reverseConvertGenerate = false)
 public class ItemBrandBo extends BaseEntity {
 
     /**

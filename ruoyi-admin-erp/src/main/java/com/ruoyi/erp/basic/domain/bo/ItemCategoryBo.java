@@ -8,11 +8,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ruoyi.erp.basic.domain.entity.ItemCategory;
+import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = ItemCategory.class, reverseConvertGenerate = false)
+@AutoMapper(target = GoodsCategory.class, reverseConvertGenerate = false)
 public class ItemCategoryBo extends BaseEntity {
 
     /**

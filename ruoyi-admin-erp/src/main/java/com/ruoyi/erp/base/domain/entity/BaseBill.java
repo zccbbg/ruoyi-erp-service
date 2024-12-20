@@ -20,7 +20,12 @@ public class BaseBill extends BaseEntity {
     /**
      * 单据编号
      */
-    private String code;
+    private String billNo;
+    /**
+     * 单据日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime billDate;
     /**
      * 审核状态
      */
@@ -28,13 +33,7 @@ public class BaseBill extends BaseEntity {
     /**
      * 审核人
      */
-    private String checkName;
-
-    /**
-     * 单据日期
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime billDate;
+    private String checkedBy;
     /**
      * 往来单位id
      */

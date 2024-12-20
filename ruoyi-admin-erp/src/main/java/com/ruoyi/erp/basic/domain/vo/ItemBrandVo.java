@@ -3,7 +3,7 @@ package com.ruoyi.erp.basic.domain.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.mybatis.core.domain.BaseVo;
-import com.ruoyi.erp.basic.domain.entity.ItemBrand;
+import com.ruoyi.erp.basic.domain.entity.Brand;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ import java.io.Serial;
  */
 @Data
 @ExcelIgnoreUnannotated
-@AutoMapper(target = ItemBrand.class)
+@AutoMapper(target = Brand.class)
 public class ItemBrandVo extends BaseVo {
 
     @Serial

@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select table_name, table_comment, create_time, update_time from information_schema.tables
         where table_name NOT LIKE 'xxl_job_%' and table_name NOT LIKE 'gen_%' and table_schema = (select database())
         and table_name in
-        <foreach collection="array" item="name" open="(" separator="," close=")">
+        <foreach collection="array" goods="name" open="(" separator="," close=")">
              #{name}
         </foreach>
     </select>

@@ -3,7 +3,7 @@ package com.ruoyi.erp.basic.domain.bo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
-import com.ruoyi.erp.basic.domain.entity.Item;
+import com.ruoyi.erp.basic.domain.entity.Goods;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = Item.class, reverseConvertGenerate = false)
+@AutoMapper(target = Goods.class, reverseConvertGenerate = false)
 public class ItemBo extends BaseEntity {
 
     /**

@@ -11,8 +11,8 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.basic.domain.bo.ItemBo;
 import com.ruoyi.erp.basic.domain.bo.ItemSkuBo;
-import com.ruoyi.erp.basic.domain.entity.Item;
-import com.ruoyi.erp.basic.domain.entity.ItemCategory;
+import com.ruoyi.erp.basic.domain.entity.Goods;
+import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
 import com.ruoyi.erp.basic.domain.vo.ItemCategoryVo;
 import com.ruoyi.erp.basic.domain.vo.ItemSkuVo;
 import com.ruoyi.erp.basic.domain.vo.ItemVo;
@@ -55,8 +55,8 @@ public class ItemService {
         if (CollUtil.isEmpty(itemIds)) {
             return CollUtil.newArrayList();
         }
-        LambdaQueryWrapper<Item> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.in(Item::getId, itemIds);
+        LambdaQueryWrapper<Goods> lambdaQueryWrapper = Wrappers.lambdaQuery();
+        lambdaQueryWrapper.in(Goods::getId, itemIds);
         return itemMapper.selectVoList(lambdaQueryWrapper);
     }
 
@@ -65,12 +65,12 @@ public class ItemService {
      */
 
     public TableDataInfo<ItemVo> queryPageList(ItemBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<Item> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<Goods> lqw = buildQueryWrapper(bo);
         Page<ItemVo> result = itemMapper.selectVoPage(pageQuery.build(), lqw);
         List<ItemVo> itemVoList = result.getRecords();
         if (!CollUtil.isEmpty(itemVoList)) {
-            LambdaQueryWrapper<ItemCategory> itemTypeWrapper = new LambdaQueryWrapper<>();
-            itemTypeWrapper.in(ItemCategory::getId, itemVoList.stream().map(ItemVo::getItemCategory).collect(Collectors.toSet()));
+            LambdaQueryWrapper<GoodsCategory> itemTypeWrapper = new LambdaQueryWrapper<>();
+            itemTypeWrapper.in(GoodsCategory::getId, itemVoList.stream().map(ItemVo::getItemCategory).collect(Collectors.toSet()));
             Map<Long, ItemCategoryVo> itemCategoryVoMap = itemCategoryMapper.selectVoList(itemTypeWrapper).stream().collect(Collectors.toMap(ItemCategoryVo::getId, Function.identity()));
             itemVoList.forEach(itemVo -> {
                 itemVo.setItemCategoryInfo(itemCategoryVoMap.get(Long.valueOf(itemVo.getItemCategory())));
@@ -84,30 +84,30 @@ public class ItemService {
      */
 
     public List<ItemVo> queryList(ItemBo bo) {
-        LambdaQueryWrapper<Item> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<Goods> lqw = buildQueryWrapper(bo);
         return itemMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<Item> buildQueryWrapper(ItemBo bo) {
-        LambdaQueryWrapper<Item> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StrUtil.isNotBlank(bo.getItemCode()), Item::getItemCode, bo.getItemCode());
+    private LambdaQueryWrapper<Goods> buildQueryWrapper(ItemBo bo) {
+        LambdaQueryWrapper<Goods> lqw = Wrappers.lambdaQuery();
+        lqw.eq(StrUtil.isNotBlank(bo.getItemCode()), Goods::getItemCode, bo.getItemCode());
         // 主键集合
-        lqw.in(!CollUtil.isEmpty(bo.getIds()), Item::getId, bo.getIds());
-        lqw.like(StrUtil.isNotBlank(bo.getItemName()), Item::getItemName, bo.getItemName());
+        lqw.in(!CollUtil.isEmpty(bo.getIds()), Goods::getId, bo.getIds());
+        lqw.like(StrUtil.isNotBlank(bo.getItemName()), Goods::getItemName, bo.getItemName());
         if (!StrUtil.isBlank(bo.getItemCategory())){
             Long parentId = Long.valueOf(bo.getItemCategory());
             List<Long> subIdList = this.buildSubItemCategoryIdList(parentId);
             subIdList.add(Long.valueOf(bo.getItemCategory()));
-            lqw.in(Item::getItemCategory, subIdList);
+            lqw.in(Goods::getItemCategory, subIdList);
         }
-        lqw.eq(StrUtil.isNotBlank(bo.getUnit()), Item::getUnit, bo.getUnit());
+        lqw.eq(StrUtil.isNotBlank(bo.getUnit()), Goods::getUnit, bo.getUnit());
         return lqw;
     }
 
     private List<Long> buildSubItemCategoryIdList(Long parentId) {
-        LambdaQueryWrapper<ItemCategory> itemTypeWrapper = new LambdaQueryWrapper<>();
-        itemTypeWrapper.eq(ItemCategory::getParentId, parentId);
-        return itemCategoryMapper.selectList(itemTypeWrapper).stream().map(ItemCategory::getId).collect(Collectors.toList());
+        LambdaQueryWrapper<GoodsCategory> itemTypeWrapper = new LambdaQueryWrapper<>();
+        itemTypeWrapper.eq(GoodsCategory::getParentId, parentId);
+        return itemCategoryMapper.selectList(itemTypeWrapper).stream().map(GoodsCategory::getId).collect(Collectors.toList());
     }
 
     /**
@@ -118,9 +118,9 @@ public class ItemService {
     @Transactional
     public void insertByForm(ItemBo bo) {
         validateBoBeforeSave(bo);
-        Item item = MapstructUtils.convert(bo, Item.class);
-        itemMapper.insert(item);
-        itemSkuService.setItemId(bo.getSku(),item.getId());
+        Goods goods = MapstructUtils.convert(bo, Goods.class);
+        itemMapper.insert(goods);
+        itemSkuService.setItemId(bo.getSku(), goods.getId());
         itemSkuService.saveOrUpdateBatchByBo(bo.getSku());
     }
 
@@ -132,7 +132,7 @@ public class ItemService {
     @Transactional
     public void updateByForm(ItemBo bo) {
         validateBoBeforeSave(bo);
-        itemMapper.updateById(MapstructUtils.convert(bo, Item.class));
+        itemMapper.updateById(MapstructUtils.convert(bo, Goods.class));
         itemSkuService.setItemId(bo.getSku(),bo.getId());
         itemSkuService.saveOrUpdateBatchByBo(bo.getSku());
     }
@@ -146,9 +146,9 @@ public class ItemService {
     }
 
     private void validateItemName(ItemBo item) {
-        LambdaQueryWrapper<Item> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(Item::getItemName, item.getItemName());
-        queryWrapper.ne(item.getId() != null, Item::getId, item.getId());
+        LambdaQueryWrapper<Goods> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(Goods::getItemName, item.getItemName());
+        queryWrapper.ne(item.getId() != null, Goods::getId, item.getId());
         Assert.isTrue(itemMapper.selectCount(queryWrapper) == 0, "商品名称重复");
     }
 

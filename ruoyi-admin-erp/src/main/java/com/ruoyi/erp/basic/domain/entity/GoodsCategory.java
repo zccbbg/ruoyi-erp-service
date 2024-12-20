@@ -10,8 +10,8 @@ import java.io.Serial;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("basic_item_category")
-public class ItemCategory extends BaseEntity {
+@TableName("basic_goods_category")
+public class GoodsCategory extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;

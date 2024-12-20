@@ -1,6 +1,6 @@
 package com.ruoyi.erp.basic.mapper;
 
-import com.ruoyi.erp.basic.domain.entity.ItemBrand;
+import com.ruoyi.erp.basic.domain.entity.Brand;
 import com.ruoyi.erp.basic.domain.vo.ItemBrandVo;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 
@@ -10,6 +10,6 @@ import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
  * @author zcc
  * @date 2024-07-30
  */
-public interface ItemBrandMapper extends BaseMapperPlus<ItemBrand, ItemBrandVo> {
+public interface ItemBrandMapper extends BaseMapperPlus<Brand, ItemBrandVo> {
 
 }

@@ -2,9 +2,9 @@ package com.ruoyi.erp.basic.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.ruoyi.erp.basic.domain.entity.Sku;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import com.ruoyi.erp.basic.domain.entity.ItemSku;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 
 @Data
 @ExcelIgnoreUnannotated
-@AutoMapper(target = ItemSku.class)
+@AutoMapper(target = Sku.class)
 public class ItemSkuVo implements Serializable {
 
     @Serial

@@ -11,8 +11,8 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.basic.domain.bo.ItemBrandBo;
-import com.ruoyi.erp.basic.domain.entity.Item;
-import com.ruoyi.erp.basic.domain.entity.ItemBrand;
+import com.ruoyi.erp.basic.domain.entity.Goods;
+import com.ruoyi.erp.basic.domain.entity.Brand;
 import com.ruoyi.erp.basic.domain.vo.ItemBrandVo;
 import com.ruoyi.erp.basic.mapper.ItemBrandMapper;
 import com.ruoyi.erp.basic.mapper.ItemMapper;
@@ -46,7 +46,7 @@ public class ItemBrandService {
      * 查询商品品牌列表
      */
     public TableDataInfo<ItemBrandVo> queryPageList(ItemBrandBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<ItemBrand> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<Brand> lqw = buildQueryWrapper(bo);
         Page<ItemBrandVo> result = itemBrandMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -55,14 +55,14 @@ public class ItemBrandService {
      * 查询商品品牌列表
      */
     public List<ItemBrandVo> queryList(ItemBrandBo bo) {
-        LambdaQueryWrapper<ItemBrand> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<Brand> lqw = buildQueryWrapper(bo);
         return itemBrandMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<ItemBrand> buildQueryWrapper(ItemBrandBo bo) {
+    private LambdaQueryWrapper<Brand> buildQueryWrapper(ItemBrandBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ItemBrand> lqw = Wrappers.lambdaQuery();
-        lqw.like(StringUtils.isNotBlank(bo.getBrandName()), ItemBrand::getBrandName, bo.getBrandName());
+        LambdaQueryWrapper<Brand> lqw = Wrappers.lambdaQuery();
+        lqw.like(StringUtils.isNotBlank(bo.getBrandName()), Brand::getBrandName, bo.getBrandName());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -71,7 +71,7 @@ public class ItemBrandService {
      * 新增商品品牌
      */
     public void insertByBo(ItemBrandBo bo) {
-        ItemBrand add = MapstructUtils.convert(bo, ItemBrand.class);
+        Brand add = MapstructUtils.convert(bo, Brand.class);
         itemBrandMapper.insert(add);
     }
 
@@ -79,7 +79,7 @@ public class ItemBrandService {
      * 修改商品品牌
      */
     public void updateByBo(ItemBrandBo bo) {
-        ItemBrand update = MapstructUtils.convert(bo, ItemBrand.class);
+        Brand update = MapstructUtils.convert(bo, Brand.class);
         itemBrandMapper.updateById(update);
     }
 
@@ -92,8 +92,8 @@ public class ItemBrandService {
     }
 
     private void validateIdBeforeDelete(Long id) {
-        LambdaQueryWrapper<Item> itemLambdaQueryWrapper = Wrappers.lambdaQuery();
-        itemLambdaQueryWrapper.eq(Item::getItemBrand, id);
+        LambdaQueryWrapper<Goods> itemLambdaQueryWrapper = Wrappers.lambdaQuery();
+        itemLambdaQueryWrapper.eq(Goods::getItemBrand, id);
         if (itemMapper.exists(itemLambdaQueryWrapper)) {
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"该品牌已有业务关联，无法删除！");
         }

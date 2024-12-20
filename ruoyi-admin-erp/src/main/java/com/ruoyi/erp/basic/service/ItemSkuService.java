@@ -12,7 +12,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.basic.domain.bo.ItemSkuBo;
-import com.ruoyi.erp.basic.domain.entity.ItemSku;
+import com.ruoyi.erp.basic.domain.entity.Sku;
 import com.ruoyi.erp.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.erp.basic.domain.vo.ItemSkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.ItemSkuVo;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})
 @Service
 @Slf4j
-public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
+public class ItemSkuService extends ServiceImpl<ItemSkuMapper, Sku> {
 
 
     private final ItemSkuMapper itemSkuMapper;
@@ -68,17 +68,17 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
      */
 
     public List<ItemSkuVo> queryList(ItemSkuBo bo) {
-        LambdaQueryWrapper<ItemSku> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<Sku> lqw = buildQueryWrapper(bo);
         return itemSkuMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<ItemSku> buildQueryWrapper(ItemSkuBo bo) {
+    private LambdaQueryWrapper<Sku> buildQueryWrapper(ItemSkuBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<ItemSku> lqw = Wrappers.lambdaQuery();
-        lqw.like(StrUtil.isNotBlank(bo.getSkuName()), ItemSku::getSkuName, bo.getSkuName());
-        lqw.eq(bo.getItemId() != null, ItemSku::getItemId, bo.getItemId());
-        lqw.eq(StrUtil.isNotBlank(bo.getBarcode()), ItemSku::getBarcode, bo.getBarcode());
-        lqw.orderByDesc(ItemSku::getItemId);
+        LambdaQueryWrapper<Sku> lqw = Wrappers.lambdaQuery();
+        lqw.like(StrUtil.isNotBlank(bo.getSkuName()), Sku::getSkuName, bo.getSkuName());
+        lqw.eq(bo.getItemId() != null, Sku::getItemId, bo.getItemId());
+        lqw.eq(StrUtil.isNotBlank(bo.getBarcode()), Sku::getBarcode, bo.getBarcode());
+        lqw.orderByDesc(Sku::getItemId);
         return lqw;
     }
 
@@ -87,7 +87,7 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
      */
 
     public Boolean insertByBo(ItemSkuBo bo) {
-        ItemSku add = MapstructUtils.convert(bo, ItemSku.class);
+        Sku add = MapstructUtils.convert(bo, Sku.class);
         return itemSkuMapper.insert(add) > 0;
     }
 
@@ -96,7 +96,7 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
      */
 
     public Boolean updateByBo(ItemSkuBo bo) {
-        ItemSku update = MapstructUtils.convert(bo, ItemSku.class);
+        Sku update = MapstructUtils.convert(bo, Sku.class);
         return itemSkuMapper.updateById(update) > 0;
     }
 
@@ -107,9 +107,9 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
 
     private void validateIdBeforeDelete(Long id) {
         // 只有一个不能删除
-        ItemSku itemSku = itemSkuMapper.selectById(id);
+        Sku sku = itemSkuMapper.selectById(id);
 
-        if(queryByItemId(itemSku.getItemId()).size() <= 1){
+        if(queryByItemId(sku.getItemId()).size() <= 1){
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"至少包含一个商品规格！");
         }
         // 校验库存是否已关联
@@ -140,8 +140,8 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
      */
     @Transactional
     public void saveOrUpdateBatchByBo(List<ItemSkuBo> sku) {
-        List<ItemSku> itemSkuList = MapstructUtils.convert(sku, ItemSku.class);
-        saveOrUpdateBatch(itemSkuList);
+        List<Sku> skuList = MapstructUtils.convert(sku, Sku.class);
+        saveOrUpdateBatch(skuList);
     }
 
     public void setItemId(List<ItemSkuBo> itemSkuList,Long itemId) {
@@ -159,8 +159,8 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
      */
 
     public List<ItemSkuVo> queryByItemId(Long id) {
-        LambdaQueryWrapper<ItemSku> lqw = Wrappers.lambdaQuery();
-        lqw.eq(ItemSku::getItemId, id);
+        LambdaQueryWrapper<Sku> lqw = Wrappers.lambdaQuery();
+        lqw.eq(Sku::getItemId, id);
         return itemSkuMapper.selectVoList(lqw);
     }
 

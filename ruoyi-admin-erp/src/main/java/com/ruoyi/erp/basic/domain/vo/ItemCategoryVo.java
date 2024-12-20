@@ -7,7 +7,7 @@ import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.convert.ExcelDictConvert;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import com.ruoyi.erp.basic.domain.entity.ItemCategory;
+import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Data
 @ExcelIgnoreUnannotated
-@AutoMapper(target = ItemCategory.class)
+@AutoMapper(target = GoodsCategory.class)
 public class ItemCategoryVo implements Serializable {
 
     @Serial

@@ -2,7 +2,7 @@ package com.ruoyi.erp.basic.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.erp.basic.domain.entity.Item;
+import com.ruoyi.erp.basic.domain.entity.Goods;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Data
 @ExcelIgnoreUnannotated
-@AutoMapper(target = Item.class)
+@AutoMapper(target = Goods.class)
 public class ItemVo implements Serializable {
 
     @Serial

@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("basic_item_sku")
-public class ItemSku extends BaseEntity {
+@TableName("basic_sku")
+public class Sku extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
