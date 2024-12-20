@@ -1,0 +1,42 @@
+CREATE TABLE `purchase_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `bill_no` varchar(32) DEFAULT NULL COMMENT '单据编号',
+  `bill_date` datetime(3) DEFAULT NULL COMMENT '单据日期',
+  `delivery_date` datetime(3) DEFAULT NULL COMMENT '交货日期',
+  `checked_status` tinyint(4) DEFAULT NULL COMMENT '审核状态',
+  `checked_by` varchar(64) DEFAULT NULL COMMENT '审核人',
+  `stock_status` tinyint(4) DEFAULT NULL COMMENT '库存状态',
+  `merchant_id` bigint(20) DEFAULT NULL COMMENT '供应商id',
+  `goods_qty` decimal(10,2) DEFAULT NULL COMMENT '商品数量',
+  `processed_qty` decimal(10,2) DEFAULT NULL COMMENT '已处理数量',
+   `goods_amount` decimal(10,2) DEFAULT NULL COMMENT '商品金额',
+   `other_expenses_amount` decimal(10,2) DEFAULT NULL COMMENT '其他费用',
+   `discount_amount` decimal(10,2) DEFAULT NULL COMMENT '优惠金额',
+   `actual_amount` decimal(10,2) DEFAULT NULL COMMENT '实际金额',
+   `prepay_amount` decimal(10,2) DEFAULT NULL COMMENT '预付金额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT NULL COMMENT '修改人',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='采购订单';
+
+CREATE TABLE `purchase_order_detail` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` bigint(20) NOT NULL COMMENT '父id',
+  `sku_id` bigint(20) NOT NULL COMMENT 'sku id',
+  `qty` decimal(10,2) DEFAULT NULL COMMENT '商品数量',
+  `processed_qty` decimal(10,2) DEFAULT NULL COMMENT '已处理数量',
+  `price_without_tax` decimal(10,2) DEFAULT NULL COMMENT '不含税价',
+  `tax_amount` decimal(10,2) DEFAULT NULL COMMENT '税费',
+  `tax_rate` decimal(10,2) DEFAULT NULL COMMENT '税率',
+  `price_with_tax` decimal(10,2) DEFAULT NULL COMMENT '含税价',
+  `total_amount` decimal(10,2) DEFAULT NULL COMMENT '总金额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT NULL COMMENT '修改人',
+  `update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='采购订单明细';

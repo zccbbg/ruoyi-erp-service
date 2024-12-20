@@ -23,10 +23,10 @@ public class BaseOrder extends BaseBill{
     /**
      * 已处理数量（入库单就是已入库数量，出库单就是已出库数量）
      */
-    private BigDecimal processedQuantity;
+    private BigDecimal processedQty;
 
     /**
-     * 预付款金额
+     * 预付金额
      */
     private BigDecimal prepayAmount;
 }

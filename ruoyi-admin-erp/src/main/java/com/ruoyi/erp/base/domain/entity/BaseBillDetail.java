@@ -24,35 +24,35 @@ public class BaseBillDetail extends BaseEntity {
      */
     private Long skuId;
     /**
-     * 入库数量
+     * 数量
      */
-    private BigDecimal quantity;
+    private BigDecimal qty;
     /**
      * 价格
      */
     private BigDecimal price;
     /**
-     * 含税交个
+     * 含税价
      */
-    private BigDecimal taxPrice;
-
+    private BigDecimal priceWithTax;
+    /**
+     * 不含税价
+     */
+    private BigDecimal priceWithoutTax;
     /**
      * 税
      */
-    private BigDecimal tax;
+    private BigDecimal taxAmount;
     /**
      * 税率
      */
     private BigDecimal taxRate;
 
     /**
-     * 金额
+     * 总金额
      */
-    private BigDecimal amount;
-    /**
-     * 含税金额
-     */
-    private BigDecimal taxAmount;
+    private BigDecimal totalAmount;
+
     /**
      * 备注
      */

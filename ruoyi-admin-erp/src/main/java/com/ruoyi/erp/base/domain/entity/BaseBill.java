@@ -41,7 +41,7 @@ public class BaseBill extends BaseEntity {
     /**
      * 商品数量
      */
-    private BigDecimal goodsQuantity;
+    private BigDecimal goodsQty;
 
     /**
      * 商品金额（未优惠）
