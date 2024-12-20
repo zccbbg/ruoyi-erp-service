@@ -1,33 +1,36 @@
-CREATE TABLE `purchase_order` (
+CREATE TABLE `purchase_trade` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_id` bigint(20) NOT NULL COMMENT '订单id',
   `bill_no` varchar(32) DEFAULT NULL COMMENT '单据编号',
   `bill_date` datetime(3) DEFAULT NULL COMMENT '单据日期',
-  `delivery_date` datetime(3) DEFAULT NULL COMMENT '交货日期',
   `checked_status` tinyint(4) DEFAULT NULL COMMENT '审核状态',
+  `payment_status` tinyint(4) DEFAULT NULL COMMENT '支付状态',
+  `refund_status` tinyint(4) DEFAULT NULL COMMENT '退货状态',
+  `refund_amount` decimal(10,2) DEFAULT NULL COMMENT '退货金额',
+  `deducted_refund_amount` decimal(10,2) DEFAULT NULL COMMENT '退货抵扣',
+  `deducted_prepay_amount` decimal(10,2) DEFAULT NULL COMMENT '预付款抵扣',
+  `paid_amount` decimal(10,2) DEFAULT NULL COMMENT '支付金额',
+  `due_amount` decimal(10,2) DEFAULT NULL COMMENT '剩余金额',
   `checked_by` varchar(64) DEFAULT NULL COMMENT '审核人',
-  `stock_status` tinyint(4) DEFAULT NULL COMMENT '库存状态',
   `merchant_id` bigint(20) DEFAULT NULL COMMENT '供应商id',
   `goods_qty` decimal(10,2) DEFAULT NULL COMMENT '商品数量',
-  `processed_qty` decimal(10,2) DEFAULT NULL COMMENT '已处理数量',
    `goods_amount` decimal(10,2) DEFAULT NULL COMMENT '商品金额',
    `other_expenses_amount` decimal(10,2) DEFAULT NULL COMMENT '其他费用',
    `discount_amount` decimal(10,2) DEFAULT NULL COMMENT '优惠金额',
    `actual_amount` decimal(10,2) DEFAULT NULL COMMENT '实际金额',
-   `prepay_amount` decimal(10,2) DEFAULT NULL COMMENT '预付金额',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_by` varchar(64) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT NULL COMMENT '修改人',
   `update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='采购订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='购货单';
 
-CREATE TABLE `purchase_order_detail` (
+CREATE TABLE `purchase_trade_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `pid` bigint(20) NOT NULL COMMENT '父id',
   `sku_id` bigint(20) NOT NULL COMMENT 'sku id',
   `qty` decimal(10,2) DEFAULT NULL COMMENT '商品数量',
-  `processed_qty` decimal(10,2) DEFAULT NULL COMMENT '已处理数量',
   `price_without_tax` decimal(10,2) DEFAULT NULL COMMENT '不含税价',
   `tax_amount` decimal(10,2) DEFAULT NULL COMMENT '税费',
   `tax_rate` decimal(10,2) DEFAULT NULL COMMENT '税率',
@@ -39,4 +42,4 @@ CREATE TABLE `purchase_order_detail` (
   `update_by` varchar(64) DEFAULT NULL COMMENT '修改人',
   `update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='采购订单明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='购货单明细';

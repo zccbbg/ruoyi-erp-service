@@ -8,5 +8,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("purchase_receipt_trade")
-public class PurchaseReceiptTrade extends BaseTrade {
+public class PurchaseTrade extends BaseTrade {
 }
