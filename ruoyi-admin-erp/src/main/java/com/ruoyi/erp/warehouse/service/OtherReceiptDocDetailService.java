@@ -65,7 +65,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
         LambdaQueryWrapper<OtherReceiptDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getPid() != null, OtherReceiptDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, OtherReceiptDocDetail::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, OtherReceiptDocDetail::getQuantity, bo.getQuantity());
+        lqw.eq(bo.getQty() != null, OtherReceiptDocDetail::getQty, bo.getQty());
         lqw.eq(bo.getAmount() != null, OtherReceiptDocDetail::getAmount, bo.getAmount());
         lqw.eq(bo.getWarehouseId() != null, OtherReceiptDocDetail::getWarehouseId, bo.getWarehouseId());
         return lqw;

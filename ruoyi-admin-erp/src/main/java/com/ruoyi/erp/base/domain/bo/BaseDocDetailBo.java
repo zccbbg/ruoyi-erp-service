@@ -33,7 +33,7 @@ public class BaseDocDetailBo extends BaseEntity {
      * 入库数量
      */
     @NotNull(message = "出入库数量不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal quantity;
+    private BigDecimal qty;
 
     /**
      * 金额
@@ -52,9 +52,9 @@ public class BaseDocDetailBo extends BaseEntity {
     /**
      * 更新前数量
      */
-    private BigDecimal beforeQuantity;
+    private BigDecimal beforeQty;
     /**
      * 更新后数量
      */
-    private BigDecimal afterQuantity;
+    private BigDecimal afterQty;
 }

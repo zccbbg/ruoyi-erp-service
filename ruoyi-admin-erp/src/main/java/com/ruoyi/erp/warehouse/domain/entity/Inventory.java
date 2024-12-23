@@ -39,7 +39,7 @@ public class Inventory extends BaseEntity{
     /**
      * 库存
      */
-    private BigDecimal quantity;
+    private BigDecimal qty;
     /**
      * 备注
      */

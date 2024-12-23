@@ -48,7 +48,7 @@ public class InventoryVo implements Serializable {
      * 库存
      */
     @ExcelProperty(value = "库存")
-    private BigDecimal quantity;
+    private BigDecimal qty;
 
     /**
      * 备注
@@ -56,8 +56,8 @@ public class InventoryVo implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
-    private SkuVo itemSku;
+    private SkuVo sku;
 
-    private GoodsVo item;
+    private GoodsVo goods;
 
 }

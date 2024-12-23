@@ -51,8 +51,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.goodsName != null and bo.goodsName != ''">
                 and goods.goods_name like concat('%', #{bo.goodsName}, '%')
             </if>
-            <if test="bo.goodsCode != null and bo.goodsCode != ''">
-                and goods.goods_code like concat('%', #{bo.goodsCode}, '%')
+            <if test="bo.goodsNo != null and bo.goodsNo != ''">
+                and goods.goods_no like concat('%', #{bo.goodsNo}, '%')
             </if>
             <if test="bo.brand != null">
                 and goods.brand=#{bo.brand}

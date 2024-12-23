@@ -24,9 +24,9 @@ public class BaseDocDetail extends BaseEntity {
      */
     private Long skuId;
     /**
-     * 入库数量
+     * 数量
      */
-    private BigDecimal quantity;
+    private BigDecimal qty;
     /**
      * 金额
      */

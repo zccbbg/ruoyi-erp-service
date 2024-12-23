@@ -37,19 +37,19 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
         List<InventoryHistory> inventoryHistoryList = new LinkedList<>();
         bo.getDetails().forEach(detail -> {
             InventoryHistory inventoryHistory = new InventoryHistory();
-            inventoryHistory.setBizId(bo.getId());
-            inventoryHistory.setBizNo(bo.getDocCode());
-            inventoryHistory.setBizType(orderType);
+            inventoryHistory.setOptId(bo.getId());
+            inventoryHistory.setOptNo(bo.getDocNo());
+            inventoryHistory.setOptType(orderType);
             inventoryHistory.setSkuId(detail.getSkuId());
             if(isAdd){
-                inventoryHistory.setQuantity(detail.getQuantity());
+                inventoryHistory.setQty(detail.getQty());
             }else {
-                inventoryHistory.setQuantity(detail.getQuantity().negate());
+                inventoryHistory.setQty(detail.getQty().negate());
             }
             inventoryHistory.setWarehouseId(detail.getWarehouseId());
             inventoryHistory.setAmount(detail.getAmount());
-            inventoryHistory.setBeforeQuantity(detail.getBeforeQuantity());
-            inventoryHistory.setAfterQuantity(detail.getAfterQuantity());
+            inventoryHistory.setBeforeQty(detail.getBeforeQty());
+            inventoryHistory.setAfterQty(detail.getAfterQty());
             inventoryHistoryList.add(inventoryHistory);
         });
         this.saveBatch(inventoryHistoryList);
@@ -81,10 +81,10 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
     private LambdaQueryWrapper<InventoryHistory> buildQueryWrapper(InventoryHistoryBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<InventoryHistory> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getBizId() != null, InventoryHistory::getBizId, bo.getBizId());
-        lqw.eq(bo.getBizType() != null, InventoryHistory::getBizType, bo.getBizType());
+        lqw.eq(bo.getOptId() != null, InventoryHistory::getOptId, bo.getOptId());
+        lqw.eq(bo.getOptType() != null, InventoryHistory::getOptType, bo.getOptType());
         lqw.eq(bo.getSkuId() != null, InventoryHistory::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, InventoryHistory::getQuantity, bo.getQuantity());
+        lqw.eq(bo.getQty() != null, InventoryHistory::getQty, bo.getQty());
         lqw.eq(bo.getWarehouseId() != null, InventoryHistory::getWarehouseId, bo.getWarehouseId());
         return lqw;
     }

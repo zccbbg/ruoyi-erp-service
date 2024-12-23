@@ -63,7 +63,7 @@ public class OtherShipmentDocDetailService extends ServiceImpl<OtherShipmentDocD
         LambdaQueryWrapper<OtherShipmentDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getPid() != null, OtherShipmentDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, OtherShipmentDocDetail::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, OtherShipmentDocDetail::getQuantity, bo.getQuantity());
+        lqw.eq(bo.getQty() != null, OtherShipmentDocDetail::getQty, bo.getQty());
         lqw.eq(bo.getAmount() != null, OtherShipmentDocDetail::getAmount, bo.getAmount());
         lqw.eq(bo.getWarehouseId() != null, OtherShipmentDocDetail::getWarehouseId, bo.getWarehouseId());
         return lqw;

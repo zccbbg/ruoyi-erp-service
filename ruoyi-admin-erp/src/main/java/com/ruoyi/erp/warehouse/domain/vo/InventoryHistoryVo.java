@@ -41,19 +41,19 @@ public class InventoryHistoryVo implements Serializable {
      */
     @ExcelProperty(value = "操作id", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "出库、入库、库存移动表单id")
-    private Long bizId;
+    private Long optId;
 
     /**
      * 操作单号（入库、出库、移库、盘库单号）
      */
     @ExcelProperty(value = "操作单号")
-    private String bizNo;
+    private String optNo;
 
     /**
      * 单据类型
      */
     @ExcelProperty(value = "单据类型")
-    private Integer bizType;
+    private Integer optType;
 
     /**
      * 物料ID
@@ -71,7 +71,7 @@ public class InventoryHistoryVo implements Serializable {
      * 库存变化
      */
     @ExcelProperty(value = "库存变化")
-    private BigDecimal quantity;
+    private BigDecimal qty;
 
     /**
      * 备注
@@ -88,15 +88,15 @@ public class InventoryHistoryVo implements Serializable {
     /**
      * 更新前数量
      */
-    private BigDecimal beforeQuantity;
+    private BigDecimal beforeQty;
     /**
      * 更新后数量
      */
-    private BigDecimal afterQuantity;
+    private BigDecimal afterQty;
 
-    private SkuVo itemSku;
+    private SkuVo sku;
 
-    private GoodsVo item;
+    private GoodsVo goods;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

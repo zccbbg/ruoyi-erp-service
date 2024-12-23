@@ -21,7 +21,7 @@ public class CheckDocDetail extends BaseDocDetail {
     /**
      * 盘点数量
      */
-    private BigDecimal checkQuantity;
+    private BigDecimal checkQty;
     /**
      * 所属仓库
      */

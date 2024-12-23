@@ -75,9 +75,9 @@ public class CheckDocService {
     private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), CheckDoc::getDocNo, bo.getDocCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), CheckDoc::getDocNo, bo.getDocNo());
         lqw.eq(bo.getCheckedStatus() != null, CheckDoc::getCheckedStatus, bo.getCheckedStatus());
-        lqw.eq(bo.getTotalQuantity() != null, CheckDoc::getTotalQuantity, bo.getTotalQuantity());
+        lqw.eq(bo.getGoodsQty() != null, CheckDoc::getGoodsQty, bo.getGoodsQty());
         lqw.eq(bo.getWarehouseId() != null, CheckDoc::getWarehouseId, bo.getWarehouseId());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
@@ -89,7 +89,7 @@ public class CheckDocService {
     @Transactional
     public void insertByBo(CheckDocBo bo) {
         // 校验盘库单号唯一性
-        validateDocCode(bo.getDocCode());
+        validateDocCode(bo.getDocNo());
         // 创建盘库单
         CheckDoc add = MapstructUtils.convert(bo, CheckDoc.class);
         checkDocMapper.insert(add);
@@ -132,7 +132,7 @@ public class CheckDocService {
             throw new BaseException("盘库单不存在");
         }
         if (ServiceConstants.Status.FINISH.equals(checkDocVo.getCheckedStatus())) {
-            throw new ServiceException("盘库单【" + checkDocVo.getDocCode() + "】已盘库完成，无法删除！");
+            throw new ServiceException("盘库单【" + checkDocVo.getDocNo() + "】已盘库完成，无法删除！");
         }
     }
 
@@ -165,13 +165,13 @@ public class CheckDocService {
     private CheckDocBo filterCheckDocDetail(CheckDocBo bo) {
         CheckDocBo filterBo = SerializationUtils.clone(bo);
         List<CheckDocDetailBo> details = filterBo.getDetails().stream().filter(detail -> {
-            BigDecimal result = detail.getCheckQuantity().subtract(detail.getQuantity());
+            BigDecimal result = detail.getCheckQty().subtract(detail.getQty());
             return result.signum() != 0;
         }).map(detail->{
-            BigDecimal result = detail.getCheckQuantity().subtract(detail.getQuantity());
-            detail.setBeforeQuantity(detail.getQuantity());
-            detail.setAfterQuantity(detail.getCheckQuantity());
-            detail.setQuantity(result);
+            BigDecimal result = detail.getCheckQty().subtract(detail.getQty());
+            detail.setBeforeQty(detail.getQty());
+            detail.setAfterQty(detail.getCheckQty());
+            detail.setQty(result);
             return detail;
         }).toList();
         filterBo.setDetails(details);

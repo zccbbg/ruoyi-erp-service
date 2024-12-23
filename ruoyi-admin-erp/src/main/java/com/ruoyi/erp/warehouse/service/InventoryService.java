@@ -58,8 +58,8 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
             Map<Long, SkuMapVo> itemSkuMap = skuService.querySkuMapVosByIds(skuIds);
             vos.forEach(it -> {
                 SkuMapVo skuMapVo = itemSkuMap.get(it.getSkuId());
-                it.setItemSku(skuMapVo.getSku());
-                it.setItem(skuMapVo.getGoods());
+                it.setSku(skuMapVo.getSku());
+                it.setGoods(skuMapVo.getGoods());
             });
         }
         return vos;
@@ -69,7 +69,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
         LambdaQueryWrapper<Inventory> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(bo.getSkuId() != null, Inventory::getSkuId, bo.getSkuId());
         wrapper.eq(bo.getWarehouseId() != null, Inventory::getWarehouseId, bo.getWarehouseId());
-        wrapper.eq(bo.getQuantity() != null, Inventory::getQuantity, bo.getQuantity());
+        wrapper.eq(bo.getQty() != null, Inventory::getQty, bo.getQty());
         return wrapper;
     }
 
@@ -112,7 +112,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     public TableDataInfo<InventoryVo> queryItemBoardList(InventoryBo bo, PageQuery pageQuery) {
-        Page<InventoryVo> result = inventoryMapper.queryItemBoardList(pageQuery.build(), bo);
+        Page<InventoryVo> result = inventoryMapper.queryGoodsBoardList(pageQuery.build(), bo);
         return TableDataInfo.build(result);
     }
 
@@ -125,15 +125,15 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
             if(detail.getInventoryId()!=null){
                 wrapper.eq(Inventory::getId,detail.getInventoryId());
                 Inventory inventory = inventoryMapper.selectOne(wrapper);
-                if(inventory.getQuantity().compareTo(detail.getQuantity())!=0){
+                if(inventory.getQty().compareTo(detail.getQty())!=0){
                     SkuMapVo skuMapVo = skuService.querySkuMapVo(detail.getSkuId());
                     throw new ServiceException(
                         "账面库存不匹配："+ skuMapVo.getGoods().getGoodsName()+"（"+ skuMapVo.getSku().getSkuName()+"）",
                         HttpStatus.CONFLICT,
-                        "填写账面库存："+detail.getQuantity()+" 实际账面库存："+inventory.getQuantity());
+                        "填写账面库存："+detail.getQty()+" 实际账面库存："+inventory.getQty());
                 }else {
-                    if(!inventory.getQuantity().equals(detail.getCheckQuantity())){
-                        inventory.setQuantity(detail.getCheckQuantity());
+                    if(!inventory.getQty().equals(detail.getCheckQty())){
+                        inventory.setQty(detail.getCheckQty());
                         updateInventoryList.add(inventory);
                     }
                 }
@@ -146,12 +146,12 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                     throw new ServiceException(
                         "账面库存不匹配："+ skuMapVo.getGoods().getGoodsName()+"（"+ skuMapVo.getSku().getSkuName()+"）",
                         HttpStatus.CONFLICT,
-                        "填写账面库存：0, 实际账面库存："+inventory.getQuantity());
+                        "填写账面库存：0, 实际账面库存："+inventory.getQty());
                 }else {
                     inventory = new Inventory();
                     inventory.setSkuId(detail.getSkuId());
                     inventory.setWarehouseId(detail.getWarehouseId());
-                    inventory.setQuantity(detail.getCheckQuantity());
+                    inventory.setQty(detail.getCheckQty());
                     insertInventoryList.add(inventory);
                 }
             }
@@ -174,15 +174,15 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
             wrapper.eq(Inventory::getSkuId, orderDetailsBo.getSkuId());
             Inventory result = inventoryMapper.selectOne(wrapper);
             if(result!=null){
-                BigDecimal before = result.getQuantity();
-                BigDecimal after = before.add(orderDetailsBo.getQuantity());
-                result.setQuantity(after);
-                orderDetailsBo.setAfterQuantity(after);
-                orderDetailsBo.setBeforeQuantity(before);
+                BigDecimal before = result.getQty();
+                BigDecimal after = before.add(orderDetailsBo.getQty());
+                result.setQty(after);
+                orderDetailsBo.setAfterQty(after);
+                orderDetailsBo.setBeforeQty(before);
                 updateList.add(result);
             }else {
-                orderDetailsBo.setBeforeQuantity(BigDecimal.ZERO);
-                orderDetailsBo.setAfterQuantity(orderDetailsBo.getQuantity());
+                orderDetailsBo.setBeforeQty(BigDecimal.ZERO);
+                orderDetailsBo.setAfterQty(orderDetailsBo.getQty());
                 Inventory inventory = MapstructUtils.convert(orderDetailsBo, Inventory.class);
                 addList.add(inventory);
             }
@@ -211,15 +211,15 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 SkuMapVo skuMapVo = skuService.querySkuMapVo(shipmentOrderDetailBo.getSkuId());
                 throw new ServiceException("库存不足", HttpStatus.CONFLICT, skuMapVo.getGoods().getGoodsName()+"（"+ skuMapVo.getSku().getSkuName()+"）库存不足，当前库存：0");
             }
-            BigDecimal beforeQuantity = result.getQuantity();
-            BigDecimal afterQuantity = beforeQuantity.subtract(shipmentOrderDetailBo.getQuantity());
-            if(afterQuantity.signum() == -1){
+            BigDecimal beforeQty = result.getQty();
+            BigDecimal afterQty = beforeQty.subtract(shipmentOrderDetailBo.getQty());
+            if(afterQty.signum() == -1){
                 SkuMapVo skuMapVo = skuService.querySkuMapVo(shipmentOrderDetailBo.getSkuId());
-                throw new ServiceException("库存不足", HttpStatus.CONFLICT, skuMapVo.getGoods().getGoodsName()+"（"+ skuMapVo.getSku().getSkuName()+"）库存不足，当前库存："+ beforeQuantity);
+                throw new ServiceException("库存不足", HttpStatus.CONFLICT, skuMapVo.getGoods().getGoodsName()+"（"+ skuMapVo.getSku().getSkuName()+"）库存不足，当前库存："+ beforeQty);
             }
-            shipmentOrderDetailBo.setBeforeQuantity(beforeQuantity);
-            shipmentOrderDetailBo.setAfterQuantity(afterQuantity);
-            result.setQuantity(afterQuantity);
+            shipmentOrderDetailBo.setBeforeQty(beforeQty);
+            shipmentOrderDetailBo.setAfterQty(afterQty);
+            result.setQty(afterQty);
             updateList.add(result);
         });
         updateBatchById(updateList);

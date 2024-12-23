@@ -24,17 +24,17 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
      * 编号
      */
     @NotBlank(message = "编号", groups = { AddGroup.class, EditGroup.class })
-    private String docCode;
+    private String docNo;
 
     /**
      * 商品总数
      */
-    private BigDecimal totalQuantity;
+    private BigDecimal goodsQty;
 
     /**
      * 订单总金额
      */
-    private BigDecimal totalAmount;
+    private BigDecimal goodsAmount;
 
     /**
      * 单据状态

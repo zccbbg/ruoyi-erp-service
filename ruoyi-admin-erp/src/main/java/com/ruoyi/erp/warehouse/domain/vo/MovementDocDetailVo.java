@@ -36,5 +36,5 @@ public class MovementDocDetailVo extends BaseDocDetailVo {
     @ExcelProperty(value = "目标仓库")
     private Long targetWarehouseId;
 
-    private BigDecimal remainQuantity;
+    private BigDecimal remainQty;
 }

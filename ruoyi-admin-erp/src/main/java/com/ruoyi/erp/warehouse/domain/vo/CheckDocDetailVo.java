@@ -26,7 +26,7 @@ public class CheckDocDetailVo extends BaseDocDetailVo {
      * 盘点数量
      */
     @ExcelProperty(value = "盘点数量")
-    private BigDecimal checkQuantity;
+    private BigDecimal checkQty;
 
     /**
      * 库存id

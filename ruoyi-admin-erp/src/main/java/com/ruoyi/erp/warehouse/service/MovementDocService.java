@@ -75,11 +75,11 @@ public class MovementDocService {
     private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), MovementDoc::getDocNo, bo.getDocCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), MovementDoc::getDocNo, bo.getDocNo());
         lqw.eq(bo.getSourceWarehouseId() != null, MovementDoc::getSourceWarehouseId, bo.getSourceWarehouseId());
         lqw.eq(bo.getTargetWarehouseId() != null, MovementDoc::getTargetWarehouseId, bo.getTargetWarehouseId());
         lqw.eq(bo.getCheckedStatus() != null, MovementDoc::getCheckedStatus, bo.getCheckedStatus());
-        lqw.eq(bo.getTotalQuantity() != null, MovementDoc::getTotalQuantity, bo.getTotalQuantity());
+        lqw.eq(bo.getGoodsQty() != null, MovementDoc::getGoodsQty, bo.getGoodsQty());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
@@ -90,7 +90,7 @@ public class MovementDocService {
     @Transactional
     public void insertByBo(MovementDocBo bo) {
         // 1.校验移库单号唯一性
-        validateMovementBizNo(bo.getDocCode());
+        validateMovementBizNo(bo.getDocNo());
         // 2.创建移库单
         MovementDoc add = MapstructUtils.convert(bo, MovementDoc.class);
         movementDocMapper.insert(add);
@@ -140,7 +140,7 @@ public class MovementDocService {
             throw new BaseException("移库单不存在");
         }
         if (ServiceConstants.Status.FINISH.equals(movementBizVo.getCheckedStatus())) {
-            throw new ServiceException("移库单【" + movementBizVo.getDocCode() + "】已移库，无法删除！");
+            throw new ServiceException("移库单【" + movementBizVo.getDocNo() + "】已移库，无法删除！");
         }
     }
 

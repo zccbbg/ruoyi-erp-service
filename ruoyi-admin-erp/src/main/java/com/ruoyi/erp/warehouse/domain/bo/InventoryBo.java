@@ -45,7 +45,7 @@ public class InventoryBo extends BaseEntity {
      * 库存
      */
     @NotNull(message = "库存不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal quantity;
+    private BigDecimal qty;
 
     /**
      * 备注
@@ -55,12 +55,12 @@ public class InventoryBo extends BaseEntity {
     /**
      * 最小数量
      */
-    private BigDecimal minQuantity;
+    private BigDecimal minQty;
 
-    private String itemName;
-    private String itemCode;
+    private String goodsName;
+    private String goodsCode;
     private String skuName;
-    private String skuCode;
-    private Long itemId;
-    private Long itemCategory;
+    private String skuNo;
+    private Long goodsId;
+    private Long categoryId;
 }

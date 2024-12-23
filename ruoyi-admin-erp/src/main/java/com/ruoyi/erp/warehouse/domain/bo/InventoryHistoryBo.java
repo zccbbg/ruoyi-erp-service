@@ -34,19 +34,19 @@ public class InventoryHistoryBo extends BaseHistoryEntity {
      * 操作id（出库、入库、库存移动表单id）
      */
     @NotNull(message = "操作id（出库、入库、库存移动表单id）不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long bizId;
+    private Long optId;
 
     /**
      * 操作单号（入库、出库、移库、盘库单号）
      */
     @NotNull(message = "操作单号（入库、出库、移库、盘库单号）不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String bizNo;
+    private String optNo;
 
     /**
      * 订单类型
      */
     @NotNull(message = "订单类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Integer bizType;
+    private Integer optType;
 
     /**
      * 物料ID
@@ -63,7 +63,7 @@ public class InventoryHistoryBo extends BaseHistoryEntity {
      * 库存变化
      */
     @NotNull(message = "库存变化不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal quantity;
+    private BigDecimal qty;
 
     /**
      * 备注
@@ -77,10 +77,10 @@ public class InventoryHistoryBo extends BaseHistoryEntity {
     @NotNull(message = "所属仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long warehouseId;
 
-    private String itemName;
-    private String itemCode;
+    private String goodsName;
+    private String goodsNo;
     private String skuName;
-    private String skuCode;
+    private String skuNo;
 
     private String startTime;
     private String endTime;

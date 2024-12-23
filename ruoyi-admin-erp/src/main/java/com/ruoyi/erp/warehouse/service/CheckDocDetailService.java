@@ -67,10 +67,10 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
         LambdaQueryWrapper<CheckDocDetail> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getPid() != null, CheckDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, CheckDocDetail::getSkuId, bo.getSkuId());
-        lqw.eq(bo.getQuantity() != null, CheckDocDetail::getQuantity, bo.getQuantity());
-        lqw.eq(bo.getCheckQuantity() != null, CheckDocDetail::getCheckQuantity, bo.getCheckQuantity());
+        lqw.eq(bo.getQty() != null, CheckDocDetail::getQty, bo.getQty());
+        lqw.eq(bo.getCheckQty() != null, CheckDocDetail::getCheckQty, bo.getCheckQty());
         lqw.eq(bo.getWarehouseId() != null, CheckDocDetail::getWarehouseId, bo.getWarehouseId());
-        lqw.apply(bo.getHaveProfitAndLoss() != null && bo.getHaveProfitAndLoss(), "quantity != check_quantity");
+        lqw.apply(bo.getHaveProfitAndLoss() != null && bo.getHaveProfitAndLoss(), "qty != check_qty");
         return lqw;
     }
 

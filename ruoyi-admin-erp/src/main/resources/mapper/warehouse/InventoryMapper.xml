@@ -27,14 +27,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.goodsName != null and bo.goodsName != ''">
                 goods.goods_name like concat('%', #{bo.goodsName}, '%')
             </if>
-            <if test="bo.goodsCode != null and bo.goodsCode != ''">
-                and goods.goods_code like concat('%', #{bo.goodsCode}, '%')
+            <if test="bo.goodsNo != null and bo.goodsNo != ''">
+                and goods.goods_no like concat('%', #{bo.goodsNo}, '%')
             </if>
             <if test="bo.skuName != null and bo.skuName != ''">
                 and sku.sku_name like concat('%', #{bo.skuName}, '%')
             </if>
-            <if test="bo.skuCode != null and bo.skuCode != ''">
-                and sku.sku_code like concat('%', #{bo.skuCode}, '%')
+            <if test="bo.skuNo != null and bo.skuNo != ''">
+                and sku.sku_no like concat('%', #{bo.skuNo}, '%')
             </if>
             <if test="bo.category != null">
                 and goods.category=#{bo.category}
@@ -45,8 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.warehouseId != null">
                 and inventory.warehouse_id=#{bo.warehouseId}
             </if>
-            <if test="bo.minQuantity != null">
-                and inventory.quantity>=#{bo.minQuantity}
+            <if test="bo.minQty != null">
+                and inventory.qty>=#{bo.minQty}
             </if>
         </where>
     </sql>

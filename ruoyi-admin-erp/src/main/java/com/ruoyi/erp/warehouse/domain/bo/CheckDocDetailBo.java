@@ -23,7 +23,7 @@ public class CheckDocDetailBo extends BaseDocDetailBo {
     /**
      * 盘点数量
      */
-    private BigDecimal checkQuantity;
+    private BigDecimal checkQty;
 
     /**
      * 盈亏数

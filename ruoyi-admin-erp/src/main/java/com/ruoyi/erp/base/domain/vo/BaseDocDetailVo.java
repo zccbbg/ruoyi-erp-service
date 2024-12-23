@@ -35,7 +35,7 @@ public class BaseDocDetailVo implements Serializable {
      * 入库数量
      */
     @ExcelProperty(value = "数量")
-    private BigDecimal quantity;
+    private BigDecimal qty;
 
     /**
      * 金额

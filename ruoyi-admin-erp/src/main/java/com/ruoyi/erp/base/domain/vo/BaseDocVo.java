@@ -22,19 +22,19 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
      * 单据编号
      */
     @ExcelProperty(value = "单据编号")
-    private String docCode;
+    private String docNo;
 
     /**
      * 商品总数
      */
     @ExcelProperty(value = "商品总数")
-    private BigDecimal totalQuantity;
+    private BigDecimal goodsQty;
 
     /**
      * 订单金额
      */
     @ExcelProperty(value = "单据总金额")
-    private BigDecimal totalAmount;
+    private BigDecimal goodsAmount;
 
     /**
      * 入库状态

@@ -24,11 +24,11 @@ public class BaseDoc extends BaseEntity {
     /**
      * 商品总数
      */
-    private BigDecimal totalQuantity;
+    private BigDecimal goodsQty;
     /**
      * 单据总金额
      */
-    private BigDecimal totalAmount;
+    private BigDecimal goodsAmount;
     /**
      * 审核状态
      */
