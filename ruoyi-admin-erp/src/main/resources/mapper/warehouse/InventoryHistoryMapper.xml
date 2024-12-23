@@ -8,8 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <association property="sku" javaType="com.ruoyi.erp.basic.domain.vo.SkuVo">
             <id property="id" column="sku_id"/> <!-- 映射 sku 的 id -->
         </association>
-        <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">
-            <id property="id" column="item_id"/> <!-- 映射 goods 的 id -->
+        <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.GoodsVo">
+            <id property="id" column="goods_id"/> <!-- 映射 goods 的 id -->
         </association>
     </resultMap>
 
@@ -18,11 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         history.*,
         sku.id as sku_id,
         sku.*,
-        goods.id as item_id,
+        goods.id as goods_id,
         goods.*
         from wms_inventory_history history
-        left join wms_item_sku sku on history.sku_id=sku.id
-        left join wms_item goods on sku.item_id=goods.id
+        left join basic_sku sku on history.sku_id=sku.id
+        left join basic_goods goods on sku.goods_id=goods.id
         <where>
             <if test="bo.orderType != null">
                 history.order_type=#{bo.orderType}
@@ -30,11 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.orderNo != null and bo.orderNo != ''">
                 and history.order_no=#{bo.orderNo}
             </if>
-            <if test="bo.itemName != null and bo.itemName != ''">
-                and goods.item_name like concat('%', #{bo.itemName}, '%')
+            <if test="bo.goodsName != null and bo.goodsName != ''">
+                and goods.goods_name like concat('%', #{bo.goodsName}, '%')
             </if>
-            <if test="bo.itemCode != null and bo.itemCode != ''">
-                and goods.item_code like concat('%', #{bo.itemCode}, '%')
+            <if test="bo.goodsCode != null and bo.goodsCode != ''">
+                and goods.goods_code like concat('%', #{bo.goodsCode}, '%')
             </if>
             <if test="bo.skuName != null and bo.skuName != ''">
                 and sku.sku_name like concat('%', #{bo.skuName}, '%')
