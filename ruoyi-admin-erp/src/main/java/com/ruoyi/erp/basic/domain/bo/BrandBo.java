@@ -20,7 +20,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = Brand.class, reverseConvertGenerate = false)
-public class ItemBrandBo extends BaseEntity {
+public class BrandBo extends BaseEntity {
 
     /**
      *

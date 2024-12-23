@@ -63,5 +63,5 @@ public class ItemVo implements Serializable {
     /**
      * 类别
      */
-    private ItemCategoryVo itemCategoryInfo;
+    private CategoryVo itemCategoryInfo;
 }

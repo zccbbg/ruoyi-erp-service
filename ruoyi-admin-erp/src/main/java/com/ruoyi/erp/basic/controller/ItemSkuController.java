@@ -11,9 +11,9 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.erp.basic.domain.bo.ItemSkuBo;
-import com.ruoyi.erp.basic.domain.vo.ItemSkuMapVo;
-import com.ruoyi.erp.basic.domain.vo.ItemSkuVo;
+import com.ruoyi.erp.basic.domain.bo.SkuBo;
+import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
+import com.ruoyi.erp.basic.domain.vo.SkuVo;
 import com.ruoyi.erp.basic.service.ItemSkuService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -36,7 +36,7 @@ public class ItemSkuController extends BaseController {
      */
     @GetMapping("/list")
     @SaCheckPermission("wms:item:list")
-    public TableDataInfo<ItemSkuMapVo> list(ItemSkuBo bo, PageQuery pageQuery) {
+    public TableDataInfo<SkuMapVo> list(SkuBo bo, PageQuery pageQuery) {
         return itemSkuService.queryPageList(bo, pageQuery);
     }
     /**
@@ -44,7 +44,7 @@ public class ItemSkuController extends BaseController {
      */
     @GetMapping("/listNoPage")
     @SaCheckPermission("wms:item:list")
-    public R<List<ItemSkuVo>> list(ItemSkuBo bo) {
+    public R<List<SkuVo>> list(SkuBo bo) {
         return R.ok(itemSkuService.queryList(bo));
     }
 
@@ -54,9 +54,9 @@ public class ItemSkuController extends BaseController {
     @Log(title = "sku信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @SaCheckPermission("wms:item:list")
-    public void export(ItemSkuBo bo, HttpServletResponse response) {
-        List<ItemSkuVo> list = itemSkuService.queryList(bo);
-        ExcelUtil.exportExcel(list, "sku信息", ItemSkuVo.class, response);
+    public void export(SkuBo bo, HttpServletResponse response) {
+        List<SkuVo> list = itemSkuService.queryList(bo);
+        ExcelUtil.exportExcel(list, "sku信息", SkuVo.class, response);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ItemSkuController extends BaseController {
      */
     @GetMapping("/{id}")
     @SaCheckPermission("wms:item:list")
-    public R<ItemSkuVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<SkuVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(itemSkuService.queryById(id));
     }
@@ -78,7 +78,7 @@ public class ItemSkuController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     @SaCheckPermission("wms:item:edit")
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ItemSkuBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody SkuBo bo) {
         return toAjax(itemSkuService.insertByBo(bo));
     }
 
@@ -89,7 +89,7 @@ public class ItemSkuController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     @SaCheckPermission("wms:item:edit")
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ItemSkuBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody SkuBo bo) {
         return toAjax(itemSkuService.updateByBo(bo));
     }
 

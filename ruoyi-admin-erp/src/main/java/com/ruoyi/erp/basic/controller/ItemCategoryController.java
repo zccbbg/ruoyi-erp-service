@@ -11,8 +11,8 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.erp.basic.domain.bo.ItemCategoryBo;
-import com.ruoyi.erp.basic.domain.vo.ItemCategoryVo;
+import com.ruoyi.erp.basic.domain.bo.CategoryBo;
+import com.ruoyi.erp.basic.domain.vo.CategoryVo;
 import com.ruoyi.erp.basic.domain.vo.ItemTypeTreeSelectVo;
 import com.ruoyi.erp.basic.service.ItemCategoryService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +39,7 @@ public class ItemCategoryController extends BaseController {
      */
     @GetMapping("/list")
     @SaCheckPermission("wms:item:list")
-    public TableDataInfo<ItemCategoryVo> list(ItemCategoryBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CategoryVo> list(CategoryBo bo, PageQuery pageQuery) {
         return itemCategoryService.queryPageList(bo, pageQuery);
     }
 
@@ -48,7 +48,7 @@ public class ItemCategoryController extends BaseController {
      */
     @GetMapping("/listNoPage")
     @SaCheckPermission("wms:item:list")
-    public R<List<ItemCategoryVo>> listNoPage(ItemCategoryBo bo) {
+    public R<List<CategoryVo>> listNoPage(CategoryBo bo) {
         return R.ok(itemCategoryService.queryList(bo));
     }
 
@@ -57,8 +57,8 @@ public class ItemCategoryController extends BaseController {
      */
     @GetMapping("/treeselect")
     @SaCheckPermission("wms:item:list")
-    public R<List<ItemTypeTreeSelectVo>> treeselect(ItemCategoryBo query) {
-        List<ItemCategoryVo> itemTypes = itemCategoryService.queryList(query);
+    public R<List<ItemTypeTreeSelectVo>> treeselect(CategoryBo query) {
+        List<CategoryVo> itemTypes = itemCategoryService.queryList(query);
         return R.ok(itemCategoryService.buildItemTypeTreeSelect(itemTypes));
     }
 
@@ -68,9 +68,9 @@ public class ItemCategoryController extends BaseController {
     @Log(title = "物料类型", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @SaCheckPermission("wms:item:list")
-    public void export(ItemCategoryBo bo, HttpServletResponse response) {
-        List<ItemCategoryVo> list = itemCategoryService.queryList(bo);
-        ExcelUtil.exportExcel(list, "物料类型", ItemCategoryVo.class, response);
+    public void export(CategoryBo bo, HttpServletResponse response) {
+        List<CategoryVo> list = itemCategoryService.queryList(bo);
+        ExcelUtil.exportExcel(list, "物料类型", CategoryVo.class, response);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ItemCategoryController extends BaseController {
      */
     @GetMapping("/{itemTypeId}")
     @SaCheckPermission("wms:item:list")
-    public R<ItemCategoryVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<CategoryVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long itemTypeId) {
         return R.ok(itemCategoryService.queryById(itemTypeId));
     }
@@ -92,7 +92,7 @@ public class ItemCategoryController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     @SaCheckPermission("wms:item:edit")
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ItemCategoryBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody CategoryBo bo) {
         itemCategoryService.insertByBo(bo);
         return R.ok();
     }
@@ -104,7 +104,7 @@ public class ItemCategoryController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     @SaCheckPermission("wms:item:edit")
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ItemCategoryBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody CategoryBo bo) {
         itemCategoryService.updateByBo(bo);
         return R.ok();
     }

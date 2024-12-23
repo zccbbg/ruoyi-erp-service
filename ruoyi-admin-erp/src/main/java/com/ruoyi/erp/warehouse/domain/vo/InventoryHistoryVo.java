@@ -3,7 +3,7 @@ package com.ruoyi.erp.warehouse.domain.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.erp.basic.domain.vo.ItemSkuVo;
+import com.ruoyi.erp.basic.domain.vo.SkuVo;
 import com.ruoyi.erp.basic.domain.vo.ItemVo;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.convert.ExcelDictConvert;
@@ -94,7 +94,7 @@ public class InventoryHistoryVo implements Serializable {
      */
     private BigDecimal afterQuantity;
 
-    private ItemSkuVo itemSku;
+    private SkuVo itemSku;
 
     private ItemVo item;
 

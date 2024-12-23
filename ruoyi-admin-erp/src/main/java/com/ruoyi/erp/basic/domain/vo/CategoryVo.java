@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = GoodsCategory.class)
-public class ItemCategoryVo implements Serializable {
+public class CategoryVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -64,6 +64,6 @@ public class ItemCategoryVo implements Serializable {
      * 子物料类型
      */
     @TableField(exist = false)
-    private List<ItemCategoryVo> children = new ArrayList<ItemCategoryVo>();
+    private List<CategoryVo> children = new ArrayList<CategoryVo>();
 
 }

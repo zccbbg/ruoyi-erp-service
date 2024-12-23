@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = Sku.class, reverseConvertGenerate = false)
-public class ItemSkuBo extends BaseEntity {
+public class SkuBo extends BaseEntity {
 
     /**
      *

@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.erp.basic.domain.bo.ItemBo;
+import com.ruoyi.erp.basic.domain.bo.GoodsBo;
 import com.ruoyi.erp.basic.domain.vo.ItemVo;
 import com.ruoyi.erp.basic.service.ItemService;
 
@@ -35,7 +35,7 @@ public class ItemController extends BaseController {
      */
     @GetMapping("/list")
     @SaCheckPermission("wms:item:list")
-    public TableDataInfo<ItemVo> list(ItemBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ItemVo> list(GoodsBo bo, PageQuery pageQuery) {
         return itemService.queryPageList(bo, pageQuery);
     }
 
@@ -44,7 +44,7 @@ public class ItemController extends BaseController {
      */
     @GetMapping("/listNoPage")
     @SaCheckPermission("wms:item:list")
-    public R<List<ItemVo>> list(ItemBo bo) {
+    public R<List<ItemVo>> list(GoodsBo bo) {
         return R.ok(itemService.queryList(bo));
     }
 
@@ -54,7 +54,7 @@ public class ItemController extends BaseController {
     @Log(title = "物料", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @SaCheckPermission("wms:item:list")
-    public void export(ItemBo bo, HttpServletResponse response) {
+    public void export(GoodsBo bo, HttpServletResponse response) {
         List<ItemVo> list = itemService.queryList(bo);
         ExcelUtil.exportExcel(list, "物料", ItemVo.class, response);
     }
@@ -78,7 +78,7 @@ public class ItemController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     @SaCheckPermission("wms:item:edit")
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ItemBo form) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody GoodsBo form) {
         itemService.insertByForm(form);
         return R.ok();
     }
@@ -89,7 +89,7 @@ public class ItemController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     @SaCheckPermission("wms:item:edit")
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ItemBo form) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody GoodsBo form) {
         itemService.updateByForm(form);
         return R.ok();
     }

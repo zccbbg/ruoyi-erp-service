@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.erp.warehouse.mapper.InventoryHistoryMapper">
 
     <resultMap id="inventoryHistoryVoMap" type="com.ruoyi.erp.warehouse.domain.vo.InventoryHistoryVo">
-        <association property="sku" javaType="com.ruoyi.erp.basic.domain.vo.ItemSkuVo">
+        <association property="sku" javaType="com.ruoyi.erp.basic.domain.vo.SkuVo">
             <id property="id" column="sku_id"/> <!-- 映射 sku 的 id -->
         </association>
         <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.ItemVo">

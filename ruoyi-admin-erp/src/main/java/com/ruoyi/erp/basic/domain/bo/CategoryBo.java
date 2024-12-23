@@ -13,7 +13,7 @@ import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = GoodsCategory.class, reverseConvertGenerate = false)
-public class ItemCategoryBo extends BaseEntity {
+public class CategoryBo extends BaseEntity {
 
     /**
      * 物料类型id

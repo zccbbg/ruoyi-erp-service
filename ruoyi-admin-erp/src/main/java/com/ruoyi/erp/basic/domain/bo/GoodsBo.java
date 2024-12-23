@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = Goods.class, reverseConvertGenerate = false)
-public class ItemBo extends BaseEntity {
+public class GoodsBo extends BaseEntity {
 
     /**
      *
@@ -61,6 +61,6 @@ public class ItemBo extends BaseEntity {
      */
     private String remark;
 
-    private List<ItemSkuBo> sku;
+    private List<SkuBo> sku;
 
 }

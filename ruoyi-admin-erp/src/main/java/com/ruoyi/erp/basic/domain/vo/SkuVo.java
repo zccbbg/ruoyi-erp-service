@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = Sku.class)
-public class ItemSkuVo implements Serializable {
+public class SkuVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

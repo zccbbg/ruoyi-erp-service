@@ -32,7 +32,7 @@ public class ItemTypeTreeSelectVo implements Serializable {
     }
 
 
-    public ItemTypeTreeSelectVo(ItemCategoryVo itemType) {
+    public ItemTypeTreeSelectVo(CategoryVo itemType) {
         this.id = itemType.getId();
         this.label = itemType.getCategoryName();
         this.children = itemType.getChildren().stream().map(ItemTypeTreeSelectVo::new).collect(Collectors.toList());

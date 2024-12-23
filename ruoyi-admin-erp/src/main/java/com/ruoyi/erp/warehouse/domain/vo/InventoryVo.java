@@ -2,7 +2,7 @@ package com.ruoyi.erp.warehouse.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.erp.basic.domain.vo.ItemSkuVo;
+import com.ruoyi.erp.basic.domain.vo.SkuVo;
 import com.ruoyi.erp.basic.domain.vo.ItemVo;
 import com.ruoyi.erp.warehouse.domain.entity.Inventory;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -56,7 +56,7 @@ public class InventoryVo implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
-    private ItemSkuVo itemSku;
+    private SkuVo itemSku;
 
     private ItemVo item;
 

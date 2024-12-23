@@ -11,8 +11,8 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.erp.basic.domain.bo.ItemBrandBo;
-import com.ruoyi.erp.basic.domain.vo.ItemBrandVo;
+import com.ruoyi.erp.basic.domain.bo.BrandBo;
+import com.ruoyi.erp.basic.domain.vo.BrandVo;
 import com.ruoyi.erp.basic.service.ItemBrandService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +41,7 @@ public class ItemBrandController extends BaseController {
      */
     @SaCheckPermission("wms:itemBrand:list")
     @GetMapping("/list")
-    public TableDataInfo<ItemBrandVo> list(ItemBrandBo bo, PageQuery pageQuery) {
+    public TableDataInfo<BrandVo> list(BrandBo bo, PageQuery pageQuery) {
         return itemBrandService.queryPageList(bo, pageQuery);
     }
 
@@ -50,7 +50,7 @@ public class ItemBrandController extends BaseController {
      */
     @SaCheckPermission("wms:itemBrand:list")
     @GetMapping("/listNoPage")
-    public R<List<ItemBrandVo>> listNoPage(ItemBrandBo bo) {
+    public R<List<BrandVo>> listNoPage(BrandBo bo) {
         return R.ok(itemBrandService.queryList(bo));
     }
 
@@ -60,9 +60,9 @@ public class ItemBrandController extends BaseController {
     @SaCheckPermission("wms:itemBrand:list")
     @Log(title = "商品品牌", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(ItemBrandBo bo, HttpServletResponse response) {
-        List<ItemBrandVo> list = itemBrandService.queryList(bo);
-        ExcelUtil.exportExcel(list, "商品品牌", ItemBrandVo.class, response);
+    public void export(BrandBo bo, HttpServletResponse response) {
+        List<BrandVo> list = itemBrandService.queryList(bo);
+        ExcelUtil.exportExcel(list, "商品品牌", BrandVo.class, response);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ItemBrandController extends BaseController {
      */
     @SaCheckPermission("wms:itemBrand:list")
     @GetMapping("/{id}")
-    public R<ItemBrandVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<BrandVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(itemBrandService.queryById(id));
     }
@@ -84,7 +84,7 @@ public class ItemBrandController extends BaseController {
     @Log(title = "商品品牌", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ItemBrandBo bo) {
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody BrandBo bo) {
         itemBrandService.insertByBo(bo);
         return R.ok();
     }
@@ -96,7 +96,7 @@ public class ItemBrandController extends BaseController {
     @Log(title = "商品品牌", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ItemBrandBo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody BrandBo bo) {
         itemBrandService.updateByBo(bo);
         return R.ok();
     }

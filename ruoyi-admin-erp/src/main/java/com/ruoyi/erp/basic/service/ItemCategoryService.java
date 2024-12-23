@@ -9,15 +9,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.erp.basic.domain.bo.ItemCategoryBo;
+import com.ruoyi.erp.basic.domain.bo.CategoryBo;
 import com.ruoyi.erp.basic.domain.entity.Goods;
-import com.ruoyi.erp.basic.domain.vo.ItemCategoryVo;
+import com.ruoyi.erp.basic.domain.vo.CategoryVo;
 import com.ruoyi.erp.basic.domain.vo.ItemTypeTreeSelectVo;
-import com.ruoyi.erp.basic.mapper.ItemCategoryMapper;
+import com.ruoyi.erp.basic.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
-import com.ruoyi.erp.basic.mapper.ItemMapper;
+import com.ruoyi.erp.basic.mapper.GoodsMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,26 +28,26 @@ import static cn.hutool.core.lang.Validator.isNotNull;
 
 @RequiredArgsConstructor
 @Service
-public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCategory> {
+public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCategory> {
 
-    private final ItemCategoryMapper itemCategoryMapper;
-    private final ItemMapper itemMapper;
+    private final CategoryMapper categoryMapper;
+    private final GoodsMapper goodsMapper;
 
     /**
      * 查询物料类型
      */
 
-    public ItemCategoryVo queryById(Long id) {
-        return itemCategoryMapper.selectVoById(id);
+    public CategoryVo queryById(Long id) {
+        return categoryMapper.selectVoById(id);
     }
 
     /**
      * 查询物料类型列表
      */
 
-    public TableDataInfo<ItemCategoryVo> queryPageList(ItemCategoryBo bo, PageQuery pageQuery) {
+    public TableDataInfo<CategoryVo> queryPageList(CategoryBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<GoodsCategory> lqw = buildQueryWrapper(bo);
-        Page<ItemCategoryVo> result = itemCategoryMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<CategoryVo> result = categoryMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 
@@ -55,13 +55,13 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
      * 查询物料类型列表
      */
 
-    public List<ItemCategoryVo> queryList(ItemCategoryBo bo) {
+    public List<CategoryVo> queryList(CategoryBo bo) {
         LambdaQueryWrapper<GoodsCategory> lqw = buildQueryWrapper(bo);
         lqw.orderByAsc(GoodsCategory::getOrderNum);
-        return itemCategoryMapper.selectVoList(lqw);
+        return categoryMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<GoodsCategory> buildQueryWrapper(ItemCategoryBo bo) {
+    private LambdaQueryWrapper<GoodsCategory> buildQueryWrapper(CategoryBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<GoodsCategory> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getParentId() != null, GoodsCategory::getParentId, bo.getParentId());
@@ -75,7 +75,7 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
      * 新增物料类型
      */
 
-    public void insertByBo(ItemCategoryBo bo) {
+    public void insertByBo(CategoryBo bo) {
         validateItemTypeName(bo);
         GoodsCategory add = MapstructUtils.convert(bo, GoodsCategory.class);
         LambdaQueryWrapper<GoodsCategory> wrapper = new LambdaQueryWrapper<>();
@@ -87,26 +87,26 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
         //查当前级别排序最大值
         wrapper.orderByDesc(GoodsCategory::getOrderNum);
         wrapper.last("limit 1");
-        GoodsCategory itemType = itemCategoryMapper.selectOne(wrapper);
+        GoodsCategory itemType = categoryMapper.selectOne(wrapper);
         add.setOrderNum(itemType == null ? 0L : itemType.getOrderNum() + 1);
-        itemCategoryMapper.insert(add);
+        categoryMapper.insert(add);
     }
 
     /**
      * 修改物料类型
      */
 
-    public void updateByBo(ItemCategoryBo bo) {
+    public void updateByBo(CategoryBo bo) {
         validateItemTypeName(bo);
         GoodsCategory update = MapstructUtils.convert(bo, GoodsCategory.class);
-        itemCategoryMapper.updateById(update);
+        categoryMapper.updateById(update);
     }
 
-    private void validateItemTypeName(ItemCategoryBo bo) {
+    private void validateItemTypeName(CategoryBo bo) {
         LambdaQueryWrapper<GoodsCategory> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(GoodsCategory::getCategoryName, bo.getCategoryName());
         queryWrapper.ne(bo.getId() != null, GoodsCategory::getId, bo.getId());
-        Assert.isTrue(itemCategoryMapper.selectCount(queryWrapper) == 0, "分类名重复");
+        Assert.isTrue(categoryMapper.selectCount(queryWrapper) == 0, "分类名重复");
     }
 
     /**
@@ -117,15 +117,15 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
         // 有子分类不能删
         LambdaQueryWrapper<GoodsCategory> itemCategoryLqw = new LambdaQueryWrapper<>();
         itemCategoryLqw.in(GoodsCategory::getParentId, ids);
-        Assert.state(itemCategoryMapper.selectCount(itemCategoryLqw) == 0, "删除失败！请先删除该分类下的子分类！");
+        Assert.state(categoryMapper.selectCount(itemCategoryLqw) == 0, "删除失败！请先删除该分类下的子分类！");
         // 被商品应用了不能删
         LambdaQueryWrapper<Goods> itemLqw = Wrappers.lambdaQuery();
         itemLqw.in(Goods::getItemCategory, ids);
-        Assert.state(itemMapper.selectCount(itemLqw) == 0, "删除失败！分类已被商品使用！");
+        Assert.state(goodsMapper.selectCount(itemLqw) == 0, "删除失败！分类已被商品使用！");
         // 删除
         LambdaQueryWrapper<GoodsCategory> deleteWrapper = new LambdaQueryWrapper<>();
         deleteWrapper.in(GoodsCategory::getId, ids);
-        itemCategoryMapper.delete(deleteWrapper);
+        categoryMapper.delete(deleteWrapper);
     }
 
     /**
@@ -133,8 +133,8 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
      * @return
      */
 
-    public List<ItemTypeTreeSelectVo> buildItemTypeTreeSelect(List<ItemCategoryVo> itemTypes) {
-        List<ItemCategoryVo> itemTypeTrees = buildDeptTree(itemTypes);
+    public List<ItemTypeTreeSelectVo> buildItemTypeTreeSelect(List<CategoryVo> itemTypes) {
+        List<CategoryVo> itemTypeTrees = buildDeptTree(itemTypes);
         return itemTypeTrees.stream().map(ItemTypeTreeSelectVo::new).collect(Collectors.toList());
     }
 
@@ -144,13 +144,13 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
      * @param itemTypes 部门列表
      * @return 树结构列表
      */
-    private List<ItemCategoryVo> buildDeptTree(List<ItemCategoryVo> itemTypes) {
-        List<ItemCategoryVo> returnList = new ArrayList<>();
+    private List<CategoryVo> buildDeptTree(List<CategoryVo> itemTypes) {
+        List<CategoryVo> returnList = new ArrayList<>();
         List<Long> tempList = new ArrayList<Long>();
-        for (ItemCategoryVo dept : itemTypes) {
+        for (CategoryVo dept : itemTypes) {
             tempList.add(dept.getId());
         }
-        for (ItemCategoryVo dept : itemTypes) {
+        for (CategoryVo dept : itemTypes) {
             // 如果是顶级节点, 遍历该父节点的所有子节点
             if (!tempList.contains(dept.getParentId())) {
                 recursionFn(itemTypes, dept);
@@ -166,11 +166,11 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
     /**
      * 递归列表
      */
-    private void recursionFn(List<ItemCategoryVo> list, ItemCategoryVo t) {
+    private void recursionFn(List<CategoryVo> list, CategoryVo t) {
         // 得到子节点列表
-        List<ItemCategoryVo> childList = getChildList(list, t);
+        List<CategoryVo> childList = getChildList(list, t);
         t.setChildren(childList);
-        for (ItemCategoryVo tChild : childList) {
+        for (CategoryVo tChild : childList) {
             if (hasChild(list, tChild)) {
                 recursionFn(list, tChild);
             }
@@ -180,9 +180,9 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
     /**
      * 得到子节点列表
      */
-    private List<ItemCategoryVo> getChildList(List<ItemCategoryVo> list, ItemCategoryVo t) {
-        List<ItemCategoryVo> tlist = new ArrayList<>();
-        for (ItemCategoryVo n : list) {
+    private List<CategoryVo> getChildList(List<CategoryVo> list, CategoryVo t) {
+        List<CategoryVo> tlist = new ArrayList<>();
+        for (CategoryVo n : list) {
             if (isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getId().longValue()) {
                 tlist.add(n);
             }
@@ -193,7 +193,7 @@ public class ItemCategoryService extends ServiceImpl<ItemCategoryMapper, GoodsCa
     /**
      * 判断是否有子节点
      */
-    private boolean hasChild(List<ItemCategoryVo> list, ItemCategoryVo t) {
+    private boolean hasChild(List<CategoryVo> list, CategoryVo t) {
         return getChildList(list, t).size() > 0;
     }
 

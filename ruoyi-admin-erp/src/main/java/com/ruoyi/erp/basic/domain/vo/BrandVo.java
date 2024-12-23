@@ -18,7 +18,7 @@ import java.io.Serial;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = Brand.class)
-public class ItemBrandVo extends BaseVo {
+public class BrandVo extends BaseVo {
 
     @Serial
     private static final long serialVersionUID = 1L;
