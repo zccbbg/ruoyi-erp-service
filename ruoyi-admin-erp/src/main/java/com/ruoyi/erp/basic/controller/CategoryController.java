@@ -15,7 +15,6 @@ import com.ruoyi.erp.basic.domain.bo.CategoryBo;
 import com.ruoyi.erp.basic.domain.vo.CategoryVo;
 import com.ruoyi.erp.basic.domain.vo.GoodsTypeTreeSelectVo;
 import com.ruoyi.erp.basic.service.CategoryService;
-import com.ruoyi.erp.basic.service.GoodsCategoryService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -75,7 +75,7 @@ public class CheckDocService {
     private LambdaQueryWrapper<CheckDoc> buildQueryWrapper(CheckDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<CheckDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), CheckDoc::getDocCode, bo.getDocCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), CheckDoc::getDocNo, bo.getDocCode());
         lqw.eq(bo.getCheckedStatus() != null, CheckDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getTotalQuantity() != null, CheckDoc::getTotalQuantity, bo.getTotalQuantity());
         lqw.eq(bo.getWarehouseId() != null, CheckDoc::getWarehouseId, bo.getWarehouseId());
@@ -101,7 +101,7 @@ public class CheckDocService {
 
     private void validateDocCode(String docCode) {
         LambdaQueryWrapper<CheckDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(CheckDoc::getDocCode, docCode);
+        lambdaQueryWrapper.eq(CheckDoc::getDocNo, docCode);
         if (checkDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("盘库单号重复，请手动修改");
         }

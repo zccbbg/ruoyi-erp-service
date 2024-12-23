@@ -104,7 +104,7 @@ public class OtherShipmentDocDetailService extends ServiceImpl<OtherShipmentDocD
         OtherShipmentDocDetailBo bo = new OtherShipmentDocDetailBo();
         bo.setPid(shipmentDocId);
         List<OtherShipmentDocDetailVo> details = queryList(bo);
-        skuService.setItemSkuMap(details);
+        skuService.setSkuMap(details);
         return details;
     }
 }

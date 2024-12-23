@@ -50,7 +50,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
         if (CollUtil.isEmpty(result.getRecords())) {
             return TableDataInfo.build(result);
         }
-        skuService.setItemSkuMap(result.getRecords());
+        skuService.setSkuMap(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -109,7 +109,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
         CheckDocDetailBo bo = new CheckDocDetailBo();
         bo.setPid(checkDocId);
         List<CheckDocDetailVo> details = queryList(bo);
-        skuService.setItemSkuMap(details);
+        skuService.setSkuMap(details);
         return details;
     }
 }

@@ -75,7 +75,7 @@ public class MovementDocService {
     private LambdaQueryWrapper<MovementDoc> buildQueryWrapper(MovementDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), MovementDoc::getDocCode, bo.getDocCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), MovementDoc::getDocNo, bo.getDocCode());
         lqw.eq(bo.getSourceWarehouseId() != null, MovementDoc::getSourceWarehouseId, bo.getSourceWarehouseId());
         lqw.eq(bo.getTargetWarehouseId() != null, MovementDoc::getTargetWarehouseId, bo.getTargetWarehouseId());
         lqw.eq(bo.getCheckedStatus() != null, MovementDoc::getCheckedStatus, bo.getCheckedStatus());
@@ -105,7 +105,7 @@ public class MovementDocService {
 
     private void validateMovementBizNo(String movementBizNo) {
         LambdaQueryWrapper<MovementDoc> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        lambdaQueryWrapper.eq(MovementDoc::getDocCode, movementBizNo);
+        lambdaQueryWrapper.eq(MovementDoc::getDocNo, movementBizNo);
         if (movementDocMapper.exists(lambdaQueryWrapper)) {
             throw new BaseException("移库单号重复，请手动修改");
         }

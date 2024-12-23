@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.erp.basic.mapper.GoodsSkuMapper">
+<mapper namespace="com.ruoyi.erp.basic.mapper.SkuMapper">
 
     <resultMap id="skuMapVo" type="com.ruoyi.erp.basic.domain.vo.SkuMapVo">
         <association property="goods" javaType="com.ruoyi.erp.basic.domain.vo.GoodsVo">

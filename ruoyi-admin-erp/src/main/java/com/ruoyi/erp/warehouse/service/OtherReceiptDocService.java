@@ -75,7 +75,7 @@ public class OtherReceiptDocService {
     private LambdaQueryWrapper<OtherReceiptDoc> buildQueryWrapper(OtherReceiptDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), OtherReceiptDoc::getDocCode, bo.getDocCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), OtherReceiptDoc::getDocNo, bo.getDocCode());
         lqw.eq(bo.getOptType() != null, OtherReceiptDoc::getOptType, bo.getOptType());
         lqw.eq(bo.getMerchantId() != null, OtherReceiptDoc::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getTotalAmount() != null, OtherReceiptDoc::getTotalAmount, bo.getTotalAmount());
@@ -187,7 +187,7 @@ public class OtherReceiptDocService {
 
     public void validateReceiptBizNo(String receiptBizNo) {
         LambdaQueryWrapper<OtherReceiptDoc> receiptDocLqw = Wrappers.lambdaQuery();
-        receiptDocLqw.eq(OtherReceiptDoc::getDocCode, receiptBizNo);
+        receiptDocLqw.eq(OtherReceiptDoc::getDocNo, receiptBizNo);
         OtherReceiptDoc receiptDoc = otherReceiptDocMapper.selectOne(receiptDocLqw);
         Assert.isNull(receiptDoc, "入库单号重复，请手动修改");
     }

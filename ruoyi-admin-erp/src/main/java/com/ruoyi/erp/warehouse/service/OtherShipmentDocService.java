@@ -75,7 +75,7 @@ public class OtherShipmentDocService {
     private LambdaQueryWrapper<OtherShipmentDoc> buildQueryWrapper(OtherShipmentDocBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), OtherShipmentDoc::getDocCode, bo.getDocCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocCode()), OtherShipmentDoc::getDocNo, bo.getDocCode());
         lqw.eq(bo.getOptType() != null, OtherShipmentDoc::getOptType, bo.getOptType());
         lqw.eq(bo.getMerchantId() != null, OtherShipmentDoc::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getTotalAmount() != null, OtherShipmentDoc::getTotalAmount, bo.getTotalAmount());
@@ -104,7 +104,7 @@ public class OtherShipmentDocService {
 
     public void validateShipmentOrderNo(String shipmentOrderNo) {
         LambdaQueryWrapper<OtherShipmentDoc> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherShipmentDoc::getDocCode, shipmentOrderNo);
+        receiptOrderLqw.eq(OtherShipmentDoc::getDocNo, shipmentOrderNo);
         OtherShipmentDoc shipmentOrder = otherShipmentDocMapper.selectOne(receiptOrderLqw);
         Assert.isNull(shipmentOrder, "出库单号重复，请手动修改");
     }

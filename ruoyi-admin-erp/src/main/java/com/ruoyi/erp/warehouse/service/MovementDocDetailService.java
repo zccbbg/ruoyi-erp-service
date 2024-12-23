@@ -113,7 +113,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMappe
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }
-        skuService.setItemSkuMap(details);
+        skuService.setSkuMap(details);
         return details;
     }
 }

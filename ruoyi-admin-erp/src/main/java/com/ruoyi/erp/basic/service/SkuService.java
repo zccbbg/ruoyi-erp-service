@@ -16,7 +16,7 @@ import com.ruoyi.erp.basic.domain.entity.Sku;
 import com.ruoyi.erp.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
-import com.ruoyi.erp.basic.mapper.GoodsSkuMapper;
+import com.ruoyi.erp.basic.mapper.SkuMapper;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,22 +34,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})
 @Service
 @Slf4j
-public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
+public class SkuService extends ServiceImpl<SkuMapper, Sku> {
 
 
-    private final GoodsSkuMapper itemSkuMapper;
+    private final SkuMapper skuMapper;
     private final InventoryService inventoryService;
 
     /**
      * 查询sku信息
      */
 
-    public SkuMapVo queryGoodsSkuMapVo(Long id) {
-        return itemSkuMapper.queryGoodsSkuMapVo(id);
+    public SkuMapVo querySkuMapVo(Long id) {
+        return skuMapper.querySkuMapVo(id);
     }
 
     public SkuVo queryById(Long id) {
-        return itemSkuMapper.selectVoById(id);
+        return skuMapper.selectVoById(id);
     }
 
 
@@ -59,7 +59,7 @@ public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
 
     public TableDataInfo<SkuMapVo> queryPageList(SkuBo bo, PageQuery pageQuery) {
         //开始查sku
-        IPage<SkuMapVo> result = itemSkuMapper.selectByBo(pageQuery.build(), bo);
+        IPage<SkuMapVo> result = skuMapper.selectByBo(pageQuery.build(), bo);
         return TableDataInfo.build(result);
     }
 
@@ -69,7 +69,7 @@ public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
 
     public List<SkuVo> queryList(SkuBo bo) {
         LambdaQueryWrapper<Sku> lqw = buildQueryWrapper(bo);
-        return itemSkuMapper.selectVoList(lqw);
+        return skuMapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<Sku> buildQueryWrapper(SkuBo bo) {
@@ -88,7 +88,7 @@ public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
 
     public Boolean insertByBo(SkuBo bo) {
         Sku add = MapstructUtils.convert(bo, Sku.class);
-        return itemSkuMapper.insert(add) > 0;
+        return skuMapper.insert(add) > 0;
     }
 
     /**
@@ -97,17 +97,17 @@ public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
 
     public Boolean updateByBo(SkuBo bo) {
         Sku update = MapstructUtils.convert(bo, Sku.class);
-        return itemSkuMapper.updateById(update) > 0;
+        return skuMapper.updateById(update) > 0;
     }
 
     public void deleteById(Long id) {
         validateIdBeforeDelete(id);
-        itemSkuMapper.deleteById(id);
+        skuMapper.deleteById(id);
     }
 
     private void validateIdBeforeDelete(Long id) {
         // 只有一个不能删除
-        Sku sku = itemSkuMapper.selectById(id);
+        Sku sku = skuMapper.selectById(id);
 
         if(queryByGoodsId(sku.getGoodsId()).size() <= 1){
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"至少包含一个商品规格！");
@@ -131,7 +131,7 @@ public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
         // 校验库存是否已关联
         validateSkuIdsBeforeDelete(ids);
         // 删除
-        itemSkuMapper.deleteBatchIds(ids);
+        skuMapper.deleteBatchIds(ids);
     }
 
     /**
@@ -161,22 +161,22 @@ public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
     public List<SkuVo> queryByGoodsId(Long id) {
         LambdaQueryWrapper<Sku> lqw = Wrappers.lambdaQuery();
         lqw.eq(Sku::getGoodsId, id);
-        return itemSkuMapper.selectVoList(lqw);
+        return skuMapper.selectVoList(lqw);
     }
 
-    public Map<Long, SkuMapVo> queryGoodsSkuMapVosByIds(Set<Long> skuIds){
-        return itemSkuMapper.queryGoodsSkuMapVos(skuIds).stream()
+    public Map<Long, SkuMapVo> querySkuMapVosByIds(Set<Long> skuIds){
+        return skuMapper.querySkuMapVos(skuIds).stream()
             .collect(Collectors.toMap(SkuMapVo::getSkuId, Function.identity()));
     }
 
-    public void setGoodsSkuMap(List<? extends BaseDocDetailVo> details){
+    public void setSkuMap(List<? extends BaseDocDetailVo> details){
         if (CollUtil.isNotEmpty(details)) {
             Set<Long> skuIds = details
                 .stream()
                 .map(BaseDocDetailVo::getSkuId)
                 .collect(Collectors.toSet());
 
-            Map<Long, SkuMapVo> itemSkuMap = this.queryGoodsSkuMapVosByIds(skuIds);
+            Map<Long, SkuMapVo> itemSkuMap = this.querySkuMapVosByIds(skuIds);
 
             details.forEach(detail -> {
                     SkuMapVo vo = itemSkuMap.get(detail.getSkuId());

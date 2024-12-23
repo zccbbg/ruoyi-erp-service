@@ -118,7 +118,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }
-        skuService.setItemSkuMap(details);
+        skuService.setSkuMap(details);
         return details;
     }
 }
