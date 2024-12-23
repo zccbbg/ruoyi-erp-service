@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.erp.basic.service.ItemSkuService;
+import com.ruoyi.erp.basic.service.SkuService;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
@@ -32,7 +32,7 @@ import java.util.Map;
 public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, CheckDocDetail> {
 
     private final CheckDocDetailMapper checkDocDetailMapper;
-    private final ItemSkuService itemSkuService;
+    private final SkuService skuService;
 
     /**
      * 查询库存盘点单据详情
@@ -50,7 +50,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
         if (CollUtil.isEmpty(result.getRecords())) {
             return TableDataInfo.build(result);
         }
-        itemSkuService.setItemSkuMap(result.getRecords());
+        skuService.setItemSkuMap(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -109,7 +109,7 @@ public class CheckDocDetailService extends ServiceImpl<CheckDocDetailMapper, Che
         CheckDocDetailBo bo = new CheckDocDetailBo();
         bo.setPid(checkDocId);
         List<CheckDocDetailVo> details = queryList(bo);
-        itemSkuService.setItemSkuMap(details);
+        skuService.setItemSkuMap(details);
         return details;
     }
 }

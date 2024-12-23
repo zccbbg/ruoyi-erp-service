@@ -12,11 +12,11 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.basic.domain.bo.CategoryBo;
 import com.ruoyi.erp.basic.domain.entity.Goods;
 import com.ruoyi.erp.basic.domain.vo.CategoryVo;
-import com.ruoyi.erp.basic.domain.vo.ItemTypeTreeSelectVo;
+import com.ruoyi.erp.basic.domain.vo.GoodsTypeTreeSelectVo;
 import com.ruoyi.erp.basic.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
+import com.ruoyi.erp.basic.domain.entity.Category;
 import com.ruoyi.erp.basic.mapper.GoodsMapper;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import static cn.hutool.core.lang.Validator.isNotNull;
 
 @RequiredArgsConstructor
 @Service
-public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCategory> {
+public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
     private final CategoryMapper categoryMapper;
     private final GoodsMapper goodsMapper;
@@ -46,7 +46,7 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
      */
 
     public TableDataInfo<CategoryVo> queryPageList(CategoryBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<GoodsCategory> lqw = buildQueryWrapper(bo);
+        LambdaQueryWrapper<Category> lqw = buildQueryWrapper(bo);
         Page<CategoryVo> result = categoryMapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
@@ -56,18 +56,18 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
      */
 
     public List<CategoryVo> queryList(CategoryBo bo) {
-        LambdaQueryWrapper<GoodsCategory> lqw = buildQueryWrapper(bo);
-        lqw.orderByAsc(GoodsCategory::getOrderNum);
+        LambdaQueryWrapper<Category> lqw = buildQueryWrapper(bo);
+        lqw.orderByAsc(Category::getOrderNum);
         return categoryMapper.selectVoList(lqw);
     }
 
-    private LambdaQueryWrapper<GoodsCategory> buildQueryWrapper(CategoryBo bo) {
+    private LambdaQueryWrapper<Category> buildQueryWrapper(CategoryBo bo) {
         Map<String, Object> params = bo.getParams();
-        LambdaQueryWrapper<GoodsCategory> lqw = Wrappers.lambdaQuery();
-        lqw.eq(bo.getParentId() != null, GoodsCategory::getParentId, bo.getParentId());
-        lqw.like(StrUtil.isNotBlank(bo.getCategoryName()), GoodsCategory::getCategoryName, bo.getCategoryName());
-        lqw.eq(bo.getOrderNum() != null, GoodsCategory::getOrderNum, bo.getOrderNum());
-        lqw.eq(StrUtil.isNotBlank(bo.getStatus()), GoodsCategory::getStatus, bo.getStatus());
+        LambdaQueryWrapper<Category> lqw = Wrappers.lambdaQuery();
+        lqw.eq(bo.getPid() != null, Category::getPid, bo.getPid());
+        lqw.like(StrUtil.isNotBlank(bo.getCategoryName()), Category::getCategoryName, bo.getCategoryName());
+        lqw.eq(bo.getOrderNum() != null, Category::getOrderNum, bo.getOrderNum());
+        lqw.eq(StrUtil.isNotBlank(bo.getStatus()), Category::getStatus, bo.getStatus());
         return lqw;
     }
 
@@ -76,18 +76,18 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
      */
 
     public void insertByBo(CategoryBo bo) {
-        validateItemTypeName(bo);
-        GoodsCategory add = MapstructUtils.convert(bo, GoodsCategory.class);
-        LambdaQueryWrapper<GoodsCategory> wrapper = new LambdaQueryWrapper<>();
-        if (bo.getParentId() != null){
-            wrapper.eq(GoodsCategory::getParentId, bo.getParentId());
+        validateGoodsTypeName(bo);
+        Category add = MapstructUtils.convert(bo, Category.class);
+        LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+        if (bo.getPid() != null){
+            wrapper.eq(Category::getPid, bo.getPid());
         }else {
-            wrapper.eq(GoodsCategory::getParentId, 0L);
+            wrapper.eq(Category::getPid, 0L);
         }
         //查当前级别排序最大值
-        wrapper.orderByDesc(GoodsCategory::getOrderNum);
+        wrapper.orderByDesc(Category::getOrderNum);
         wrapper.last("limit 1");
-        GoodsCategory itemType = categoryMapper.selectOne(wrapper);
+        Category itemType = categoryMapper.selectOne(wrapper);
         add.setOrderNum(itemType == null ? 0L : itemType.getOrderNum() + 1);
         categoryMapper.insert(add);
     }
@@ -97,15 +97,15 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
      */
 
     public void updateByBo(CategoryBo bo) {
-        validateItemTypeName(bo);
-        GoodsCategory update = MapstructUtils.convert(bo, GoodsCategory.class);
+        validateGoodsTypeName(bo);
+        Category update = MapstructUtils.convert(bo, Category.class);
         categoryMapper.updateById(update);
     }
 
-    private void validateItemTypeName(CategoryBo bo) {
-        LambdaQueryWrapper<GoodsCategory> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(GoodsCategory::getCategoryName, bo.getCategoryName());
-        queryWrapper.ne(bo.getId() != null, GoodsCategory::getId, bo.getId());
+    private void validateGoodsTypeName(CategoryBo bo) {
+        LambdaQueryWrapper<Category> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(Category::getCategoryName, bo.getCategoryName());
+        queryWrapper.ne(bo.getId() != null, Category::getId, bo.getId());
         Assert.isTrue(categoryMapper.selectCount(queryWrapper) == 0, "分类名重复");
     }
 
@@ -115,16 +115,16 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
 
     public void deleteByIds(List<Long> ids) {
         // 有子分类不能删
-        LambdaQueryWrapper<GoodsCategory> itemCategoryLqw = new LambdaQueryWrapper<>();
-        itemCategoryLqw.in(GoodsCategory::getParentId, ids);
+        LambdaQueryWrapper<Category> itemCategoryLqw = new LambdaQueryWrapper<>();
+        itemCategoryLqw.in(Category::getPid, ids);
         Assert.state(categoryMapper.selectCount(itemCategoryLqw) == 0, "删除失败！请先删除该分类下的子分类！");
         // 被商品应用了不能删
         LambdaQueryWrapper<Goods> itemLqw = Wrappers.lambdaQuery();
-        itemLqw.in(Goods::getItemCategory, ids);
+        itemLqw.in(Goods::getCategoryId, ids);
         Assert.state(goodsMapper.selectCount(itemLqw) == 0, "删除失败！分类已被商品使用！");
         // 删除
-        LambdaQueryWrapper<GoodsCategory> deleteWrapper = new LambdaQueryWrapper<>();
-        deleteWrapper.in(GoodsCategory::getId, ids);
+        LambdaQueryWrapper<Category> deleteWrapper = new LambdaQueryWrapper<>();
+        deleteWrapper.in(Category::getId, ids);
         categoryMapper.delete(deleteWrapper);
     }
 
@@ -133,9 +133,9 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
      * @return
      */
 
-    public List<ItemTypeTreeSelectVo> buildItemTypeTreeSelect(List<CategoryVo> itemTypes) {
+    public List<GoodsTypeTreeSelectVo> buildGoodsTypeTreeSelect(List<CategoryVo> itemTypes) {
         List<CategoryVo> itemTypeTrees = buildDeptTree(itemTypes);
-        return itemTypeTrees.stream().map(ItemTypeTreeSelectVo::new).collect(Collectors.toList());
+        return itemTypeTrees.stream().map(GoodsTypeTreeSelectVo::new).collect(Collectors.toList());
     }
 
     /**
@@ -197,10 +197,10 @@ public class ItemCategoryService extends ServiceImpl<CategoryMapper, GoodsCatego
         return getChildList(list, t).size() > 0;
     }
 
-    public void updateOrderNum(List<ItemTypeTreeSelectVo> tree) {
-        List<GoodsCategory> updateList = new ArrayList<>();
+    public void updateOrderNum(List<GoodsTypeTreeSelectVo> tree) {
+        List<Category> updateList = new ArrayList<>();
         for (int i = 0; i < tree.size(); i++) {
-            GoodsCategory itemType = new GoodsCategory();
+            Category itemType = new Category();
             itemType.setId(tree.get(i).getId());
             itemType.setOrderNum((long) i);
             updateList.add(itemType);

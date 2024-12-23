@@ -8,11 +8,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ruoyi.erp.basic.domain.entity.GoodsCategory;
+import com.ruoyi.erp.basic.domain.entity.Category;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = GoodsCategory.class, reverseConvertGenerate = false)
+@AutoMapper(target = Category.class, reverseConvertGenerate = false)
 public class CategoryBo extends BaseEntity {
 
     /**
@@ -24,7 +24,7 @@ public class CategoryBo extends BaseEntity {
     /**
      * 父物料类型id
      */
-    private Long parentId;
+    private Long pid;
 
     /**
      * 物料类型名称

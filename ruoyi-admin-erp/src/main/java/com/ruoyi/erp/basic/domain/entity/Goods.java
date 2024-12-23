@@ -25,17 +25,17 @@ public class Goods extends BaseEntity {
     /**
      * 编号
      */
-    private String itemCode;
+    private String goodsNo;
 
     /**
      * 名称
      */
-    private String itemName;
+    private String goodsName;
 
     /**
-     * 分类
+     * 分类id
      */
-    private String itemCategory;
+    private Long categoryId;
 
     /**
      * 单位类别
@@ -45,7 +45,7 @@ public class Goods extends BaseEntity {
     /**
      * 品牌
      */
-    private Long itemBrand;
+    private Long brandId;
 
     /**
      * 备注

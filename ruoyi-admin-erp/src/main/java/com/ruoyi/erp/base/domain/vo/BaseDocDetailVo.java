@@ -3,7 +3,7 @@ package com.ruoyi.erp.base.domain.vo;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
-import com.ruoyi.erp.basic.domain.vo.ItemVo;
+import com.ruoyi.erp.basic.domain.vo.GoodsVo;
 import lombok.Data;
 
 import java.io.Serial;
@@ -55,7 +55,7 @@ public class BaseDocDetailVo implements Serializable {
     @ExcelProperty(value = "所属仓库")
     private Long warehouseId;
 
-    private SkuVo itemSku;
+    private SkuVo sku;
 
-    private ItemVo item;
+    private GoodsVo goods;
 }

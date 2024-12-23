@@ -30,7 +30,7 @@ public class Merchant extends BaseEntity {
     /**
      * 编号
      */
-    private String merchantCode;
+    private String merchantNo;
     /**
      * 名称
      */

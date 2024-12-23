@@ -13,7 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.erp.basic.domain.bo.BrandBo;
 import com.ruoyi.erp.basic.domain.vo.BrandVo;
-import com.ruoyi.erp.basic.service.ItemBrandService;
+import com.ruoyi.erp.basic.service.BrandService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +32,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/basic/itemBrand")
-public class ItemBrandController extends BaseController {
+public class BrandController extends BaseController {
 
-    private final ItemBrandService itemBrandService;
+    private final BrandService brandService;
 
     /**
      * 查询商品品牌列表
@@ -42,7 +42,7 @@ public class ItemBrandController extends BaseController {
     @SaCheckPermission("wms:itemBrand:list")
     @GetMapping("/list")
     public TableDataInfo<BrandVo> list(BrandBo bo, PageQuery pageQuery) {
-        return itemBrandService.queryPageList(bo, pageQuery);
+        return brandService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ItemBrandController extends BaseController {
     @SaCheckPermission("wms:itemBrand:list")
     @GetMapping("/listNoPage")
     public R<List<BrandVo>> listNoPage(BrandBo bo) {
-        return R.ok(itemBrandService.queryList(bo));
+        return R.ok(brandService.queryList(bo));
     }
 
     /**
@@ -61,7 +61,7 @@ public class ItemBrandController extends BaseController {
     @Log(title = "商品品牌", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(BrandBo bo, HttpServletResponse response) {
-        List<BrandVo> list = itemBrandService.queryList(bo);
+        List<BrandVo> list = brandService.queryList(bo);
         ExcelUtil.exportExcel(list, "商品品牌", BrandVo.class, response);
     }
 
@@ -74,7 +74,7 @@ public class ItemBrandController extends BaseController {
     @GetMapping("/{id}")
     public R<BrandVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(itemBrandService.queryById(id));
+        return R.ok(brandService.queryById(id));
     }
 
     /**
@@ -85,7 +85,7 @@ public class ItemBrandController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody BrandBo bo) {
-        itemBrandService.insertByBo(bo);
+        brandService.insertByBo(bo);
         return R.ok();
     }
 
@@ -97,7 +97,7 @@ public class ItemBrandController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody BrandBo bo) {
-        itemBrandService.updateByBo(bo);
+        brandService.updateByBo(bo);
         return R.ok();
     }
 
@@ -111,7 +111,7 @@ public class ItemBrandController extends BaseController {
     @DeleteMapping("/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空")
                           @PathVariable Long id) {
-        itemBrandService.deleteById(id);
+        brandService.deleteById(id);
         return R.ok();
     }
 }

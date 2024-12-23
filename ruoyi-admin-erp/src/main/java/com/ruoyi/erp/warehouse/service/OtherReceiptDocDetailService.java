@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.erp.basic.service.ItemSkuService;
+import com.ruoyi.erp.basic.service.SkuService;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
@@ -34,7 +34,7 @@ import java.util.Map;
 public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDetailMapper, OtherReceiptDocDetail> {
 
     private final OtherReceiptDocDetailMapper otherReceiptDocDetailMapper;
-    private final ItemSkuService itemSkuService;
+    private final SkuService skuService;
 
     /**
      * 查询入库单详情
@@ -118,7 +118,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }
-        itemSkuService.setItemSkuMap(details);
+        skuService.setItemSkuMap(details);
         return details;
     }
 }

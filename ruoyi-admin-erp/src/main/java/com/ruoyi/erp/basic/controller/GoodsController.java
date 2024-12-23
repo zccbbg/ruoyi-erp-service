@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.erp.basic.domain.bo.GoodsBo;
-import com.ruoyi.erp.basic.domain.vo.ItemVo;
-import com.ruoyi.erp.basic.service.ItemService;
+import com.ruoyi.erp.basic.domain.vo.GoodsVo;
+import com.ruoyi.erp.basic.service.GoodsService;
 
 import java.util.List;
 
@@ -26,16 +26,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/basic/item")
-public class ItemController extends BaseController {
+public class GoodsController extends BaseController {
 
-    private final ItemService itemService;
+    private final GoodsService itemService;
 
     /**
      * 查询物料列表
      */
     @GetMapping("/list")
     @SaCheckPermission("wms:item:list")
-    public TableDataInfo<ItemVo> list(GoodsBo bo, PageQuery pageQuery) {
+    public TableDataInfo<GoodsVo> list(GoodsBo bo, PageQuery pageQuery) {
         return itemService.queryPageList(bo, pageQuery);
     }
 
@@ -44,7 +44,7 @@ public class ItemController extends BaseController {
      */
     @GetMapping("/listNoPage")
     @SaCheckPermission("wms:item:list")
-    public R<List<ItemVo>> list(GoodsBo bo) {
+    public R<List<GoodsVo>> list(GoodsBo bo) {
         return R.ok(itemService.queryList(bo));
     }
 
@@ -55,8 +55,8 @@ public class ItemController extends BaseController {
     @PostMapping("/export")
     @SaCheckPermission("wms:item:list")
     public void export(GoodsBo bo, HttpServletResponse response) {
-        List<ItemVo> list = itemService.queryList(bo);
-        ExcelUtil.exportExcel(list, "物料", ItemVo.class, response);
+        List<GoodsVo> list = itemService.queryList(bo);
+        ExcelUtil.exportExcel(list, "物料", GoodsVo.class, response);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ItemController extends BaseController {
      */
     @GetMapping("/{id}")
     @SaCheckPermission("wms:item:list")
-    public R<ItemVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<GoodsVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(itemService.queryById(id));
     }

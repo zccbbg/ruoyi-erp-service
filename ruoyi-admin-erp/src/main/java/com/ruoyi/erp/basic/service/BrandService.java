@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Service
-public class ItemBrandService {
+public class BrandService {
 
     private final BrandMapper brandMapper;
     private final GoodsMapper goodsMapper;
@@ -93,7 +93,7 @@ public class ItemBrandService {
 
     private void validateIdBeforeDelete(Long id) {
         LambdaQueryWrapper<Goods> itemLambdaQueryWrapper = Wrappers.lambdaQuery();
-        itemLambdaQueryWrapper.eq(Goods::getItemBrand, id);
+        itemLambdaQueryWrapper.eq(Goods::getBrandId, id);
         if (goodsMapper.exists(itemLambdaQueryWrapper)) {
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"该品牌已有业务关联，无法删除！");
         }

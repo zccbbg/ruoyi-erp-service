@@ -16,7 +16,7 @@ import com.ruoyi.erp.basic.domain.entity.Sku;
 import com.ruoyi.erp.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
-import com.ruoyi.erp.basic.mapper.ItemSkuMapper;
+import com.ruoyi.erp.basic.mapper.GoodsSkuMapper;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,18 +34,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor_ = {@Lazy})
 @Service
 @Slf4j
-public class ItemSkuService extends ServiceImpl<ItemSkuMapper, Sku> {
+public class SkuService extends ServiceImpl<GoodsSkuMapper, Sku> {
 
 
-    private final ItemSkuMapper itemSkuMapper;
+    private final GoodsSkuMapper itemSkuMapper;
     private final InventoryService inventoryService;
 
     /**
      * 查询sku信息
      */
 
-    public SkuMapVo queryItemSkuMapVo(Long id) {
-        return itemSkuMapper.queryItemSkuMapVo(id);
+    public SkuMapVo queryGoodsSkuMapVo(Long id) {
+        return itemSkuMapper.queryGoodsSkuMapVo(id);
     }
 
     public SkuVo queryById(Long id) {
@@ -76,9 +76,9 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, Sku> {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<Sku> lqw = Wrappers.lambdaQuery();
         lqw.like(StrUtil.isNotBlank(bo.getSkuName()), Sku::getSkuName, bo.getSkuName());
-        lqw.eq(bo.getItemId() != null, Sku::getItemId, bo.getItemId());
+        lqw.eq(bo.getGoodsId() != null, Sku::getGoodsId, bo.getGoodsId());
         lqw.eq(StrUtil.isNotBlank(bo.getBarcode()), Sku::getBarcode, bo.getBarcode());
-        lqw.orderByDesc(Sku::getItemId);
+        lqw.orderByDesc(Sku::getGoodsId);
         return lqw;
     }
 
@@ -109,7 +109,7 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, Sku> {
         // 只有一个不能删除
         Sku sku = itemSkuMapper.selectById(id);
 
-        if(queryByItemId(sku.getItemId()).size() <= 1){
+        if(queryByGoodsId(sku.getGoodsId()).size() <= 1){
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"至少包含一个商品规格！");
         }
         // 校验库存是否已关联
@@ -144,10 +144,10 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, Sku> {
         saveOrUpdateBatch(skuList);
     }
 
-    public void setItemId(List<SkuBo> itemSkuList, Long itemId) {
+    public void setGoodsId(List<SkuBo> itemSkuList, Long itemId) {
         for (SkuBo skuBo : itemSkuList) {
             if (StrUtil.isBlank(skuBo.getBarcode())) {
-                skuBo.setItemId(itemId);
+                skuBo.setGoodsId(itemId);
             }
         }
     }
@@ -158,30 +158,30 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, Sku> {
      * @param id 商品id
      */
 
-    public List<SkuVo> queryByItemId(Long id) {
+    public List<SkuVo> queryByGoodsId(Long id) {
         LambdaQueryWrapper<Sku> lqw = Wrappers.lambdaQuery();
-        lqw.eq(Sku::getItemId, id);
+        lqw.eq(Sku::getGoodsId, id);
         return itemSkuMapper.selectVoList(lqw);
     }
 
-    public Map<Long, SkuMapVo> queryItemSkuMapVosByIds(Set<Long> skuIds){
-        return itemSkuMapper.queryItemSkuMapVos(skuIds).stream()
+    public Map<Long, SkuMapVo> queryGoodsSkuMapVosByIds(Set<Long> skuIds){
+        return itemSkuMapper.queryGoodsSkuMapVos(skuIds).stream()
             .collect(Collectors.toMap(SkuMapVo::getSkuId, Function.identity()));
     }
 
-    public void setItemSkuMap(List<? extends BaseDocDetailVo> details){
+    public void setGoodsSkuMap(List<? extends BaseDocDetailVo> details){
         if (CollUtil.isNotEmpty(details)) {
             Set<Long> skuIds = details
                 .stream()
                 .map(BaseDocDetailVo::getSkuId)
                 .collect(Collectors.toSet());
 
-            Map<Long, SkuMapVo> itemSkuMap = this.queryItemSkuMapVosByIds(skuIds);
+            Map<Long, SkuMapVo> itemSkuMap = this.queryGoodsSkuMapVosByIds(skuIds);
 
             details.forEach(detail -> {
                     SkuMapVo vo = itemSkuMap.get(detail.getSkuId());
-                    detail.setItemSku(vo.getItemSku());
-                    detail.setItem(vo.getItem());
+                    detail.setSku(vo.getSku());
+                    detail.setGoods(vo.getGoods());
             });
         }
     }

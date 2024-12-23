@@ -11,7 +11,7 @@ import java.io.Serial;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("basic_category")
-public class GoodsCategory extends BaseEntity {
+public class Category extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class GoodsCategory extends BaseEntity {
     /**
      * 父物料类型id
      */
-    private Long parentId;
+    private Long pid;
 
     /**
      * 物料类型名称

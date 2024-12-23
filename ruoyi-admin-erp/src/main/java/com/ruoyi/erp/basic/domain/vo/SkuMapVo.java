@@ -12,6 +12,6 @@ public class SkuMapVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long skuId;
-    private ItemVo item;
+    private GoodsVo item;
     private SkuVo itemSku;
 }

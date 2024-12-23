@@ -33,7 +33,7 @@ public class SkuBo extends BaseEntity {
      *
      */
     @NotNull(message = "不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long itemId;
+    private Long goodsId;
 
     /**
      * sku条码
@@ -43,7 +43,7 @@ public class SkuBo extends BaseEntity {
     /**
      * 编码
      */
-    private String skuCode;
+    private String skuNo;
 
     /**
      * 长(cm)
@@ -83,17 +83,17 @@ public class SkuBo extends BaseEntity {
     /**
      * 商品名称
      */
-    private String itemName;
+    private String goodsName;
 
     /**
      * 商品编码
      */
-    private String itemCode;
+    private String goodsNo;
 
     /**
      * 商品分类
      */
-    private String itemCategory;
+    private String category;
 
-    private Long itemBrand;
+    private Long brand;
 }

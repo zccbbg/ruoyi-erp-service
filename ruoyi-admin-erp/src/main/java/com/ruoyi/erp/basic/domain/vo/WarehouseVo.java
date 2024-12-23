@@ -28,7 +28,7 @@ public class WarehouseVo extends BaseVo {
      * 编号
      */
     @ExcelProperty(value = "编号")
-    private String warehouseCode;
+    private String warehouseNo;
 
     /**
      * 名称

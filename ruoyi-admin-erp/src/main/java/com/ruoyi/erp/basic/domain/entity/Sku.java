@@ -31,7 +31,7 @@ public class Sku extends BaseEntity {
     /**
      *
      */
-    private Long itemId;
+    private Long goodsId;
 
     /**
      * 条码
@@ -41,7 +41,7 @@ public class Sku extends BaseEntity {
     /**
      * 编码
      */
-    private String skuCode;
+    private String skuNo;
 
 
     /**

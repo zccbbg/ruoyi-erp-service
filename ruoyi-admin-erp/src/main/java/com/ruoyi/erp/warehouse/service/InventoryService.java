@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
-import com.ruoyi.erp.basic.service.ItemSkuService;
+import com.ruoyi.erp.basic.service.SkuService;
 import com.ruoyi.common.core.constant.HttpStatus;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MapstructUtils;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
 
     private final InventoryMapper inventoryMapper;
-    private final ItemSkuService itemSkuService;
+    private final SkuService skuService;
 
     /**
      * 查询库存
@@ -55,7 +55,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
         List<InventoryVo> vos = inventoryMapper.selectVoList(lqw);
         if(CollUtil.isNotEmpty(vos)){
             Set<Long> skuIds = vos.stream().map(InventoryVo::getSkuId).collect(Collectors.toSet());
-            Map<Long, SkuMapVo> itemSkuMap = itemSkuService.queryItemSkuMapVosByIds(skuIds);
+            Map<Long, SkuMapVo> itemSkuMap = skuService.queryItemSkuMapVosByIds(skuIds);
             vos.forEach(it -> {
                 SkuMapVo skuMapVo = itemSkuMap.get(it.getSkuId());
                 it.setItemSku(skuMapVo.getItemSku());
@@ -126,7 +126,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 wrapper.eq(Inventory::getId,detail.getInventoryId());
                 Inventory inventory = inventoryMapper.selectOne(wrapper);
                 if(inventory.getQuantity().compareTo(detail.getQuantity())!=0){
-                    SkuMapVo skuMapVo = itemSkuService.queryItemSkuMapVo(detail.getSkuId());
+                    SkuMapVo skuMapVo = skuService.queryItemSkuMapVo(detail.getSkuId());
                     throw new ServiceException(
                         "账面库存不匹配："+ skuMapVo.getItem().getItemName()+"（"+ skuMapVo.getItemSku().getSkuName()+"）",
                         HttpStatus.CONFLICT,
@@ -142,7 +142,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 wrapper.eq(Inventory::getWarehouseId,detail.getWarehouseId());
                 Inventory inventory = inventoryMapper.selectOne(wrapper);
                 if(inventory != null){
-                    SkuMapVo skuMapVo = itemSkuService.queryItemSkuMapVo(detail.getSkuId());
+                    SkuMapVo skuMapVo = skuService.queryItemSkuMapVo(detail.getSkuId());
                     throw new ServiceException(
                         "账面库存不匹配："+ skuMapVo.getItem().getItemName()+"（"+ skuMapVo.getItemSku().getSkuName()+"）",
                         HttpStatus.CONFLICT,
@@ -208,13 +208,13 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
             wrapper.eq(Inventory::getSkuId, shipmentOrderDetailBo.getSkuId());
             Inventory result = inventoryMapper.selectOne(wrapper);
             if(result==null){
-                SkuMapVo skuMapVo = itemSkuService.queryItemSkuMapVo(shipmentOrderDetailBo.getSkuId());
+                SkuMapVo skuMapVo = skuService.queryItemSkuMapVo(shipmentOrderDetailBo.getSkuId());
                 throw new ServiceException("库存不足", HttpStatus.CONFLICT, skuMapVo.getItem().getItemName()+"（"+ skuMapVo.getItemSku().getSkuName()+"）库存不足，当前库存：0");
             }
             BigDecimal beforeQuantity = result.getQuantity();
             BigDecimal afterQuantity = beforeQuantity.subtract(shipmentOrderDetailBo.getQuantity());
             if(afterQuantity.signum() == -1){
-                SkuMapVo skuMapVo = itemSkuService.queryItemSkuMapVo(shipmentOrderDetailBo.getSkuId());
+                SkuMapVo skuMapVo = skuService.queryItemSkuMapVo(shipmentOrderDetailBo.getSkuId());
                 throw new ServiceException("库存不足", HttpStatus.CONFLICT, skuMapVo.getItem().getItemName()+"（"+ skuMapVo.getItemSku().getSkuName()+"）库存不足，当前库存："+ beforeQuantity);
             }
             shipmentOrderDetailBo.setBeforeQuantity(beforeQuantity);

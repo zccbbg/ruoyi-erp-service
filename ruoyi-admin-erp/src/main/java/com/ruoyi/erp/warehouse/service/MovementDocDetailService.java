@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.erp.basic.service.ItemSkuService;
+import com.ruoyi.erp.basic.service.SkuService;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
@@ -33,7 +33,7 @@ import java.util.Map;
 public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMapper, MovementDocDetail> {
 
     private final MovementDocDetailMapper movementDocDetailMapper;
-    private final ItemSkuService itemSkuService;
+    private final SkuService skuService;
 
     /**
      * 查询库存移动详情
@@ -113,7 +113,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMappe
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }
-        itemSkuService.setItemSkuMap(details);
+        skuService.setItemSkuMap(details);
         return details;
     }
 }

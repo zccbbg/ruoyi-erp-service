@@ -31,19 +31,19 @@ public class GoodsBo extends BaseEntity {
     /**
      * 编号
      */
-    private String itemCode;
+    private String goodsNo;
 
     /**
      * 名称
      */
     @NotBlank(message = "名称不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String itemName;
+    private String goodsName;
 
     /**
      * 分类
      */
     @NotBlank(message = "分类不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String itemCategory;
+    private Long categoryId;
 
     /**
      * 单位类别
@@ -53,7 +53,7 @@ public class GoodsBo extends BaseEntity {
     /**
      * 品牌
      */
-    private Long itemBrand;
+    private Long brandId;
 
 
     /**

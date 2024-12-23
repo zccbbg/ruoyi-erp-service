@@ -4,7 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
-import com.ruoyi.erp.basic.domain.vo.ItemVo;
+import com.ruoyi.erp.basic.domain.vo.GoodsVo;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.convert.ExcelDictConvert;
 import com.ruoyi.erp.warehouse.domain.entity.InventoryHistory;
@@ -96,7 +96,7 @@ public class InventoryHistoryVo implements Serializable {
 
     private SkuVo itemSku;
 
-    private ItemVo item;
+    private GoodsVo item;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

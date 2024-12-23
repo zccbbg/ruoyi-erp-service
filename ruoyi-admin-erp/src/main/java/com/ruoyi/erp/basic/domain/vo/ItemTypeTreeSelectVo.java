@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemTypeTreeSelectVo implements Serializable {
+public class GoodsTypeTreeSelectVo implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
@@ -25,17 +25,17 @@ public class ItemTypeTreeSelectVo implements Serializable {
      * 子节点
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ItemTypeTreeSelectVo> children;
+    private List<GoodsTypeTreeSelectVo> children;
 
-    public ItemTypeTreeSelectVo() {
+    public GoodsTypeTreeSelectVo() {
 
     }
 
 
-    public ItemTypeTreeSelectVo(CategoryVo itemType) {
+    public GoodsTypeTreeSelectVo(CategoryVo itemType) {
         this.id = itemType.getId();
         this.label = itemType.getCategoryName();
-        this.children = itemType.getChildren().stream().map(ItemTypeTreeSelectVo::new).collect(Collectors.toList());
+        this.children = itemType.getChildren().stream().map(GoodsTypeTreeSelectVo::new).collect(Collectors.toList());
     }
 
 
@@ -55,11 +55,11 @@ public class ItemTypeTreeSelectVo implements Serializable {
         this.label = label;
     }
 
-    public List<ItemTypeTreeSelectVo> getChildren() {
+    public List<GoodsTypeTreeSelectVo> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ItemTypeTreeSelectVo> children) {
+    public void setChildren(List<GoodsTypeTreeSelectVo> children) {
         this.children = children;
     }
 

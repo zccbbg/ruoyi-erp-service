@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = Goods.class)
-public class ItemVo implements Serializable {
+public class GoodsVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,19 +28,13 @@ public class ItemVo implements Serializable {
      * 编号
      */
     @ExcelProperty(value = "编号")
-    private String itemCode;
+    private String goodsNo;
 
     /**
      * 名称
      */
     @ExcelProperty(value = "名称")
-    private String itemName;
-
-    /**
-     * 分类
-     */
-    @ExcelProperty(value = "分类")
-    private String itemCategory;
+    private String goodsName;
 
     /**
      * 单位类别
@@ -52,7 +46,7 @@ public class ItemVo implements Serializable {
      * 品牌
      */
     @ExcelProperty(value = "品牌")
-    private Long itemBrand;
+    private Long brandId;
 
     /**
      * 备注
@@ -60,8 +54,10 @@ public class ItemVo implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
+    private Long categoryId;
+
     /**
      * 类别
      */
-    private CategoryVo itemCategoryInfo;
+    private CategoryVo category;
 }

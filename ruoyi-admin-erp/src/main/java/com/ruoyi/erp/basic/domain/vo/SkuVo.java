@@ -48,7 +48,7 @@ public class SkuVo implements Serializable {
      * sku编码
      */
     @ExcelProperty(value = "sku编码")
-    private String skuCode;
+    private String skuNo;
 
     /**
      * 长(cm)

@@ -13,8 +13,9 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.erp.basic.domain.bo.CategoryBo;
 import com.ruoyi.erp.basic.domain.vo.CategoryVo;
-import com.ruoyi.erp.basic.domain.vo.ItemTypeTreeSelectVo;
-import com.ruoyi.erp.basic.service.ItemCategoryService;
+import com.ruoyi.erp.basic.domain.vo.GoodsTypeTreeSelectVo;
+import com.ruoyi.erp.basic.service.CategoryService;
+import com.ruoyi.erp.basic.service.GoodsCategoryService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -30,9 +31,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/basic/itemCategory")
-public class ItemCategoryController extends BaseController {
+public class CategoryController extends BaseController {
 
-    private final ItemCategoryService itemCategoryService;
+    private final CategoryService categoryService;
 
     /**
      * 查询物料类型列表
@@ -40,7 +41,7 @@ public class ItemCategoryController extends BaseController {
     @GetMapping("/list")
     @SaCheckPermission("wms:item:list")
     public TableDataInfo<CategoryVo> list(CategoryBo bo, PageQuery pageQuery) {
-        return itemCategoryService.queryPageList(bo, pageQuery);
+        return categoryService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -49,7 +50,7 @@ public class ItemCategoryController extends BaseController {
     @GetMapping("/listNoPage")
     @SaCheckPermission("wms:item:list")
     public R<List<CategoryVo>> listNoPage(CategoryBo bo) {
-        return R.ok(itemCategoryService.queryList(bo));
+        return R.ok(categoryService.queryList(bo));
     }
 
     /**
@@ -57,9 +58,9 @@ public class ItemCategoryController extends BaseController {
      */
     @GetMapping("/treeselect")
     @SaCheckPermission("wms:item:list")
-    public R<List<ItemTypeTreeSelectVo>> treeselect(CategoryBo query) {
-        List<CategoryVo> itemTypes = itemCategoryService.queryList(query);
-        return R.ok(itemCategoryService.buildItemTypeTreeSelect(itemTypes));
+    public R<List<GoodsTypeTreeSelectVo>> treeselect(CategoryBo query) {
+        List<CategoryVo> itemTypes = categoryService.queryList(query);
+        return R.ok(categoryService.buildGoodsTypeTreeSelect(itemTypes));
     }
 
     /**
@@ -69,7 +70,7 @@ public class ItemCategoryController extends BaseController {
     @PostMapping("/export")
     @SaCheckPermission("wms:item:list")
     public void export(CategoryBo bo, HttpServletResponse response) {
-        List<CategoryVo> list = itemCategoryService.queryList(bo);
+        List<CategoryVo> list = categoryService.queryList(bo);
         ExcelUtil.exportExcel(list, "物料类型", CategoryVo.class, response);
     }
 
@@ -82,7 +83,7 @@ public class ItemCategoryController extends BaseController {
     @SaCheckPermission("wms:item:list")
     public R<CategoryVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long itemTypeId) {
-        return R.ok(itemCategoryService.queryById(itemTypeId));
+        return R.ok(categoryService.queryById(itemTypeId));
     }
 
     /**
@@ -93,7 +94,7 @@ public class ItemCategoryController extends BaseController {
     @PostMapping()
     @SaCheckPermission("wms:item:edit")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody CategoryBo bo) {
-        itemCategoryService.insertByBo(bo);
+        categoryService.insertByBo(bo);
         return R.ok();
     }
 
@@ -105,7 +106,7 @@ public class ItemCategoryController extends BaseController {
     @PutMapping()
     @SaCheckPermission("wms:item:edit")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody CategoryBo bo) {
-        itemCategoryService.updateByBo(bo);
+        categoryService.updateByBo(bo);
         return R.ok();
     }
 
@@ -120,14 +121,14 @@ public class ItemCategoryController extends BaseController {
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] itemTypeIds) {
         List<Long> ids = new ArrayList<>(Arrays.asList(itemTypeIds));
-        itemCategoryService.deleteByIds(ids);
+        categoryService.deleteByIds(ids);
         return R.ok();
     }
 
     @PostMapping("/update/orderNum")
     @SaCheckPermission("wms:item:edit")
-    public R<Void> updateOrderNum(@RequestBody List<ItemTypeTreeSelectVo> tree) {
-        itemCategoryService.updateOrderNum(tree);
+    public R<Void> updateOrderNum(@RequestBody List<GoodsTypeTreeSelectVo> tree) {
+        categoryService.updateOrderNum(tree);
         return R.ok();
     }
 }

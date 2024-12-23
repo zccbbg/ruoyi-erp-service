@@ -14,7 +14,7 @@ import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.erp.basic.domain.bo.SkuBo;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
-import com.ruoyi.erp.basic.service.ItemSkuService;
+import com.ruoyi.erp.basic.service.SkuService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -27,25 +27,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/basic/itemSku")
-public class ItemSkuController extends BaseController {
+public class SkuController extends BaseController {
 
-    private final ItemSkuService itemSkuService;
+    private final SkuService skuService;
 
     /**
      * 查询sku信息列表
      */
     @GetMapping("/list")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public TableDataInfo<SkuMapVo> list(SkuBo bo, PageQuery pageQuery) {
-        return itemSkuService.queryPageList(bo, pageQuery);
+        return skuService.queryPageList(bo, pageQuery);
     }
     /**
      * 查询sku信息列表
      */
     @GetMapping("/listNoPage")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<List<SkuVo>> list(SkuBo bo) {
-        return R.ok(itemSkuService.queryList(bo));
+        return R.ok(skuService.queryList(bo));
     }
 
     /**
@@ -53,9 +53,9 @@ public class ItemSkuController extends BaseController {
      */
     @Log(title = "sku信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public void export(SkuBo bo, HttpServletResponse response) {
-        List<SkuVo> list = itemSkuService.queryList(bo);
+        List<SkuVo> list = skuService.queryList(bo);
         ExcelUtil.exportExcel(list, "sku信息", SkuVo.class, response);
     }
 
@@ -65,10 +65,10 @@ public class ItemSkuController extends BaseController {
      * @param id 主键
      */
     @GetMapping("/{id}")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<SkuVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(itemSkuService.queryById(id));
+        return R.ok(skuService.queryById(id));
     }
 
     /**
@@ -77,9 +77,9 @@ public class ItemSkuController extends BaseController {
     @Log(title = "sku信息", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SkuBo bo) {
-        return toAjax(itemSkuService.insertByBo(bo));
+        return toAjax(skuService.insertByBo(bo));
     }
 
     /**
@@ -88,9 +88,9 @@ public class ItemSkuController extends BaseController {
     @Log(title = "sku信息", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SkuBo bo) {
-        return toAjax(itemSkuService.updateByBo(bo));
+        return toAjax(skuService.updateByBo(bo));
     }
 
     /**
@@ -100,10 +100,10 @@ public class ItemSkuController extends BaseController {
      */
     @Log(title = "sku信息", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> remove(@NotNull(message = "主键不能为空")
                           @PathVariable Long id) {
-        itemSkuService.deleteById(id);
+        skuService.deleteById(id);
         return R.ok();
     }
 }
