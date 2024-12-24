@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from basic_sku sku
         inner join basic_goods goods on sku.goods_id=goods.id
         where sku.id in
-        <foreach collection="ids" goods="id" open="(" separator="," close=")">
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
