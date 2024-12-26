@@ -34,7 +34,7 @@ public class GoodsController extends BaseController {
      * 查询物料列表
      */
     @GetMapping("/list")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public TableDataInfo<GoodsVo> list(GoodsBo bo, PageQuery pageQuery) {
         return itemService.queryPageList(bo, pageQuery);
     }
@@ -43,7 +43,7 @@ public class GoodsController extends BaseController {
      * 查询物料列表
      */
     @GetMapping("/listNoPage")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<List<GoodsVo>> list(GoodsBo bo) {
         return R.ok(itemService.queryList(bo));
     }
@@ -53,7 +53,7 @@ public class GoodsController extends BaseController {
      */
     @Log(title = "物料", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public void export(GoodsBo bo, HttpServletResponse response) {
         List<GoodsVo> list = itemService.queryList(bo);
         ExcelUtil.exportExcel(list, "物料", GoodsVo.class, response);
@@ -65,7 +65,7 @@ public class GoodsController extends BaseController {
      * @param id 主键
      */
     @GetMapping("/{id}")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<GoodsVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
         return R.ok(itemService.queryById(id));
@@ -77,7 +77,7 @@ public class GoodsController extends BaseController {
     @Log(title = "物料", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody GoodsBo form) {
         itemService.insertByForm(form);
         return R.ok();
@@ -88,7 +88,7 @@ public class GoodsController extends BaseController {
     @Log(title = "物料", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody GoodsBo form) {
         itemService.updateByForm(form);
         return R.ok();
@@ -101,7 +101,7 @@ public class GoodsController extends BaseController {
      */
     @Log(title = "物料", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> remove(@NotNull(message = "主键不能为空")
                           @PathVariable Long id) {
         itemService.deleteById(id);

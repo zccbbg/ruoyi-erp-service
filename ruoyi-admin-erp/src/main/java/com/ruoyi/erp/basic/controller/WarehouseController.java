@@ -33,7 +33,7 @@ public class WarehouseController extends BaseController {
     /**
      * 查询仓库列表
      */
-    @SaCheckPermission("wms:warehouse:list")
+    @SaCheckPermission("basic:warehouse:list")
     @GetMapping("/list")
     public TableDataInfo<WarehouseVo> list(WarehouseBo bo, PageQuery pageQuery) {
         return warehouseService.queryPageList(bo, pageQuery);
@@ -42,7 +42,7 @@ public class WarehouseController extends BaseController {
     /**
      * 查询仓库列表
      */
-    @SaCheckPermission("wms:warehouse:list")
+    @SaCheckPermission("basic:warehouse:list")
     @GetMapping("/listNoPage")
     public R<List<WarehouseVo>> listNoPage(WarehouseBo bo) {
         return R.ok(warehouseService.queryList(bo));
@@ -51,7 +51,7 @@ public class WarehouseController extends BaseController {
     /**
      * 导出仓库列表
      */
-    @SaCheckPermission("wms:warehouse:list")
+    @SaCheckPermission("basic:warehouse:list")
     @Log(title = "仓库", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(WarehouseBo bo, HttpServletResponse response) {
@@ -64,7 +64,7 @@ public class WarehouseController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("wms:warehouse:list")
+    @SaCheckPermission("basic:warehouse:list")
     @GetMapping("/{id}")
     public R<WarehouseVo> getInfo(@NotNull(message = "主键不能为空")
                                   @PathVariable Long id) {

@@ -39,7 +39,7 @@ public class BrandController extends BaseController {
     /**
      * 查询商品品牌列表
      */
-    @SaCheckPermission("wms:itemBrand:list")
+    @SaCheckPermission("basic:brand:list")
     @GetMapping("/list")
     public TableDataInfo<BrandVo> list(BrandBo bo, PageQuery pageQuery) {
         return brandService.queryPageList(bo, pageQuery);
@@ -48,7 +48,7 @@ public class BrandController extends BaseController {
     /**
      * 查询商品品牌列表
      */
-    @SaCheckPermission("wms:itemBrand:list")
+    @SaCheckPermission("basic:brand:list")
     @GetMapping("/listNoPage")
     public R<List<BrandVo>> listNoPage(BrandBo bo) {
         return R.ok(brandService.queryList(bo));
@@ -57,7 +57,7 @@ public class BrandController extends BaseController {
     /**
      * 导出商品品牌列表
      */
-    @SaCheckPermission("wms:itemBrand:list")
+    @SaCheckPermission("basic:brand:list")
     @Log(title = "商品品牌", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(BrandBo bo, HttpServletResponse response) {
@@ -70,7 +70,7 @@ public class BrandController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("wms:itemBrand:list")
+    @SaCheckPermission("basic:brand:list")
     @GetMapping("/{id}")
     public R<BrandVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -80,7 +80,7 @@ public class BrandController extends BaseController {
     /**
      * 新增商品品牌
      */
-    @SaCheckPermission("wms:itemBrand:edit")
+    @SaCheckPermission("basic:brand:edit")
     @Log(title = "商品品牌", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -92,7 +92,7 @@ public class BrandController extends BaseController {
     /**
      * 修改商品品牌
      */
-    @SaCheckPermission("wms:itemBrand:edit")
+    @SaCheckPermission("basic:brand:edit")
     @Log(title = "商品品牌", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -106,7 +106,7 @@ public class BrandController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("wms:itemBrand:edit")
+    @SaCheckPermission("basic:brand:edit")
     @Log(title = "商品品牌", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     public R<Void> remove(@NotNull(message = "主键不能为空")

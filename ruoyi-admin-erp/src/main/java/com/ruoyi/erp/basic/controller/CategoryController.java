@@ -29,7 +29,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/basic/itemCategory")
+@RequestMapping("/basic/category")
 public class CategoryController extends BaseController {
 
     private final CategoryService categoryService;
@@ -38,7 +38,7 @@ public class CategoryController extends BaseController {
      * 查询物料类型列表
      */
     @GetMapping("/list")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public TableDataInfo<CategoryVo> list(CategoryBo bo, PageQuery pageQuery) {
         return categoryService.queryPageList(bo, pageQuery);
     }
@@ -47,7 +47,7 @@ public class CategoryController extends BaseController {
      * 查询物料类型列表
      */
     @GetMapping("/listNoPage")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<List<CategoryVo>> listNoPage(CategoryBo bo) {
         return R.ok(categoryService.queryList(bo));
     }
@@ -56,7 +56,7 @@ public class CategoryController extends BaseController {
      * 获取物料类型下拉树列表
      */
     @GetMapping("/treeselect")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<List<GoodsTypeTreeSelectVo>> treeselect(CategoryBo query) {
         List<CategoryVo> itemTypes = categoryService.queryList(query);
         return R.ok(categoryService.buildGoodsTypeTreeSelect(itemTypes));
@@ -67,7 +67,7 @@ public class CategoryController extends BaseController {
      */
     @Log(title = "物料类型", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public void export(CategoryBo bo, HttpServletResponse response) {
         List<CategoryVo> list = categoryService.queryList(bo);
         ExcelUtil.exportExcel(list, "物料类型", CategoryVo.class, response);
@@ -79,7 +79,7 @@ public class CategoryController extends BaseController {
      * @param itemTypeId 主键
      */
     @GetMapping("/{itemTypeId}")
-    @SaCheckPermission("wms:item:list")
+    @SaCheckPermission("basic:goods:list")
     public R<CategoryVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long itemTypeId) {
         return R.ok(categoryService.queryById(itemTypeId));
@@ -91,7 +91,7 @@ public class CategoryController extends BaseController {
     @Log(title = "物料类型", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> add(@Validated(AddGroup.class) @RequestBody CategoryBo bo) {
         categoryService.insertByBo(bo);
         return R.ok();
@@ -103,7 +103,7 @@ public class CategoryController extends BaseController {
     @Log(title = "物料类型", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody CategoryBo bo) {
         categoryService.updateByBo(bo);
         return R.ok();
@@ -116,7 +116,7 @@ public class CategoryController extends BaseController {
      */
     @Log(title = "物料类型", businessType = BusinessType.DELETE)
     @DeleteMapping("/{itemTypeIds}")
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] itemTypeIds) {
         List<Long> ids = new ArrayList<>(Arrays.asList(itemTypeIds));
@@ -125,7 +125,7 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping("/update/orderNum")
-    @SaCheckPermission("wms:item:edit")
+    @SaCheckPermission("basic:goods:edit")
     public R<Void> updateOrderNum(@RequestBody List<GoodsTypeTreeSelectVo> tree) {
         categoryService.updateOrderNum(tree);
         return R.ok();
