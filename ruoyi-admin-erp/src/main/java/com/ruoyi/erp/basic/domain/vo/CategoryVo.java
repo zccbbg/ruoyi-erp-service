@@ -54,13 +54,6 @@ public class CategoryVo implements Serializable {
     private Long orderNum;
 
     /**
-     * 物料类型状态（0正常 1停用）
-     */
-    @ExcelProperty(value = "物料类型状态", converter = ExcelDictConvert.class)
-    @ExcelDictFormat(readConverterExp = "0=正常,1=停用")
-    private String status;
-
-    /**
      * 子物料类型
      */
     @TableField(exist = false)

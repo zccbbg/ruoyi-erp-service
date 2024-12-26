@@ -67,7 +67,6 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         lqw.eq(bo.getPid() != null, Category::getPid, bo.getPid());
         lqw.like(StrUtil.isNotBlank(bo.getCategoryName()), Category::getCategoryName, bo.getCategoryName());
         lqw.eq(bo.getOrderNum() != null, Category::getOrderNum, bo.getOrderNum());
-        lqw.eq(StrUtil.isNotBlank(bo.getStatus()), Category::getStatus, bo.getStatus());
         return lqw;
     }
 

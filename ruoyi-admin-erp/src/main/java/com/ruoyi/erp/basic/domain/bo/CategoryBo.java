@@ -37,10 +37,5 @@ public class CategoryBo extends BaseEntity {
      */
     private Long orderNum;
 
-    /**
-     * 物料类型状态（0停用 1正常）
-     */
-    private String status;
-
 
 }
