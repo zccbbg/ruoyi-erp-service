@@ -26,7 +26,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/basic/itemSku")
+@RequestMapping("/basic/sku")
 public class SkuController extends BaseController {
 
     private final SkuService skuService;
