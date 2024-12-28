@@ -68,5 +68,32 @@ public class MerchantVo implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
+    /**
+     * 开户行
+     */
+    private String bankName;
 
+    /**
+     * 银行账户
+     */
+    private String bankAccount;
+
+    /**
+     * 地址
+     */
+    private String address;
+
+    /**
+     * 手机号
+     */
+    private String mobile;
+
+    /**
+     * 座机号
+     */
+    private String tel;
+    /**
+     * Email
+     */
+    private String email;
 }
