@@ -64,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and sku.barcode like concat('%', #{bo.barcode}, '%')
             </if>
             <if test="bo.categoryId != null">
-                and (category.id=#{bo.categoryId} or category.parent_id=#{bo.categoryId})
+                and (category.id=#{bo.categoryId} or category.pid=#{bo.categoryId})
             </if>
         </where>
         order by sku.goods_id desc
