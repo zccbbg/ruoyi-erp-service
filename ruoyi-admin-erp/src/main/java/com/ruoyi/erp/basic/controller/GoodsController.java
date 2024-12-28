@@ -25,7 +25,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/basic/item")
+@RequestMapping("/basic/goods")
 public class GoodsController extends BaseController {
 
     private final GoodsService itemService;
