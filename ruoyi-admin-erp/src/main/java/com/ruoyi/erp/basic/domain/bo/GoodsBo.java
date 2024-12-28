@@ -42,7 +42,7 @@ public class GoodsBo extends BaseEntity {
     /**
      * 分类
      */
-    @NotBlank(message = "分类不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "分类不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long categoryId;
 
     /**

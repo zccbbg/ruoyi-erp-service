@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             goods.*
         from basic_sku sku
         inner join basic_goods goods on sku.goods_id=goods.id
-        inner join basic_category category on goods.category=category.id
+        inner join basic_category category on goods.category_id=category.id
         <where>
             <if test="bo.goodsName != null and bo.goodsName != ''">
                 and goods.goods_name like concat('%', #{bo.goodsName}, '%')
@@ -54,8 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.goodsNo != null and bo.goodsNo != ''">
                 and goods.goods_no like concat('%', #{bo.goodsNo}, '%')
             </if>
-            <if test="bo.brand != null">
-                and goods.brand=#{bo.brand}
+            <if test="bo.brandId != null">
+                and goods.brand_id=#{bo.brandId}
             </if>
             <if test="bo.skuName != null and bo.skuName != ''">
                 and sku.sku_name like concat('%', #{bo.skuName}, '%')
@@ -63,8 +63,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.barcode != null and bo.barcode != ''">
                 and sku.barcode like concat('%', #{bo.barcode}, '%')
             </if>
-            <if test="bo.category != null and bo.category != ''">
-                and (category.id=#{bo.category} or category.parent_id=#{bo.category})
+            <if test="bo.categoryId != null">
+                and (category.id=#{bo.categoryId} or category.parent_id=#{bo.categoryId})
             </if>
         </where>
         order by sku.goods_id desc

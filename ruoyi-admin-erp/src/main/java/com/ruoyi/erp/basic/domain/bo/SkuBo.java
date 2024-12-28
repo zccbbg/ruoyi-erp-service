@@ -93,7 +93,7 @@ public class SkuBo extends BaseEntity {
     /**
      * 商品分类
      */
-    private String category;
+    private Long categoryId;
 
-    private Long brand;
+    private Long brandId;
 }
