@@ -64,7 +64,8 @@ public class MerchantService {
         LambdaQueryWrapper<Merchant> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getMerchantNo()), Merchant::getMerchantNo, bo.getMerchantNo());
         lqw.like(StringUtils.isNotBlank(bo.getMerchantName()), Merchant::getMerchantName, bo.getMerchantName());
-        lqw.eq(bo.getMerchantType() != null, Merchant::getMerchantType, bo.getMerchantType());
+        lqw.eq(bo.getMerchantTypeCustomer() != null, Merchant::getMerchantTypeCustomer, bo.getMerchantTypeCustomer());
+        lqw.eq(bo.getMerchantTypeSupplier() != null, Merchant::getMerchantTypeSupplier, bo.getMerchantTypeSupplier());
         return lqw;
     }
 

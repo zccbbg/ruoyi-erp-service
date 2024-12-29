@@ -38,7 +38,8 @@ public class Merchant extends BaseEntity {
     /**
      * 企业类型
      */
-    private Integer merchantType;
+    private Integer merchantTypeCustomer;
+    private Integer merchantTypeSupplier;
     /**
      * 级别
      */

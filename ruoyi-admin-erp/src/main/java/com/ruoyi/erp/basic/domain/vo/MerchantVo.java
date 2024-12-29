@@ -48,7 +48,8 @@ public class MerchantVo implements Serializable {
      */
     @ExcelProperty(value = "企业类型", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "merchant_type")
-    private Integer merchantType;
+    private Integer merchantTypeCustomer;
+    private Integer merchantTypeSupplier;
 
     /**
      * 级别
