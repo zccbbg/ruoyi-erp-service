@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </association>
     </resultMap>
 
-    <select id="queryGoodsSkuMapVos" resultMap="skuMapVo">
+    <select id="querySkuMapVos" resultMap="skuMapVo">
         select
             sku.id as sku_id,
             sku.*,
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </select>
 
-    <select id="queryGoodsSkuMapVo" resultMap="skuMapVo">
+    <select id="querySkuMapVo" resultMap="skuMapVo">
         select
         sku.id as sku_id,
         sku.*,
