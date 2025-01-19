@@ -1,5 +1,6 @@
 package com.ruoyi.erp.base.domain.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import lombok.Data;
@@ -38,5 +39,10 @@ public class BaseDoc extends BaseEntity {
      * 备注
      */
     private String remark;
+    /**
+     * 仓库id
+     */
+    @ExcelProperty(value = "仓库id")
+    private Long warehouseId;
 
 }

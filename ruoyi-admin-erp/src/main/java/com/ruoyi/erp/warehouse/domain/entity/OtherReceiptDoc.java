@@ -15,22 +15,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("wms_receipt_doc")
 public class OtherReceiptDoc extends BaseDoc {
-    /**
-     * 仓库id
-     */
-    private Long warehouseId;
-
-    /**
-     * 入库类型
-     */
-    private Long optType;
-    /**
-     * 业务订单号
-     */
-    private String bizOrderNo;
-    /**
-     * 供应商
-     */
-    private Long merchantId;
 
 }

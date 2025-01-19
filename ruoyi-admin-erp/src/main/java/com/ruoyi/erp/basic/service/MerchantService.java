@@ -95,7 +95,6 @@ public class MerchantService {
 
     private void validateIdBeforeDelete(Long id) {
         LambdaQueryWrapper<OtherReceiptDoc> receiptOrderLqw = Wrappers.lambdaQuery();
-        receiptOrderLqw.eq(OtherReceiptDoc::getMerchantId, id);
         Long receiptOrderCount = otherReceiptDocMapper.selectCount(receiptOrderLqw);
         if (receiptOrderCount != null && receiptOrderCount > 0) {
             throw new ServiceException("删除失败", HttpStatus.CONFLICT,"该企业已有业务关联，无法删除！");

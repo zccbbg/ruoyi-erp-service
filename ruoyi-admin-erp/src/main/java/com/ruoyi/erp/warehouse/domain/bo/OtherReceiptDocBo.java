@@ -21,24 +21,4 @@ import lombok.EqualsAndHashCode;
 @AutoMapper(target = OtherReceiptDoc.class, reverseConvertGenerate = false)
 public class OtherReceiptDocBo extends BaseDocBo<OtherReceiptDocDetailBo> {
 
-    /**
-     * 入库类型
-     */
-    @NotNull(message = "入库类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long optType;
-
-    /**
-     * 订单号
-     */
-    private String bizOrderNo;
-    /**
-     * 对接商户
-     */
-    private Long merchantId;
-    /**
-     * 仓库id
-     */
-    @NotNull(message = "仓库不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long warehouseId;
-
 }

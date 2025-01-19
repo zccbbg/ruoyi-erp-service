@@ -76,8 +76,6 @@ public class OtherReceiptDocService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherReceiptDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), OtherReceiptDoc::getDocNo, bo.getDocNo());
-        lqw.eq(bo.getOptType() != null, OtherReceiptDoc::getOptType, bo.getOptType());
-        lqw.eq(bo.getMerchantId() != null, OtherReceiptDoc::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getGoodsAmount() != null, OtherReceiptDoc::getGoodsAmount, bo.getGoodsAmount());
         lqw.eq(bo.getCheckedStatus() != null, OtherReceiptDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
