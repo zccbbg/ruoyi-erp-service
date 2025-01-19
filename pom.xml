@@ -63,6 +63,10 @@
                 <profiles.active>local</profiles.active>
                 <logging.level>info</logging.level>
             </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>dev</id>
@@ -71,10 +75,6 @@
                 <profiles.active>dev</profiles.active>
                 <logging.level>info</logging.level>
             </properties>
-            <activation>
-                <!-- 默认环境 -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>prod</id>
