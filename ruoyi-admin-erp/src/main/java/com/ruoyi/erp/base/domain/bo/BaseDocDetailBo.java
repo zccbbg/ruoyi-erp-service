@@ -38,7 +38,7 @@ public class BaseDocDetailBo extends BaseEntity {
     /**
      * 金额
      */
-    private BigDecimal amount;
+    private BigDecimal totalAmount;
     /**
      * 备注
      */

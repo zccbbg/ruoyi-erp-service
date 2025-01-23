@@ -47,7 +47,7 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
                 inventoryHistory.setQty(detail.getQty().negate());
             }
             inventoryHistory.setWarehouseId(detail.getWarehouseId());
-            inventoryHistory.setAmount(detail.getAmount());
+            inventoryHistory.setAmount(detail.getTotalAmount());
             inventoryHistory.setBeforeQty(detail.getBeforeQty());
             inventoryHistory.setAfterQty(detail.getAfterQty());
             inventoryHistoryList.add(inventoryHistory);

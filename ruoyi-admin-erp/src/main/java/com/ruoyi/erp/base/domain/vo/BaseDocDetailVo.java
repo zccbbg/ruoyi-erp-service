@@ -41,7 +41,7 @@ public class BaseDocDetailVo implements Serializable {
      * 金额
      */
     @ExcelProperty(value = "金额")
-    private BigDecimal amount;
+    private BigDecimal totalAmount;
 
     /**
      * 备注

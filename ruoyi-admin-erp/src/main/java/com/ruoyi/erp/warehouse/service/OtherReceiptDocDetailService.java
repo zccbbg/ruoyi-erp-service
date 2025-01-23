@@ -66,7 +66,7 @@ public class OtherReceiptDocDetailService extends ServiceImpl<OtherReceiptDocDet
         lqw.eq(bo.getPid() != null, OtherReceiptDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, OtherReceiptDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQty() != null, OtherReceiptDocDetail::getQty, bo.getQty());
-        lqw.eq(bo.getAmount() != null, OtherReceiptDocDetail::getAmount, bo.getAmount());
+        lqw.eq(bo.getTotalAmount() != null, OtherReceiptDocDetail::getTotalAmount, bo.getTotalAmount());
         lqw.eq(bo.getWarehouseId() != null, OtherReceiptDocDetail::getWarehouseId, bo.getWarehouseId());
         return lqw;
     }
