@@ -58,7 +58,7 @@ public class InventoryBo extends BaseEntity {
     private BigDecimal minQty;
 
     private String goodsName;
-    private String goodsCode;
+    private String goodsNo;
     private String skuName;
     private String skuNo;
     private Long goodsId;
