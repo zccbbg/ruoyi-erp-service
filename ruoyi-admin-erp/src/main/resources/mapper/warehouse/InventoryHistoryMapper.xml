@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join basic_goods goods on sku.goods_id=goods.id
         <where>
             <if test="bo.optType != null">
-                history.optType_type=#{bo.optType}
+                history.opt_type=#{bo.optType}
             </if>
             <if test="bo.optNo != null and bo.optNo != ''">
                 and history.opt_no=#{bo.optNo}
