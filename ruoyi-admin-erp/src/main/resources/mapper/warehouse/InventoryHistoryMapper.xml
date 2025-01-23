@@ -24,11 +24,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join basic_sku sku on history.sku_id=sku.id
         left join basic_goods goods on sku.goods_id=goods.id
         <where>
-            <if test="bo.orderType != null">
-                history.order_type=#{bo.orderType}
+            <if test="bo.optType != null">
+                history.optType_type=#{bo.optType}
             </if>
-            <if test="bo.orderNo != null and bo.orderNo != ''">
-                and history.order_no=#{bo.orderNo}
+            <if test="bo.optNo != null and bo.optNo != ''">
+                and history.opt_no=#{bo.optNo}
             </if>
             <if test="bo.goodsName != null and bo.goodsName != ''">
                 and goods.goods_name like concat('%', #{bo.goodsName}, '%')
