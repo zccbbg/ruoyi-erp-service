@@ -23,7 +23,7 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
     /**
      * 编号
      */
-    @NotBlank(message = "编号", groups = { AddGroup.class, EditGroup.class })
+    @NotBlank(message = "编号不能为空", groups = { AddGroup.class, EditGroup.class })
     private String docNo;
 
     /**
