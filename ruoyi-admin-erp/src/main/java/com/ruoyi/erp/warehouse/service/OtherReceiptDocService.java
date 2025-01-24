@@ -91,15 +91,33 @@ public class OtherReceiptDocService {
         validateReceiptBizNo(bo.getDocNo());
         // 创建入库单
         OtherReceiptDoc add = MapstructUtils.convert(bo, OtherReceiptDoc.class);
-        otherReceiptDocMapper.insert(add);
-        bo.setId(add.getId());
         List<OtherReceiptDocDetailBo> detailBoList = bo.getDetails();
         List<OtherReceiptDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherReceiptDocDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(addDetailList);
+        add.setWarehouseId(sameWarehouseId);
+        otherReceiptDocMapper.insert(add);
+        bo.setId(add.getId());
+
         addDetailList.forEach(it -> {
             it.setPid(add.getId());
         });
         // 创建入库单明细
         otherReceiptDocDetailService.saveDetails(addDetailList);
+    }
+
+    private Long getSameWarehouseId(List<OtherReceiptDocDetail> detailBoList){
+        if (detailBoList == null || detailBoList.isEmpty()) {
+            return null; // 空列表返回null
+        }
+
+        Long firstWarehouseId = detailBoList.get(0).getWarehouseId(); // 获取第一个元素的warehouseId
+        for (OtherReceiptDocDetail detail : detailBoList) {
+            if (!firstWarehouseId.equals(detail.getWarehouseId())) {
+                return null; // 如果发现不一致的warehouseId，返回null
+            }
+        }
+
+        return firstWarehouseId; // 所有warehouseId都相同，返回第一个warehouseId
     }
 
     /**
@@ -142,9 +160,11 @@ public class OtherReceiptDocService {
     public void updateByBo(OtherReceiptDocBo bo) {
         // 更新入库单
         OtherReceiptDoc update = MapstructUtils.convert(bo, OtherReceiptDoc.class);
+        List<OtherReceiptDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherReceiptDocDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(detailList);
+        update.setWarehouseId(sameWarehouseId);
         otherReceiptDocMapper.updateById(update);
         // 保存入库单明细
-        List<OtherReceiptDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherReceiptDocDetail.class);
         detailList.forEach(it -> it.setPid(bo.getId()));
         otherReceiptDocDetailService.saveDetails(detailList);
     }
