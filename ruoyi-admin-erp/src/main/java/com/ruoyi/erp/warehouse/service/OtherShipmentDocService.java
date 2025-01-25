@@ -76,8 +76,6 @@ public class OtherShipmentDocService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<OtherShipmentDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), OtherShipmentDoc::getDocNo, bo.getDocNo());
-        lqw.eq(bo.getOptType() != null, OtherShipmentDoc::getOptType, bo.getOptType());
-        lqw.eq(bo.getMerchantId() != null, OtherShipmentDoc::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getGoodsAmount() != null, OtherShipmentDoc::getGoodsAmount, bo.getGoodsAmount());
         lqw.eq(bo.getGoodsQty() != null, OtherShipmentDoc::getGoodsQty, bo.getGoodsQty());
         lqw.eq(bo.getCheckedStatus() != null, OtherShipmentDoc::getCheckedStatus, bo.getCheckedStatus());

@@ -20,23 +20,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = OtherShipmentDoc.class, reverseConvertGenerate = false)
 public class OtherShipmentDocBo extends BaseDocBo<OtherShipmentDocDetailBo> {
-    /**
-     * 出库类型
-     */
-    @NotNull(message = "出库类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long optType;
 
-    /**
-     * 订单号
-     */
-    private String bizOrderNo;
-    /**
-     * 对接商户
-     */
-    private Long merchantId;
-    /**
-     * 仓库id
-     */
-    @NotNull(message = "仓库不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long warehouseId;
 }

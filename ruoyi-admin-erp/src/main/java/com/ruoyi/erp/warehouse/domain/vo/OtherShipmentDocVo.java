@@ -20,21 +20,4 @@ import lombok.EqualsAndHashCode;
 @AutoMapper(target = OtherShipmentDoc.class)
 public class OtherShipmentDocVo extends BaseDocVo<OtherShipmentDocDetailVo> {
 
-    /**
-     * 入库类型
-     */
-    @ExcelProperty(value = "操作类型")
-    private Long optType;
-
-    /**
-     * 供应商
-     */
-    @ExcelProperty(value = "对接商家id")
-    private Long merchantId;
-
-    /**
-     * 订单号
-     */
-    @ExcelProperty(value = "业务订单号")
-    private String bizOrderNo;
 }
