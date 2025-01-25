@@ -111,6 +111,9 @@ public class OtherReceiptDocService {
         }
 
         Long firstWarehouseId = detailBoList.get(0).getWarehouseId(); // 获取第一个元素的warehouseId
+        if(firstWarehouseId == null){
+            return null;
+        }
         for (OtherReceiptDocDetail detail : detailBoList) {
             if (!firstWarehouseId.equals(detail.getWarehouseId())) {
                 return null; // 如果发现不一致的warehouseId，返回null
@@ -169,16 +172,6 @@ public class OtherReceiptDocService {
         otherReceiptDocDetailService.saveDetails(detailList);
     }
 
-    /**
-     * 入库单作废
-     * @param id
-     */
-    public void editToInvalid(Long id) {
-        LambdaUpdateWrapper<OtherReceiptDoc> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(OtherReceiptDoc::getId, id);
-        wrapper.set(OtherReceiptDoc::getCheckedStatus, ServiceConstants.Status.INVALID);
-        otherReceiptDocMapper.update(null, wrapper);
-    }
 
     /**
      * 删除入库单
