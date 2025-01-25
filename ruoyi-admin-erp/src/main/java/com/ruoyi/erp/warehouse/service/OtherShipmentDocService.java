@@ -16,6 +16,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherShipmentDocBo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherShipmentDocDetailBo;
+import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
 import com.ruoyi.erp.warehouse.domain.entity.OtherShipmentDoc;
 import com.ruoyi.erp.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.erp.warehouse.domain.vo.OtherShipmentDocVo;
@@ -83,6 +84,24 @@ public class OtherShipmentDocService {
         return lqw;
     }
 
+    private Long getSameWarehouseId(List<OtherShipmentDocDetail> detailBoList){
+        if (detailBoList == null || detailBoList.isEmpty()) {
+            return null; // 空列表返回null
+        }
+
+        Long firstWarehouseId = detailBoList.get(0).getWarehouseId(); // 获取第一个元素的warehouseId
+        if(firstWarehouseId == null){
+            return null;
+        }
+        for (OtherShipmentDocDetail detail : detailBoList) {
+            if (!firstWarehouseId.equals(detail.getWarehouseId())) {
+                return null; // 如果发现不一致的warehouseId，返回null
+            }
+        }
+
+        return firstWarehouseId; // 所有warehouseId都相同，返回第一个warehouseId
+    }
+
     /**
      * 暂存出库单
      */
@@ -92,10 +111,12 @@ public class OtherShipmentDocService {
         validateShipmentOrderNo(bo.getDocNo());
         // 创建出库单
         OtherShipmentDoc add = MapstructUtils.convert(bo, OtherShipmentDoc.class);
-        otherShipmentDocMapper.insert(add);
-        bo.setId(add.getId());
         List<OtherShipmentDocDetailBo> detailBoList = bo.getDetails();
         List<OtherShipmentDocDetail> addDetailList = MapstructUtils.convert(detailBoList, OtherShipmentDocDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(addDetailList);
+        add.setWarehouseId(sameWarehouseId);
+        otherShipmentDocMapper.insert(add);
+        bo.setId(add.getId());
         addDetailList.forEach(it -> it.setPid(add.getId()));
         otherShipmentDocDetailService.saveDetails(addDetailList);
     }
@@ -115,9 +136,11 @@ public class OtherShipmentDocService {
     public void updateByBo(OtherShipmentDocBo bo) {
         // 更新出库单
         OtherShipmentDoc update = MapstructUtils.convert(bo, OtherShipmentDoc.class);
-        otherShipmentDocMapper.updateById(update);
         // 保存出库单明细
         List<OtherShipmentDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), OtherShipmentDocDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(detailList);
+        update.setWarehouseId(sameWarehouseId);
+        otherShipmentDocMapper.updateById(update);
         detailList.forEach(it -> it.setPid(bo.getId()));
         otherShipmentDocDetailService.saveDetails(detailList);
     }

@@ -16,8 +16,4 @@ import lombok.EqualsAndHashCode;
 @TableName("wms_shipment_doc_detail")
 public class OtherShipmentDocDetail extends BaseDocDetail {
 
-    /**
-     * 所属仓库
-     */
-    private Long warehouseId;
 }
