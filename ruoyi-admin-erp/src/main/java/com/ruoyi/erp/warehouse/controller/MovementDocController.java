@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/movementDoc")
+@RequestMapping("/wms/movement")
 public class MovementDocController extends BaseController {
 
     private final MovementDocService movementDocService;

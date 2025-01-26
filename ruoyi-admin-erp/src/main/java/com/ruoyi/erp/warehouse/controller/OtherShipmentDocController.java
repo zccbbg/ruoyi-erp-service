@@ -99,10 +99,10 @@ public class OtherShipmentDocController extends BaseController {
     @SaCheckPermission("wms:shipment:all")
     @Log(title = "出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping("/shipment")
-    public R<Void> shipment(@Validated(AddGroup.class) @RequestBody OtherShipmentDocBo bo) {
+    @PutMapping("/outbound")
+    public R<Void> outbound(@Validated(AddGroup.class) @RequestBody OtherShipmentDocBo bo) {
         bo.setCheckedStatus(ServiceConstants.Status.FINISH);
-        otherShipmentDocService.shipment(bo);
+        otherShipmentDocService.outbound(bo);
         return R.ok();
     }
 

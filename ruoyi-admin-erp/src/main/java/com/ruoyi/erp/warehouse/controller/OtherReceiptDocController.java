@@ -88,10 +88,10 @@ public class OtherReceiptDocController extends BaseController {
     @SaCheckPermission("wms:receipt:all")
     @Log(title = "入库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PostMapping("/warehousing")
-    public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody OtherReceiptDocBo bo) {
+    @PostMapping("/inbound")
+    public R<Void> inbound(@Validated(AddGroup.class) @RequestBody OtherReceiptDocBo bo) {
         bo.setCheckedStatus(ServiceConstants.Status.FINISH);
-        otherReceiptDocService.receive(bo);
+        otherReceiptDocService.inbound(bo);
         return R.ok();
     }
 

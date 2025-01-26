@@ -3,7 +3,6 @@ package com.ruoyi.erp.warehouse.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.constant.HttpStatus;
@@ -132,7 +131,7 @@ public class OtherReceiptDocService {
      * 5.保存库存记录
      */
     @Transactional
-    public void receive(OtherReceiptDocBo bo) {
+    public void inbound(OtherReceiptDocBo bo) {
         // 1. 校验
         validateBeforeReceive(bo);
 

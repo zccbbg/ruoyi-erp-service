@@ -16,7 +16,6 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherShipmentDocBo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherShipmentDocDetailBo;
-import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
 import com.ruoyi.erp.warehouse.domain.entity.OtherShipmentDoc;
 import com.ruoyi.erp.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.erp.warehouse.domain.vo.OtherShipmentDocVo;
@@ -168,7 +167,7 @@ public class OtherShipmentDocService {
      * @param bo
      */
     @Transactional
-    public void shipment(OtherShipmentDocBo bo) {
+    public void outbound(OtherShipmentDocBo bo) {
         // 1.校验商品明细不能为空！
         validateBeforeShipment(bo);
         // 2. 保存入库单和入库单明细
