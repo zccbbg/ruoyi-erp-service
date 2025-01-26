@@ -21,12 +21,6 @@ import lombok.EqualsAndHashCode;
 public class MovementDocVo extends BaseDocVo<MovementDocDetailVo> {
 
     /**
-     * 源仓库
-     */
-    @ExcelProperty(value = "源仓库")
-    private Long sourceWarehouseId;
-
-    /**
      * 目标仓库
      */
     @ExcelProperty(value = "目标仓库")

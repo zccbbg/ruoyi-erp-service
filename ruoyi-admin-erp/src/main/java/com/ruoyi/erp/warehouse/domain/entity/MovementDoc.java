@@ -21,11 +21,6 @@ public class MovementDoc extends BaseDoc {
     @Serial
     private static final long serialVersionUID=1L;
 
-
-    /**
-     * 源仓库
-     */
-    private Long sourceWarehouseId;
     /**
      * 目标仓库
      */

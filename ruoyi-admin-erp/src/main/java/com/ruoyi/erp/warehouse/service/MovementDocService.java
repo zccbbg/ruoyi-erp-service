@@ -76,8 +76,6 @@ public class MovementDocService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<MovementDoc> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), MovementDoc::getDocNo, bo.getDocNo());
-        lqw.eq(bo.getSourceWarehouseId() != null, MovementDoc::getSourceWarehouseId, bo.getSourceWarehouseId());
-        lqw.eq(bo.getTargetWarehouseId() != null, MovementDoc::getTargetWarehouseId, bo.getTargetWarehouseId());
         lqw.eq(bo.getCheckedStatus() != null, MovementDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getGoodsQty() != null, MovementDoc::getGoodsQty, bo.getGoodsQty());
         lqw.orderByDesc(BaseEntity::getCreateTime);
@@ -190,7 +188,7 @@ public class MovementDocService {
 
     private MovementDocBo getShipmentBo(MovementDocBo bo) {
         MovementDocBo shipmentBo = SerializationUtils.clone(bo);
-        shipmentBo.getDetails().forEach(detail -> detail.setWarehouseId(detail.getSourceWarehouseId()));
+        shipmentBo.getDetails().forEach(detail -> detail.setWarehouseId(detail.getWarehouseId()));
         return shipmentBo;
     }
 

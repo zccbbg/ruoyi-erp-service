@@ -22,19 +22,9 @@ import java.math.BigDecimal;
 @AutoMapper(target = MovementDocDetail.class)
 public class MovementDocDetailVo extends BaseDocDetailVo {
 
-
-
-    /**
-     * 源仓库
-     */
-    @ExcelProperty(value = "源仓库")
-    private Long sourceWarehouseId;
-
     /**
      * 目标仓库
      */
     @ExcelProperty(value = "目标仓库")
     private Long targetWarehouseId;
-
-    private BigDecimal remainQty;
 }

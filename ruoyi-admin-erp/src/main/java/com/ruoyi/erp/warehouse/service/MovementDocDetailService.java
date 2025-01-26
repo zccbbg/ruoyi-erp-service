@@ -65,7 +65,7 @@ public class MovementDocDetailService extends ServiceImpl<MovementDocDetailMappe
         lqw.eq(bo.getPid() != null, MovementDocDetail::getPid, bo.getPid());
         lqw.eq(bo.getSkuId() != null, MovementDocDetail::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQty() != null, MovementDocDetail::getQty, bo.getQty());
-        lqw.eq(bo.getSourceWarehouseId() != null, MovementDocDetail::getSourceWarehouseId, bo.getSourceWarehouseId());
+        lqw.eq(bo.getWarehouseId() != null, MovementDocDetail::getWarehouseId, bo.getWarehouseId());
         lqw.eq(bo.getTargetWarehouseId() != null, MovementDocDetail::getTargetWarehouseId, bo.getTargetWarehouseId());
         return lqw;
     }

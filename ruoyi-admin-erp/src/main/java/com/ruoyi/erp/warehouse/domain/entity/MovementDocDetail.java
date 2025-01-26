@@ -17,10 +17,6 @@ import lombok.EqualsAndHashCode;
 public class MovementDocDetail extends BaseDocDetail {
 
     /**
-     * 源仓库
-     */
-    private Long sourceWarehouseId;
-    /**
      * 目标仓库
      */
     private Long targetWarehouseId;
