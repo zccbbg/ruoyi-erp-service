@@ -1,5 +1,7 @@
 package com.ruoyi.erp.warehouse.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.erp.base.domain.entity.BaseDoc;
 import lombok.Data;
@@ -24,6 +26,7 @@ public class MovementDoc extends BaseDoc {
     /**
      * 目标仓库
      */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private Long targetWarehouseId;
 
 }

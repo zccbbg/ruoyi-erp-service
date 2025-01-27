@@ -14,6 +14,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
+import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.warehouse.domain.bo.OtherShipmentDocBo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherShipmentDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.entity.OtherShipmentDoc;
@@ -36,7 +37,7 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Service
-public class OtherShipmentDocService {
+public class OtherShipmentDocService extends BaseDocService<OtherShipmentDocDetail> {
 
     private final OtherShipmentDocMapper otherShipmentDocMapper;
     private final OtherShipmentDocDetailService otherShipmentDocDetailService;
@@ -81,24 +82,6 @@ public class OtherShipmentDocService {
         lqw.eq(bo.getCheckedStatus() != null, OtherShipmentDoc::getCheckedStatus, bo.getCheckedStatus());
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
-    }
-
-    private Long getSameWarehouseId(List<OtherShipmentDocDetail> detailBoList){
-        if (detailBoList == null || detailBoList.isEmpty()) {
-            return null; // 空列表返回null
-        }
-
-        Long firstWarehouseId = detailBoList.get(0).getWarehouseId(); // 获取第一个元素的warehouseId
-        if(firstWarehouseId == null){
-            return null;
-        }
-        for (OtherShipmentDocDetail detail : detailBoList) {
-            if (!firstWarehouseId.equals(detail.getWarehouseId())) {
-                return null; // 如果发现不一致的warehouseId，返回null
-            }
-        }
-
-        return firstWarehouseId; // 所有warehouseId都相同，返回第一个warehouseId
     }
 
     /**

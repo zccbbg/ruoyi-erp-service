@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ruoyi.common.core.constant.HttpStatus;
 import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.exception.base.BaseException;
@@ -12,9 +13,11 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
+import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.warehouse.domain.bo.MovementDocBo;
 import com.ruoyi.erp.warehouse.domain.entity.MovementDoc;
 import com.ruoyi.erp.warehouse.domain.entity.MovementDocDetail;
+import com.ruoyi.erp.warehouse.domain.entity.OtherShipmentDocDetail;
 import com.ruoyi.erp.warehouse.domain.vo.MovementDocVo;
 import com.ruoyi.erp.warehouse.mapper.MovementDocMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +38,7 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Service
-public class MovementDocService {
+public class MovementDocService extends BaseDocService<MovementDocDetail> {
 
     private final MovementDocMapper movementDocMapper;
     private final MovementDocDetailService movementDocDetailService;
@@ -82,6 +85,34 @@ public class MovementDocService {
         return lqw;
     }
 
+    private Long getSameTargetWarehouseId(List<MovementDocDetail> detailBoList){
+        if (detailBoList == null || detailBoList.isEmpty()) {
+            return null; // 空列表返回null
+        }
+
+        Long firstWarehouseId = detailBoList.get(0).getTargetWarehouseId(); // 获取第一个元素的warehouseId
+        if(firstWarehouseId == null){
+            return null;
+        }
+        for (MovementDocDetail detail : detailBoList) {
+            if (!firstWarehouseId.equals(detail.getTargetWarehouseId())) {
+                return null; // 如果发现不一致的warehouseId，返回null
+            }
+        }
+
+        return firstWarehouseId; // 所有warehouseId都相同，返回第一个warehouseId
+    }
+
+    private void checkSameWarehouse(List<MovementDocDetail> detailList){
+
+        boolean hasSameWarehouse = detailList.stream()
+            .anyMatch(detail -> detail.getWarehouseId().equals(detail.getTargetWarehouseId()));
+
+        if (hasSameWarehouse) {
+            throw new ServiceException("源仓库和目标仓库不能相同！", HttpStatus.CONFLICT);
+        }
+    }
+
     /**
      * 新增移库单
      */
@@ -91,10 +122,15 @@ public class MovementDocService {
         validateMovementBizNo(bo.getDocNo());
         // 2.创建移库单
         MovementDoc add = MapstructUtils.convert(bo, MovementDoc.class);
+        List<MovementDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
+        checkSameWarehouse(addDetailList);
+        Long sameWarehouseId = getSameWarehouseId(addDetailList);
+        Long sameTargetWarehouseId = getSameTargetWarehouseId(addDetailList);
+        add.setWarehouseId(sameWarehouseId);
+        add.setTargetWarehouseId(sameTargetWarehouseId);
         movementDocMapper.insert(add);
         bo.setId(add.getId());
         // 3.创建移库单明细
-        List<MovementDocDetail> addDetailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         addDetailList.forEach(it -> {
             it.setPid(add.getId());
         });
@@ -116,9 +152,15 @@ public class MovementDocService {
     public void updateByBo(MovementDocBo bo) {
         // 1.更新移库单
         MovementDoc update = MapstructUtils.convert(bo, MovementDoc.class);
+        List<MovementDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
+        checkSameWarehouse(detailList);
+        Long sameWarehouseId = getSameWarehouseId(detailList);
+        Long sameTargetWarehouseId = getSameTargetWarehouseId(detailList);
+        update.setWarehouseId(sameWarehouseId);
+        update.setTargetWarehouseId(sameTargetWarehouseId);
+
         movementDocMapper.updateById(update);
         // 2.保存移库单明细
-        List<MovementDocDetail> detailList = MapstructUtils.convert(bo.getDetails(), MovementDocDetail.class);
         detailList.forEach(it -> it.setPid(bo.getId()));
         movementDocDetailService.saveDetails(detailList);
     }
