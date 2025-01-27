@@ -23,11 +23,6 @@ public class CheckDocDetail extends BaseDocDetail {
      */
     private BigDecimal checkQty;
     /**
-     * 所属仓库
-     */
-    private Long warehouseId;
-
-    /**
      * 库存id
      */
     private Long inventoryId;

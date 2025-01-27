@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/wms/checkDoc")
+@RequestMapping("/wms/check")
 public class CheckDocController extends BaseController {
 
     private final CheckDocService checkDocService;
