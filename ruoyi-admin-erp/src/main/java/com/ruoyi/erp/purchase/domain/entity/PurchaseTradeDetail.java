@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("purchase_receipt_trade")
+@TableName("purchase_trade_detail")
 public class PurchaseTradeDetail extends BaseTradeDetail {
 }
