@@ -58,19 +58,12 @@ public class PurchaseOrderService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<PurchaseOrder> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getBillNo()), PurchaseOrder::getBillNo, bo.getBillNo());
-        lqw.eq(bo.getBillDate() != null, PurchaseOrder::getBillDate, bo.getBillDate());
-        lqw.eq(bo.getDeliveryDate() != null, PurchaseOrder::getDeliveryDate, bo.getDeliveryDate());
+        lqw.between(params.get("beginBillDate") != null && params.get("endBillDate") != null,
+            PurchaseOrder::getBillDate ,params.get("beginBillDate"), params.get("endBillDate"));
+        lqw.between(params.get("beginDeliveryDate") != null && params.get("endDeliveryDate") != null,
+            PurchaseOrder::getDeliveryDate ,params.get("beginDeliveryDate"), params.get("endDeliveryDate"));
         lqw.eq(bo.getCheckedStatus() != null, PurchaseOrder::getCheckedStatus, bo.getCheckedStatus());
-        lqw.eq(StringUtils.isNotBlank(bo.getCheckedBy()), PurchaseOrder::getCheckedBy, bo.getCheckedBy());
         lqw.eq(bo.getStockStatus() != null, PurchaseOrder::getStockStatus, bo.getStockStatus());
-        lqw.eq(bo.getMerchantId() != null, PurchaseOrder::getMerchantId, bo.getMerchantId());
-        lqw.eq(bo.getGoodsQty() != null, PurchaseOrder::getGoodsQty, bo.getGoodsQty());
-        lqw.eq(bo.getProcessedQty() != null, PurchaseOrder::getProcessedQty, bo.getProcessedQty());
-        lqw.eq(bo.getGoodsAmount() != null, PurchaseOrder::getGoodsAmount, bo.getGoodsAmount());
-        lqw.eq(bo.getOtherExpensesAmount() != null, PurchaseOrder::getOtherExpensesAmount, bo.getOtherExpensesAmount());
-        lqw.eq(bo.getDiscountAmount() != null, PurchaseOrder::getDiscountAmount, bo.getDiscountAmount());
-        lqw.eq(bo.getActualAmount() != null, PurchaseOrder::getActualAmount, bo.getActualAmount());
-        lqw.eq(bo.getPrepayAmount() != null, PurchaseOrder::getPrepayAmount, bo.getPrepayAmount());
         return lqw;
     }
 
