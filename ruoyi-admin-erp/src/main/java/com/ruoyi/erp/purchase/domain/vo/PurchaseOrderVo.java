@@ -55,7 +55,8 @@ public class PurchaseOrderVo implements Serializable {
     /**
      * 审核状态
      */
-    @ExcelProperty(value = "审核状态")
+    @ExcelProperty(value = "审核状态", converter = ExcelDictConvert.class)
+    @ExcelDictFormat(dictType = "doc_checked_status")
     private Integer checkedStatus;
 
     /**

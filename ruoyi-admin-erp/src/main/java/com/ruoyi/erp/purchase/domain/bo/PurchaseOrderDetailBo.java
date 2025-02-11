@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.domain.bo;
 
+import com.ruoyi.erp.base.domain.bo.BaseOrderDetailBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
@@ -21,73 +22,9 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = PurchaseOrderDetail.class, reverseConvertGenerate = false)
-public class PurchaseOrderDetailBo extends BaseEntity {
+public class PurchaseOrderDetailBo extends BaseOrderDetailBo {
 
-    /**
-     * 
-     */
-    @NotNull(message = "不能为空", groups = { EditGroup.class })
-    private Long id;
 
-    /**
-     * 父id
-     */
-    @NotNull(message = "父id不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long pid;
-
-    /**
-     * sku id
-     */
-    @NotNull(message = "sku id不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long skuId;
-
-    /**
-     * 商品数量
-     */
-    @NotNull(message = "商品数量不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal qty;
-
-    /**
-     * 已处理数量
-     */
-    @NotNull(message = "已处理数量不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal processedQty;
-
-    /**
-     * 不含税价
-     */
-    @NotNull(message = "不含税价不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal priceWithoutTax;
-
-    /**
-     * 税费
-     */
-    @NotNull(message = "税费不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal taxAmount;
-
-    /**
-     * 税率
-     */
-    @NotNull(message = "税率不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal taxRate;
-
-    /**
-     * 含税价
-     */
-    @NotNull(message = "含税价不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal priceWithTax;
-
-    /**
-     * 总金额
-     */
-    @NotNull(message = "总金额不能为空", groups = { AddGroup.class, EditGroup.class })
-    private BigDecimal totalAmount;
-
-    /**
-     * 备注
-     */
-    @NotBlank(message = "备注不能为空", groups = { AddGroup.class, EditGroup.class })
-    private String remark;
 
 
 }
