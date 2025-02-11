@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import cn.hutool.core.collection.CollUtil;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
@@ -7,16 +8,20 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseOrderDetailVo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseOrderDetailMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+
+import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
 /**
  * 采购订单明细Service业务层处理
@@ -90,5 +95,12 @@ public class PurchaseOrderDetailService {
      */
     public void deleteByIds(Collection<Long> ids) {
         purchaseOrderDetailMapper.deleteBatchIds(ids);
+    }
+
+    public void saveDetails(List<PurchaseOrderDetail> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        saveOrUpdateBatch(list);
     }
 }

@@ -7,6 +7,11 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
+import com.ruoyi.erp.warehouse.domain.bo.OtherReceiptDocDetailBo;
+import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDoc;
+import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
@@ -29,6 +34,7 @@ import java.util.Collection;
 public class PurchaseOrderService {
 
     private final PurchaseOrderMapper purchaseOrderMapper;
+    private final PurchaseOrderDetailService purchaseOrderDetailService;
 
     /**
      * 查询采购订单
@@ -71,8 +77,18 @@ public class PurchaseOrderService {
      * 新增采购订单
      */
     public void insertByBo(PurchaseOrderBo bo) {
+        // 创建入库单
         PurchaseOrder add = MapstructUtils.convert(bo, PurchaseOrder.class);
+        List<PurchaseOrderDetailBo> detailBoList = bo.getDetails();
+        List<PurchaseOrderDetail> addDetailList = MapstructUtils.convert(detailBoList, PurchaseOrderDetail.class);
         purchaseOrderMapper.insert(add);
+        bo.setId(add.getId());
+
+        addDetailList.forEach(it -> {
+            it.setPid(add.getId());
+        });
+        // 创建入库单明细
+        purchaseOrderDetailService.saveDetails(addDetailList);
     }
 
     /**

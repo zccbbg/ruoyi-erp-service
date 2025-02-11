@@ -26,6 +26,4 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @AutoMapper(target = PurchaseOrder.class, reverseConvertGenerate = false)
 public class PurchaseOrderBo extends BaseOrderBo<PurchaseOrderDetailBo> {
 
-
-
 }

@@ -28,10 +28,6 @@ public class BaseBillDetail extends BaseEntity {
      */
     private BigDecimal qty;
     /**
-     * 价格
-     */
-    private BigDecimal price;
-    /**
      * 含税价
      */
     private BigDecimal priceWithTax;
