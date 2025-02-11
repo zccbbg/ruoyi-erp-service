@@ -58,10 +58,9 @@ public class PurchaseRefundService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<PurchaseRefund> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getTradeId() != null, PurchaseRefund::getTradeId, bo.getTradeId());
-        lqw.eq(StringUtils.isNotBlank(bo.getBillNo()), PurchaseRefund::getBillNo, bo.getBillNo());
-        lqw.eq(bo.getBillDate() != null, PurchaseRefund::getBillDate, bo.getBillDate());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), PurchaseRefund::getDocNo, bo.getDocNo());
+        lqw.eq(bo.getDocDate() != null, PurchaseRefund::getDocDate, bo.getDocDate());
         lqw.eq(bo.getCheckedStatus() != null, PurchaseRefund::getCheckedStatus, bo.getCheckedStatus());
-        lqw.eq(StringUtils.isNotBlank(bo.getCheckedBy()), PurchaseRefund::getCheckedBy, bo.getCheckedBy());
         lqw.eq(bo.getMerchantId() != null, PurchaseRefund::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getGoodsQty() != null, PurchaseRefund::getGoodsQty, bo.getGoodsQty());
         lqw.eq(bo.getGoodsAmount() != null, PurchaseRefund::getGoodsAmount, bo.getGoodsAmount());

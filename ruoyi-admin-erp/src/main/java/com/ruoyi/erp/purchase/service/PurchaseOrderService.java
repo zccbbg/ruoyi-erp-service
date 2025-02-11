@@ -40,7 +40,9 @@ public class PurchaseOrderService {
      * 查询采购订单
      */
     public PurchaseOrderVo queryById(Long id){
-        return purchaseOrderMapper.selectVoById(id);
+        PurchaseOrderVo purchaseOrderVo = purchaseOrderMapper.selectVoById(id);
+        purchaseOrderVo.setDetails(purchaseOrderDetailService.queryByPid(id));
+        return purchaseOrderVo;
     }
 
     /**
@@ -63,9 +65,9 @@ public class PurchaseOrderService {
     private LambdaQueryWrapper<PurchaseOrder> buildQueryWrapper(PurchaseOrderBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<PurchaseOrder> lqw = Wrappers.lambdaQuery();
-        lqw.eq(StringUtils.isNotBlank(bo.getBillNo()), PurchaseOrder::getBillNo, bo.getBillNo());
-        lqw.between(params.get("beginBillDate") != null && params.get("endBillDate") != null,
-            PurchaseOrder::getBillDate ,params.get("beginBillDate"), params.get("endBillDate"));
+        lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), PurchaseOrder::getDocNo, bo.getDocNo());
+        lqw.between(params.get("beginDocDate") != null && params.get("endDocDate") != null,
+            PurchaseOrder::getDocDate ,params.get("beginDocDate"), params.get("endDocDate"));
         lqw.between(params.get("beginDeliveryDate") != null && params.get("endDeliveryDate") != null,
             PurchaseOrder::getDeliveryDate ,params.get("beginDeliveryDate"), params.get("endDeliveryDate"));
         lqw.eq(bo.getCheckedStatus() != null, PurchaseOrder::getCheckedStatus, bo.getCheckedStatus());

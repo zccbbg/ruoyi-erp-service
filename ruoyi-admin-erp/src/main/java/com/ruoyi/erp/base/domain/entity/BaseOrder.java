@@ -30,3 +30,4 @@ public class BaseOrder extends BaseBill{
      */
     private BigDecimal prepayAmount;
 }
+

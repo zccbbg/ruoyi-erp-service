@@ -1,17 +1,15 @@
-package com.ruoyi.erp.base.domain.entity;
+package com.ruoyi.erp.base.domain.bo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.mybatis.core.domain.BaseEntity;
+import com.ruoyi.erp.base.domain.entity.BaseBill;
+import com.ruoyi.erp.base.domain.entity.BaseDoc;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseBill extends BaseDoc {
+public class BaseBillBo<T extends BaseBillDetailBo> extends BaseDocBo<T> {
 
     /**
      * 其他费用金额

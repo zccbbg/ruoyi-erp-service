@@ -1,5 +1,6 @@
 package com.ruoyi.erp.base.domain.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -25,6 +27,12 @@ public class BaseDocBo<T extends BaseDocDetailBo> extends BaseEntity {
      */
     @NotBlank(message = "编号不能为空", groups = { AddGroup.class, EditGroup.class })
     private String docNo;
+
+    /**
+     * 单据日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime docDate;
 
     /**
      * 商品总数

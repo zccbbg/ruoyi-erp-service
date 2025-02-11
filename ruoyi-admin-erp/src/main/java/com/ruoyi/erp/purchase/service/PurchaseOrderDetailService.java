@@ -8,7 +8,10 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.warehouse.domain.bo.OtherReceiptDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
+import com.ruoyi.erp.warehouse.domain.vo.OtherReceiptDocDetailVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
@@ -17,6 +20,7 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseOrderDetailMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -34,6 +38,7 @@ import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 public class PurchaseOrderDetailService {
 
     private final PurchaseOrderDetailMapper purchaseOrderDetailMapper;
+    private final SkuService skuService;
 
     /**
      * 查询采购订单明细
@@ -57,6 +62,17 @@ public class PurchaseOrderDetailService {
     public List<PurchaseOrderDetailVo> queryList(PurchaseOrderDetailBo bo) {
         LambdaQueryWrapper<PurchaseOrderDetail> lqw = buildQueryWrapper(bo);
         return purchaseOrderDetailMapper.selectVoList(lqw);
+    }
+
+    public List<PurchaseOrderDetailVo> queryByPid(Long pid) {
+        PurchaseOrderDetailBo bo = new PurchaseOrderDetailBo();
+        bo.setPid(pid);
+        List<PurchaseOrderDetailVo> details = queryList(bo);
+        if (CollUtil.isEmpty(details)) {
+            return Collections.emptyList();
+        }
+        skuService.setSkuMap(details);
+        return details;
     }
 
     private LambdaQueryWrapper<PurchaseOrderDetail> buildQueryWrapper(PurchaseOrderDetailBo bo) {

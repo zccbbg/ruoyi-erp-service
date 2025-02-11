@@ -1,7 +1,6 @@
-package com.ruoyi.erp.base.domain.entity;
+package com.ruoyi.erp.base.domain.bo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.ruoyi.common.mybatis.core.domain.BaseEntity;
+import com.ruoyi.erp.base.domain.entity.BaseDocDetail;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseBillDetail extends BaseDocDetail {
+public class BaseBillDetailBo extends BaseDocDetailBo {
     /**
      * 含税价
      */

@@ -11,6 +11,7 @@ import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
+import com.ruoyi.erp.base.domain.vo.BaseOrderDetailVo;
 import com.ruoyi.erp.basic.domain.bo.SkuBo;
 import com.ruoyi.erp.basic.domain.entity.Sku;
 import com.ruoyi.erp.base.domain.vo.BaseDocDetailVo;

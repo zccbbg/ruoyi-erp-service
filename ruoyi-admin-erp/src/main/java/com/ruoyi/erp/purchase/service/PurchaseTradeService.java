@@ -58,8 +58,8 @@ public class PurchaseTradeService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<PurchaseTrade> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, PurchaseTrade::getOrderId, bo.getOrderId());
-        lqw.eq(StringUtils.isNotBlank(bo.getBillNo()), PurchaseTrade::getBillNo, bo.getBillNo());
-        lqw.eq(bo.getBillDate() != null, PurchaseTrade::getBillDate, bo.getBillDate());
+        lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), PurchaseTrade::getDocNo, bo.getDocNo());
+        lqw.eq(bo.getDocDate() != null, PurchaseTrade::getDocDate, bo.getDocDate());
         lqw.eq(bo.getCheckedStatus() != null, PurchaseTrade::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getPaymentStatus() != null, PurchaseTrade::getPaymentStatus, bo.getPaymentStatus());
         lqw.eq(bo.getRefundStatus() != null, PurchaseTrade::getRefundStatus, bo.getRefundStatus());
@@ -68,7 +68,6 @@ public class PurchaseTradeService {
         lqw.eq(bo.getDeductedPrepayAmount() != null, PurchaseTrade::getDeductedPrepayAmount, bo.getDeductedPrepayAmount());
         lqw.eq(bo.getPaidAmount() != null, PurchaseTrade::getPaidAmount, bo.getPaidAmount());
         lqw.eq(bo.getDueAmount() != null, PurchaseTrade::getDueAmount, bo.getDueAmount());
-        lqw.eq(StringUtils.isNotBlank(bo.getCheckedBy()), PurchaseTrade::getCheckedBy, bo.getCheckedBy());
         lqw.eq(bo.getMerchantId() != null, PurchaseTrade::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getGoodsQty() != null, PurchaseTrade::getGoodsQty, bo.getGoodsQty());
         lqw.eq(bo.getGoodsAmount() != null, PurchaseTrade::getGoodsAmount, bo.getGoodsAmount());

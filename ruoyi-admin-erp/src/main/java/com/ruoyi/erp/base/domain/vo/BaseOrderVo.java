@@ -1,16 +1,16 @@
-package com.ruoyi.erp.base.domain.bo;
+package com.ruoyi.erp.base.domain.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.core.validate.AddGroup;
-import com.ruoyi.common.core.validate.EditGroup;
-import com.ruoyi.common.mybatis.core.domain.BaseEntity;
-import com.ruoyi.erp.base.domain.vo.BaseDocDetailVo;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.ruoyi.common.excel.annotation.ExcelDictFormat;
+import com.ruoyi.common.excel.convert.ExcelDictConvert;
+import com.ruoyi.common.mybatis.core.domain.BaseVo;
+import com.ruoyi.erp.base.domain.bo.BaseOrderDetailBo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.poi.ss.formula.functions.T;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -18,8 +18,8 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseOrderBo<T extends BaseOrderDetailBo>  extends BaseBillBo<T> {
-
+@ExcelIgnoreUnannotated
+public class BaseOrderVo<T extends BaseOrderDetailVo> extends BaseBillVo {
     /**
      * 库存状态
      */
@@ -38,4 +38,7 @@ public class BaseOrderBo<T extends BaseOrderDetailBo>  extends BaseBillBo<T> {
      * 预付金额
      */
     private BigDecimal prepayAmount;
+
+
+    private List<T> details;
 }
