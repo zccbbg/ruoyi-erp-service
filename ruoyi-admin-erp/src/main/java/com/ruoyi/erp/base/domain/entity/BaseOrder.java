@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,7 +20,7 @@ public class BaseOrder extends BaseBill{
      * 交货日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     /**
      * 已处理数量（入库单就是已入库数量，出库单就是已出库数量）
      */

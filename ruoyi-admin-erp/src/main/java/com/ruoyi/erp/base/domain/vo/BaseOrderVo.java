@@ -9,9 +9,11 @@ import com.ruoyi.common.mybatis.core.domain.BaseVo;
 import com.ruoyi.erp.base.domain.bo.BaseOrderDetailBo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.io.Serial;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-public class BaseOrderVo<T extends BaseOrderDetailVo> extends BaseBillVo {
+public class BaseOrderVo<T extends BaseOrderDetailVo> extends BaseBillVo<T> {
     /**
      * 库存状态
      */
@@ -28,7 +30,7 @@ public class BaseOrderVo<T extends BaseOrderDetailVo> extends BaseBillVo {
      * 交货日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     /**
      * 已处理数量（入库单就是已入库数量，出库单就是已出库数量）
      */
@@ -38,7 +40,4 @@ public class BaseOrderVo<T extends BaseOrderDetailVo> extends BaseBillVo {
      * 预付金额
      */
     private BigDecimal prepayAmount;
-
-
-    private List<T> details;
 }

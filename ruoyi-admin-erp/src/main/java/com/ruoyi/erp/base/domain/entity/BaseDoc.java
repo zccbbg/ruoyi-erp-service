@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -29,7 +30,7 @@ public class BaseDoc extends BaseEntity {
      * 单据日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime docDate;
+    private LocalDate docDate;
 
     /**
      * 商品总数

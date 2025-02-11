@@ -2,11 +2,13 @@ package com.ruoyi.erp.base.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.mybatis.core.domain.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -23,6 +25,12 @@ public class BaseDocVo<T extends BaseDocDetailVo> extends BaseVo {
      */
     @ExcelProperty(value = "单据编号")
     private String docNo;
+
+    /**
+     * 单据日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate docDate;
 
     /**
      * 商品总数

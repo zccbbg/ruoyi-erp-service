@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-public class BaseTradeVo<T extends BaseTradeDetailVo> extends BaseBillVo {
+public class BaseTradeVo<T extends BaseTradeDetailVo> extends BaseBillVo<T> {
     private Long orderId;
 
     private Integer paymentStatus;
@@ -40,7 +40,4 @@ public class BaseTradeVo<T extends BaseTradeDetailVo> extends BaseBillVo {
      * 剩余金额=实际金额-支付金额-退款抵扣-预付款抵扣
      */
     private BigDecimal dueAmount;
-
-
-    private List<T> details;
 }

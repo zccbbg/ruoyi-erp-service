@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BaseBillVo extends BaseDoc {
+public class BaseBillVo<T extends BaseBillDetailVo> extends BaseDocVo<T> {
 
     /**
      * 其他费用金额

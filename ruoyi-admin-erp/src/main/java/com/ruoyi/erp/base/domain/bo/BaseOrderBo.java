@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.poi.ss.formula.functions.T;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class BaseOrderBo<T extends BaseOrderDetailBo>  extends BaseBillBo<T> {
      * 交货日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     /**
      * 已处理数量（入库单就是已入库数量，出库单就是已出库数量）
      */

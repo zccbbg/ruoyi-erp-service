@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ExcelIgnoreUnannotated
-public class BaseRefundVo<T extends BaseRefundDetailVo> extends BaseBillVo {
+public class BaseRefundVo<T extends BaseRefundDetailVo> extends BaseBillVo<T> {
     private Long tradeId;
 
     /**
@@ -28,7 +28,4 @@ public class BaseRefundVo<T extends BaseRefundDetailVo> extends BaseBillVo {
      * 未付金额=实际金额-已付退款金额-已抵扣退款金额
      */
     private BigDecimal dueAmount;
-
-
-    private List<T> details;
 }
