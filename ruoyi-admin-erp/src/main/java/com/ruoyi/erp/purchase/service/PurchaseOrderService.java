@@ -1,12 +1,14 @@
 package com.ruoyi.erp.purchase.service;
 
 import com.ruoyi.common.core.utils.MapstructUtils;
+import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.erp.warehouse.domain.bo.OtherReceiptDocDetailBo;
@@ -31,7 +33,7 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @Service
-public class PurchaseOrderService {
+public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
 
     private final PurchaseOrderMapper purchaseOrderMapper;
     private final PurchaseOrderDetailService purchaseOrderDetailService;
@@ -72,6 +74,7 @@ public class PurchaseOrderService {
             PurchaseOrder::getDeliveryDate ,params.get("beginDeliveryDate"), params.get("endDeliveryDate"));
         lqw.eq(bo.getCheckedStatus() != null, PurchaseOrder::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getStockStatus() != null, PurchaseOrder::getStockStatus, bo.getStockStatus());
+        lqw.orderByDesc(BaseEntity::getUpdateTime);
         return lqw;
     }
 
@@ -83,9 +86,10 @@ public class PurchaseOrderService {
         PurchaseOrder add = MapstructUtils.convert(bo, PurchaseOrder.class);
         List<PurchaseOrderDetailBo> detailBoList = bo.getDetails();
         List<PurchaseOrderDetail> addDetailList = MapstructUtils.convert(detailBoList, PurchaseOrderDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(addDetailList);
+        add.setWarehouseId(sameWarehouseId);
         purchaseOrderMapper.insert(add);
         bo.setId(add.getId());
-
         addDetailList.forEach(it -> {
             it.setPid(add.getId());
         });
@@ -98,7 +102,13 @@ public class PurchaseOrderService {
      */
     public void updateByBo(PurchaseOrderBo bo) {
         PurchaseOrder update = MapstructUtils.convert(bo, PurchaseOrder.class);
+        List<PurchaseOrderDetail> detailList = MapstructUtils.convert(bo.getDetails(), PurchaseOrderDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(detailList);
+        update.setWarehouseId(sameWarehouseId);
         purchaseOrderMapper.updateById(update);
+        // 保存入库单明细
+        detailList.forEach(it -> it.setPid(bo.getId()));
+        purchaseOrderDetailService.saveDetails(detailList);
     }
 
     /**
