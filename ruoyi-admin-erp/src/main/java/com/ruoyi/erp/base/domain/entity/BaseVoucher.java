@@ -1,20 +1,31 @@
-package com.ruoyi.erp.financial.domain.entity;
+package com.ruoyi.erp.base.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.ruoyi.common.mybatis.core.domain.BaseHistoryEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TransHistory extends BaseHistoryEntity {
+public class BaseVoucher extends BaseEntity {
     /**
      * id
      */
     @TableId(value = "id")
     private Long id;
+    /**
+     * 编号
+     */
+    private String voucherNo;
+    /**
+     * 付款或收款日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate transDate;
     /**
      * 往来单位id
      */
@@ -22,32 +33,15 @@ public class TransHistory extends BaseHistoryEntity {
 
     private Long bankAccountId;
     /**
-     * 交易类型
+     * 支付金额
      */
-    private String transType;
-
-    /**
-     * 总金额
-     */
-    private BigDecimal totalAmount;
-
+    private BigDecimal paidAmount;
     /**
      * 优惠金额
      */
     private BigDecimal discountAmount;
-
     /**
-     * 实际金额
-     * 实际金额= 总金额-优惠金额
-     */
-    private BigDecimal actualAmount;
-    /**
-     * 支付金额
-     */
-    private BigDecimal paidAmount;
-
-    /**
-     * 余额变动=实际金额-支付金额
+     * 余额变动=支付金额+优惠金额
      */
     private BigDecimal balanceChange;
     /**
@@ -59,12 +53,12 @@ public class TransHistory extends BaseHistoryEntity {
      */
     private BigDecimal afterBalance;
     /**
-     * 关联业务id
+     * 审核状态
      */
-    private Long relatedId;
+    private Integer checkedStatus;
     /**
-     * 关联业务编号
+     * 审核人
      */
-    private String relatedNo;
+    private String checkedBy;
 
 }
