@@ -77,13 +77,4 @@ public class Merchant extends BaseEntity {
      * 备注
      */
     private String remark;
-    /**
-     * 账户余额
-     */
-    private BigDecimal balance;
-    /**
-     * 期初余额
-     */
-    private BigDecimal initialBalance;
-
 }
