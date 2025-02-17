@@ -1,10 +1,8 @@
 package com.ruoyi.erp.basic.domain.vo;
 
-import com.ruoyi.erp.basic.domain.entity.BasicBankAccount;
+import com.ruoyi.erp.basic.domain.entity.BankAccount;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.common.excel.annotation.ExcelDictFormat;
-import com.ruoyi.common.excel.convert.ExcelDictConvert;
 import lombok.Data;
 import io.github.linpeilie.annotations.AutoMapper;
 
@@ -19,14 +17,14 @@ import java.io.Serial;
  */
 @Data
 @ExcelIgnoreUnannotated
-@AutoMapper(target = BasicBankAccount.class)
-public class BasicBankAccountVo implements Serializable {
+@AutoMapper(target = BankAccount.class)
+public class BankAccountVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      */
     @ExcelProperty(value = "")
     private Long id;

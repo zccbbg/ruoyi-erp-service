@@ -2,6 +2,8 @@ package com.ruoyi.erp.basic.controller;
 
 import java.util.List;
 
+import com.ruoyi.erp.basic.domain.bo.BankAccountBo;
+import com.ruoyi.erp.basic.domain.vo.BankAccountVo;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -17,9 +19,7 @@ import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.excel.utils.ExcelUtil;
-import com.ruoyi.erp.basic.domain.vo.BasicBankAccountVo;
-import com.ruoyi.erp.basic.domain.bo.BasicBankAccountBo;
-import com.ruoyi.erp.basic.service.BasicBankAccountService;
+import com.ruoyi.erp.basic.service.BankAccountService;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 
 /**
@@ -32,17 +32,23 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/basic/bankAccount")
-public class BasicBankAccountController extends BaseController {
+public class BankAccountController extends BaseController {
 
-    private final BasicBankAccountService basicBankAccountService;
+    private final BankAccountService bankAccountService;
 
     /**
      * 查询银行账户列表
      */
     @SaCheckPermission("basic:bankAccount:list")
     @GetMapping("/list")
-    public TableDataInfo<BasicBankAccountVo> list(BasicBankAccountBo bo, PageQuery pageQuery) {
-        return basicBankAccountService.queryPageList(bo, pageQuery);
+    public TableDataInfo<BankAccountVo> list(BankAccountBo bo, PageQuery pageQuery) {
+        return bankAccountService.queryPageList(bo, pageQuery);
+    }
+
+    @SaCheckPermission("basic:bankAccount:list")
+    @GetMapping("/listNoPage")
+    public R<List<BankAccountVo>> listNoPage(BankAccountBo bo) {
+        return R.ok(bankAccountService.queryList(bo));
     }
 
     /**
@@ -51,9 +57,9 @@ public class BasicBankAccountController extends BaseController {
     @SaCheckPermission("basic:bankAccount:export")
     @Log(title = "银行账户", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(BasicBankAccountBo bo, HttpServletResponse response) {
-        List<BasicBankAccountVo> list = basicBankAccountService.queryList(bo);
-        ExcelUtil.exportExcel(list, "银行账户", BasicBankAccountVo.class, response);
+    public void export(BankAccountBo bo, HttpServletResponse response) {
+        List<BankAccountVo> list = bankAccountService.queryList(bo);
+        ExcelUtil.exportExcel(list, "银行账户", BankAccountVo.class, response);
     }
 
     /**
@@ -63,9 +69,9 @@ public class BasicBankAccountController extends BaseController {
      */
     @SaCheckPermission("basic:bankAccount:query")
     @GetMapping("/{id}")
-    public R<BasicBankAccountVo> getInfo(@NotNull(message = "主键不能为空")
+    public R<BankAccountVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(basicBankAccountService.queryById(id));
+        return R.ok(bankAccountService.queryById(id));
     }
 
     /**
@@ -75,8 +81,8 @@ public class BasicBankAccountController extends BaseController {
     @Log(title = "银行账户", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody BasicBankAccountBo bo) {
-        basicBankAccountService.insertByBo(bo);
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody BankAccountBo bo) {
+        bankAccountService.insertByBo(bo);
         return R.ok();
     }
 
@@ -87,8 +93,8 @@ public class BasicBankAccountController extends BaseController {
     @Log(title = "银行账户", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody BasicBankAccountBo bo) {
-        basicBankAccountService.updateByBo(bo);
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody BankAccountBo bo) {
+        bankAccountService.updateByBo(bo);
         return R.ok();
     }
 
@@ -102,7 +108,7 @@ public class BasicBankAccountController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
-        basicBankAccountService.deleteByIds(List.of(ids));
+        bankAccountService.deleteByIds(List.of(ids));
         return R.ok();
     }
 }

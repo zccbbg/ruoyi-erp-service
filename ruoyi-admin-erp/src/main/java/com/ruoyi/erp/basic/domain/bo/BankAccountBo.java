@@ -1,6 +1,6 @@
 package com.ruoyi.erp.basic.domain.bo;
 
-import com.ruoyi.erp.basic.domain.entity.BasicBankAccount;
+import com.ruoyi.erp.basic.domain.entity.BankAccount;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -19,11 +19,11 @@ import io.github.linpeilie.annotations.AutoMapper;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = BasicBankAccount.class, reverseConvertGenerate = false)
-public class BasicBankAccountBo extends BaseEntity {
+@AutoMapper(target = BankAccount.class, reverseConvertGenerate = false)
+public class BankAccountBo extends BaseEntity {
 
     /**
-     * 
+     *
      */
     @NotNull(message = "不能为空", groups = { EditGroup.class })
     private Long id;
