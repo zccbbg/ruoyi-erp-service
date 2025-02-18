@@ -41,17 +41,9 @@ public class BaseVoucher extends BaseEntity {
      */
     private BigDecimal discountAmount;
     /**
-     * 余额变动=支付金额+优惠金额
+     * 总金额=支付金额+优惠金额
      */
-    private BigDecimal balanceChange;
-    /**
-     * 交易前余额
-     */
-    private BigDecimal beforeBalance;
-    /**
-     * 交易后余额
-     */
-    private BigDecimal afterBalance;
+    private BigDecimal totalAmount;
     /**
      * 审核状态
      */

@@ -1,6 +1,7 @@
 package com.ruoyi.erp.financial.domain.vo;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.erp.financial.domain.entity.ReceiptVoucher;
@@ -29,7 +30,7 @@ public class ReceiptVoucherVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      */
     @ExcelProperty(value = "")
     private Long id;
@@ -44,7 +45,7 @@ public class ReceiptVoucherVo implements Serializable {
      * 收款日期
      */
     @ExcelProperty(value = "收款日期")
-    private Date transDate;
+    private LocalDate transDate;
 
     /**
      * 往来单位id
@@ -73,20 +74,9 @@ public class ReceiptVoucherVo implements Serializable {
     /**
      * 余额变动
      */
-    @ExcelProperty(value = "余额变动")
-    private BigDecimal balanceChange;
+    @ExcelProperty(value = "总金额")
+    private BigDecimal totalAmount;
 
-    /**
-     * 交易前余额
-     */
-    @ExcelProperty(value = "交易前余额")
-    private BigDecimal beforeBalance;
-
-    /**
-     * 交易后余额
-     */
-    @ExcelProperty(value = "交易后余额")
-    private BigDecimal afterBalance;
 
     /**
      * 审核状态

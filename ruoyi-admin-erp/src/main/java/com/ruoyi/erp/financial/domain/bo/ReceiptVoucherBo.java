@@ -10,6 +10,7 @@ import jakarta.validation.constraints.*;
 import io.github.linpeilie.annotations.AutoMapper;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class ReceiptVoucherBo extends BaseEntity {
 
     /**
-     * 
+     *
      */
     @NotNull(message = "不能为空", groups = { EditGroup.class })
     private Long id;
@@ -41,18 +42,18 @@ public class ReceiptVoucherBo extends BaseEntity {
      * 收款日期
      */
     @NotNull(message = "收款日期不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Date transDate;
+    private LocalDate transDate;
 
     /**
      * 往来单位id
      */
-    @NotNull(message = "往来单位id不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "往来单位不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long merchantId;
 
     /**
      * 银行账户id
      */
-    @NotNull(message = "银行账户id不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "银行账户不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long bankAccountId;
 
     /**
@@ -67,19 +68,10 @@ public class ReceiptVoucherBo extends BaseEntity {
     private BigDecimal discountAmount;
 
     /**
-     * 余额变动
+     * 总金额
      */
-    private BigDecimal balanceChange;
-
-    /**
-     * 交易前余额
-     */
-    private BigDecimal beforeBalance;
-
-    /**
-     * 交易后余额
-     */
-    private BigDecimal afterBalance;
+    @NotNull(message = "总金额不能为空", groups = { AddGroup.class, EditGroup.class })
+    private BigDecimal totalAmount;
 
     /**
      * 审核状态
@@ -94,7 +86,6 @@ public class ReceiptVoucherBo extends BaseEntity {
     /**
      * 备注
      */
-    @NotBlank(message = "备注不能为空", groups = { AddGroup.class, EditGroup.class })
     private String remark;
 
 
