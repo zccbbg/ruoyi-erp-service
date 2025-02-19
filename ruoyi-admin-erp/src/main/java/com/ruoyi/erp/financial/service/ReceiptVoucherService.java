@@ -18,6 +18,7 @@ import com.ruoyi.erp.financial.mapper.ReceiptVoucherMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 收款单Service业务层处理
@@ -88,5 +89,14 @@ public class ReceiptVoucherService {
      */
     public void deleteByIds(Collection<Long> ids) {
         receiptVoucherMapper.deleteBatchIds(ids);
+    }
+
+    public void finish(ReceiptVoucherBo bo) {
+        if (Objects.isNull(bo.getId())) {
+            insertByBo(bo);
+        } else {
+            updateByBo(bo);
+        }
+        //todo merchantBalanceService.add();
     }
 }

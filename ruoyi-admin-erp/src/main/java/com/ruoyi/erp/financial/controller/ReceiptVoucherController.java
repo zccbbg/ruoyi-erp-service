@@ -2,6 +2,7 @@ package com.ruoyi.erp.financial.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.core.constant.ServiceConstants;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -77,6 +78,19 @@ public class ReceiptVoucherController extends BaseController {
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptVoucherBo bo) {
         receiptVoucherService.insertByBo(bo);
+        return R.ok();
+    }
+
+    /**
+     * 收款完成
+     */
+    @SaCheckPermission("financial:receiptVoucher:all")
+    @Log(title = "收款单", businessType = BusinessType.INSERT)
+    @RepeatSubmit()
+    @PostMapping("/finish")
+    public R<Void> finish(@Validated(EditGroup.class) @RequestBody ReceiptVoucherBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        receiptVoucherService.finish(bo);
         return R.ok();
     }
 
