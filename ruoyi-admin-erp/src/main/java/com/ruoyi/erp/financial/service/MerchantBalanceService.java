@@ -16,6 +16,7 @@ import com.ruoyi.erp.financial.domain.bo.MerchantBalanceBo;
 import com.ruoyi.erp.financial.domain.vo.MerchantBalanceVo;
 import com.ruoyi.erp.financial.domain.entity.MerchantBalance;
 import com.ruoyi.erp.financial.mapper.MerchantBalanceMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -99,6 +100,7 @@ public class MerchantBalanceService {
         merchantBalanceMapper.deleteBatchIds(ids);
     }
 
+    @Transactional
     public void add(ReceiptVoucherBo bo) {
         Long merchantId = bo.getMerchantId();
         MerchantBalance merchantBalance = queryByMerchantId(merchantId);
@@ -121,10 +123,11 @@ public class MerchantBalanceService {
             transHistoryBo.setBeforeBalance(BigDecimal.ZERO);
             transHistoryBo.setAfterBalance(bo.getTotalAmount());
         }else {
-            BigDecimal afterBalance = merchantBalance.getBalance().add(bo.getTotalAmount());
+            BigDecimal beforeBalance = merchantBalance.getBalance();
+            BigDecimal afterBalance = beforeBalance.add(bo.getTotalAmount());
             merchantBalance.setBalance(afterBalance);
             merchantBalanceMapper.updateById(merchantBalance);
-            transHistoryBo.setBeforeBalance(merchantBalance.getBalance());
+            transHistoryBo.setBeforeBalance(beforeBalance);
             transHistoryBo.setAfterBalance(afterBalance);
         }
         transHistoryService.insertByBo(transHistoryBo);

@@ -16,6 +16,7 @@ import com.ruoyi.erp.financial.domain.bo.ReceiptVoucherBo;
 import com.ruoyi.erp.financial.domain.vo.ReceiptVoucherVo;
 import com.ruoyi.erp.financial.domain.entity.ReceiptVoucher;
 import com.ruoyi.erp.financial.mapper.ReceiptVoucherMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,7 @@ public class ReceiptVoucherService {
     public void insertByBo(ReceiptVoucherBo bo) {
         ReceiptVoucher add = MapstructUtils.convert(bo, ReceiptVoucher.class);
         receiptVoucherMapper.insert(add);
+        bo.setId(add.getId());
     }
 
     /**
@@ -94,6 +96,7 @@ public class ReceiptVoucherService {
         receiptVoucherMapper.deleteBatchIds(ids);
     }
 
+    @Transactional
     public void finish(ReceiptVoucherBo bo) {
         if (Objects.isNull(bo.getId())) {
             insertByBo(bo);

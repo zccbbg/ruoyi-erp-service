@@ -12,6 +12,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 import java.io.Serializable;
 import java.io.Serial;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 交易流水视图对象 financial_trans_history
@@ -106,16 +107,10 @@ public class TransHistoryVo implements Serializable {
     private BigDecimal afterBalance;
 
     /**
-     * 创建人
-     */
-    @ExcelProperty(value = "创建人")
-    private String createBy;
-
-    /**
      * 创建时间
      */
     @ExcelProperty(value = "创建时间")
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
 
 }

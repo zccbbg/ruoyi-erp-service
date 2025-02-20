@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.erp.base.domain.vo.BaseVoucherVo;
 import com.ruoyi.erp.financial.domain.entity.ReceiptVoucher;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -24,71 +25,6 @@ import java.io.Serial;
 @Data
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ReceiptVoucher.class)
-public class ReceiptVoucherVo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /**
-     *
-     */
-    @ExcelProperty(value = "")
-    private Long id;
-
-    /**
-     * 编号
-     */
-    @ExcelProperty(value = "编号")
-    private String voucherNo;
-
-    /**
-     * 收款日期
-     */
-    @ExcelProperty(value = "收款日期")
-    private LocalDate transDate;
-
-    /**
-     * 往来单位id
-     */
-    @ExcelProperty(value = "往来单位id")
-    private Long merchantId;
-
-    /**
-     * 银行账户id
-     */
-    @ExcelProperty(value = "银行账户id")
-    private Long bankAccountId;
-
-    /**
-     * 支付金额
-     */
-    @ExcelProperty(value = "支付金额")
-    private BigDecimal paidAmount;
-
-    /**
-     * 优惠金额
-     */
-    @ExcelProperty(value = "优惠金额")
-    private BigDecimal discountAmount;
-
-    /**
-     * 余额变动
-     */
-    @ExcelProperty(value = "总金额")
-    private BigDecimal totalAmount;
-
-
-    /**
-     * 审核状态
-     */
-    @ExcelProperty(value = "审核状态")
-    private Integer checkedStatus;
-
-    /**
-     * 备注
-     */
-    @ExcelProperty(value = "备注")
-    private String remark;
-
+public class ReceiptVoucherVo extends BaseVoucherVo {
 
 }

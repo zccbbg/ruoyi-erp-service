@@ -1,5 +1,6 @@
 package com.ruoyi.erp.financial.domain.bo;
 
+import com.ruoyi.common.mybatis.core.domain.BaseHistoryEntity;
 import com.ruoyi.erp.financial.domain.entity.TransHistory;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
@@ -21,10 +22,10 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = TransHistory.class, reverseConvertGenerate = false)
-public class TransHistoryBo extends BaseEntity {
+public class TransHistoryBo extends BaseHistoryEntity {
 
     /**
-     * 
+     *
      */
     @NotNull(message = "不能为空", groups = { EditGroup.class })
     private Long id;

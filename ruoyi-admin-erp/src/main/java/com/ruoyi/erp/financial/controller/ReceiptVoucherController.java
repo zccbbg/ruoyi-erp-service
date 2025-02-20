@@ -77,6 +77,7 @@ public class ReceiptVoucherController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ReceiptVoucherBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         receiptVoucherService.insertByBo(bo);
         return R.ok();
     }
@@ -88,7 +89,7 @@ public class ReceiptVoucherController extends BaseController {
     @Log(title = "收款单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping("/finish")
-    public R<Void> finish(@Validated(EditGroup.class) @RequestBody ReceiptVoucherBo bo) {
+    public R<Void> finish(@Validated(AddGroup.class) @RequestBody ReceiptVoucherBo bo) {
         bo.setCheckedStatus(ServiceConstants.Status.FINISH);
         receiptVoucherService.finish(bo);
         return R.ok();
