@@ -79,30 +79,4 @@ public class TransHistoryController extends BaseController {
         transHistoryService.insertByBo(bo);
         return R.ok();
     }
-
-    /**
-     * 修改交易流水
-     */
-    @SaCheckPermission("financial:transHistory:edit")
-    @Log(title = "交易流水", businessType = BusinessType.UPDATE)
-    @RepeatSubmit()
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody TransHistoryBo bo) {
-        transHistoryService.updateByBo(bo);
-        return R.ok();
-    }
-
-    /**
-     * 删除交易流水
-     *
-     * @param ids 主键串
-     */
-    @SaCheckPermission("financial:transHistory:remove")
-    @Log(title = "交易流水", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ids) {
-        transHistoryService.deleteByIds(List.of(ids));
-        return R.ok();
-    }
 }

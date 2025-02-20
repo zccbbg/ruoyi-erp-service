@@ -79,30 +79,4 @@ public class MerchantBalanceController extends BaseController {
         merchantBalanceService.insertByBo(bo);
         return R.ok();
     }
-
-    /**
-     * 修改商家余额
-     */
-    @SaCheckPermission("financial:merchantBalance:edit")
-    @Log(title = "商家余额", businessType = BusinessType.UPDATE)
-    @RepeatSubmit()
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody MerchantBalanceBo bo) {
-        merchantBalanceService.updateByBo(bo);
-        return R.ok();
-    }
-
-    /**
-     * 删除商家余额
-     *
-     * @param ids 主键串
-     */
-    @SaCheckPermission("financial:merchantBalance:remove")
-    @Log(title = "商家余额", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ids) {
-        merchantBalanceService.deleteByIds(List.of(ids));
-        return R.ok();
-    }
 }
