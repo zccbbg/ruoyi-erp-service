@@ -1,6 +1,7 @@
 package com.ruoyi.erp.financial.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.mybatis.core.domain.BaseHistoryEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("financial_trans_history")
 public class TransHistory extends BaseHistoryEntity {
     /**
      * id
