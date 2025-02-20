@@ -8,6 +8,8 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.financial.domain.bo.ReceiptVoucherBo;
+import com.ruoyi.erp.financial.domain.bo.TransHistoryBo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.MerchantBalanceBo;
@@ -15,6 +17,7 @@ import com.ruoyi.erp.financial.domain.vo.MerchantBalanceVo;
 import com.ruoyi.erp.financial.domain.entity.MerchantBalance;
 import com.ruoyi.erp.financial.mapper.MerchantBalanceMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -30,12 +33,20 @@ import java.util.Collection;
 public class MerchantBalanceService {
 
     private final MerchantBalanceMapper merchantBalanceMapper;
+    private final TransHistoryService transHistoryService;
 
     /**
      * 查询商家余额
      */
     public MerchantBalanceVo queryById(Long id){
         return merchantBalanceMapper.selectVoById(id);
+    }
+
+    public MerchantBalance queryByMerchantId(Long merchantId){
+        LambdaQueryWrapper<MerchantBalance> lqw = Wrappers.lambdaQuery();
+        lqw.eq(MerchantBalance::getMerchantId, merchantId);
+        return merchantBalanceMapper.selectOne(lqw);
+
     }
 
     /**
@@ -86,5 +97,36 @@ public class MerchantBalanceService {
      */
     public void deleteByIds(Collection<Long> ids) {
         merchantBalanceMapper.deleteBatchIds(ids);
+    }
+
+    public void add(ReceiptVoucherBo bo) {
+        Long merchantId = bo.getMerchantId();
+        MerchantBalance merchantBalance = queryByMerchantId(merchantId);
+        TransHistoryBo transHistoryBo = new TransHistoryBo();
+        transHistoryBo.setMerchantId(merchantId);
+        transHistoryBo.setTransType("收款单");
+        transHistoryBo.setTotalAmount(bo.getTotalAmount());
+        transHistoryBo.setRelatedNo(bo.getVoucherNo());
+        transHistoryBo.setDiscountAmount(bo.getDiscountAmount());
+        transHistoryBo.setBankAccountId(bo.getBankAccountId());
+        transHistoryBo.setRelatedId(bo.getId());
+        transHistoryBo.setPaidAmount(bo.getPaidAmount());
+        transHistoryBo.setBalanceChange(bo.getTotalAmount());
+        if (merchantBalance == null) {
+            merchantBalance = new MerchantBalance();
+            merchantBalance.setMerchantId(merchantId);
+            merchantBalance.setInitialBalance(BigDecimal.ZERO);
+            merchantBalance.setBalance(bo.getTotalAmount());
+            merchantBalanceMapper.insert(merchantBalance);
+            transHistoryBo.setBeforeBalance(BigDecimal.ZERO);
+            transHistoryBo.setAfterBalance(bo.getTotalAmount());
+        }else {
+            BigDecimal afterBalance = merchantBalance.getBalance().add(bo.getTotalAmount());
+            merchantBalance.setBalance(afterBalance);
+            merchantBalanceMapper.updateById(merchantBalance);
+            transHistoryBo.setBeforeBalance(merchantBalance.getBalance());
+            transHistoryBo.setAfterBalance(afterBalance);
+        }
+        transHistoryService.insertByBo(transHistoryBo);
     }
 }
