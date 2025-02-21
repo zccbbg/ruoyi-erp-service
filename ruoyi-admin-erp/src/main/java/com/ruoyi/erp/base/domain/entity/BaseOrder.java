@@ -30,5 +30,6 @@ public class BaseOrder extends BaseBill{
      * 预付金额
      */
     private BigDecimal prepayAmount;
+    private Long bankAccountId;
 }
 

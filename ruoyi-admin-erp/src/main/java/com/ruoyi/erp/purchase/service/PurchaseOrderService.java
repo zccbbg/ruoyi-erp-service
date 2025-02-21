@@ -9,21 +9,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.service.BaseDocService;
+import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
-import com.ruoyi.erp.warehouse.domain.bo.OtherReceiptDocDetailBo;
-import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDoc;
-import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseOrderVo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
 import com.ruoyi.erp.purchase.mapper.PurchaseOrderMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 采购订单Service业务层处理
@@ -37,6 +37,7 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
 
     private final PurchaseOrderMapper purchaseOrderMapper;
     private final PurchaseOrderDetailService purchaseOrderDetailService;
+    private final MerchantBalanceService merchantBalanceService;
 
     /**
      * 查询采购订单
@@ -116,5 +117,17 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
      */
     public void deleteByIds(Collection<Long> ids) {
         purchaseOrderMapper.deleteBatchIds(ids);
+    }
+
+    @Transactional
+    public void pass(PurchaseOrderBo bo) {
+        if (Objects.isNull(bo.getId())) {
+            insertByBo(bo);
+        } else {
+            updateByBo(bo);
+        }
+        if(bo.getPrepayAmount()!=null && bo.getBankAccountId()!=null){
+            merchantBalanceService.subtract(bo);
+        }
     }
 }

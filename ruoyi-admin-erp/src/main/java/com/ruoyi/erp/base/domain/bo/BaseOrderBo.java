@@ -39,4 +39,5 @@ public class BaseOrderBo<T extends BaseOrderDetailBo>  extends BaseBillBo<T> {
      * 预付金额
      */
     private BigDecimal prepayAmount;
+    private Long bankAccountId;
 }
