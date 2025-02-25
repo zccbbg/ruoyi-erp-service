@@ -143,7 +143,7 @@ public class MerchantBalanceService {
         transHistoryBo.setRelatedNo(bo.getDocNo());
         transHistoryBo.setBankAccountId(bo.getBankAccountId());
         transHistoryBo.setRelatedId(bo.getId());
-        transHistoryBo.setPaidAmount(bo.getPrepayAmount());
+        transHistoryBo.setPaidAmount(bo.getPrepayAmount().negate());
         transHistoryBo.setBalanceChange(balanceChange);
         if (merchantBalance == null) {
             merchantBalance = new MerchantBalance();

@@ -3,6 +3,7 @@ package com.ruoyi.erp.purchase.controller;
 import java.util.List;
 
 import com.ruoyi.common.core.constant.ServiceConstants;
+import com.ruoyi.common.core.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -85,7 +86,10 @@ public class PurchaseOrderController extends BaseController {
     @Log(title = "采购订单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping("/pass")
-    public R<Void> pass(@Validated(EditGroup.class) @RequestBody PurchaseOrderBo bo) {
+    public R<Void> pass(@Validated(AddGroup.class) @RequestBody PurchaseOrderBo bo) {
+        if(bo.getMerchantId()==null){
+            throw new ServiceException("请选择商家！");
+        }
         bo.setCheckedStatus(ServiceConstants.Status.FINISH);
         purchaseOrderService.pass(bo);
         return R.ok();
