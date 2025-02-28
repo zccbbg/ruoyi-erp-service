@@ -25,4 +25,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = PurchaseTrade.class, reverseConvertGenerate = false)
 public class PurchaseTradeBo<T extends PurchaseTradeDetailBo> extends BaseTradeBo<T> {
+    private Long orderId;
+    private String orderNo;
+
+    private Integer refundStatus;
+
+    private BigDecimal refundAmount;
+
+    /**
+     * 支付金额
+     */
+    private BigDecimal paidAmount;
+    private Long bankAccountId;
 }

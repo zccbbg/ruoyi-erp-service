@@ -59,15 +59,13 @@ public class PurchaseTradeService {
         LambdaQueryWrapper<PurchaseTrade> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, PurchaseTrade::getOrderId, bo.getOrderId());
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), PurchaseTrade::getDocNo, bo.getDocNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), PurchaseTrade::getOrderNo, bo.getOrderNo());
         lqw.eq(bo.getDocDate() != null, PurchaseTrade::getDocDate, bo.getDocDate());
         lqw.eq(bo.getCheckedStatus() != null, PurchaseTrade::getCheckedStatus, bo.getCheckedStatus());
-        lqw.eq(bo.getPaymentStatus() != null, PurchaseTrade::getPaymentStatus, bo.getPaymentStatus());
         lqw.eq(bo.getRefundStatus() != null, PurchaseTrade::getRefundStatus, bo.getRefundStatus());
         lqw.eq(bo.getRefundAmount() != null, PurchaseTrade::getRefundAmount, bo.getRefundAmount());
-        lqw.eq(bo.getDeductedRefundAmount() != null, PurchaseTrade::getDeductedRefundAmount, bo.getDeductedRefundAmount());
-        lqw.eq(bo.getDeductedPrepayAmount() != null, PurchaseTrade::getDeductedPrepayAmount, bo.getDeductedPrepayAmount());
         lqw.eq(bo.getPaidAmount() != null, PurchaseTrade::getPaidAmount, bo.getPaidAmount());
-        lqw.eq(bo.getDueAmount() != null, PurchaseTrade::getDueAmount, bo.getDueAmount());
+        lqw.eq(bo.getBankAccountId() != null, PurchaseTrade::getBankAccountId, bo.getBankAccountId());
         lqw.eq(bo.getMerchantId() != null, PurchaseTrade::getMerchantId, bo.getMerchantId());
         lqw.eq(bo.getGoodsQty() != null, PurchaseTrade::getGoodsQty, bo.getGoodsQty());
         lqw.eq(bo.getGoodsAmount() != null, PurchaseTrade::getGoodsAmount, bo.getGoodsAmount());
