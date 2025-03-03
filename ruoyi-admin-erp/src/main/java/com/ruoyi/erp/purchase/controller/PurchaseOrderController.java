@@ -78,6 +78,7 @@ public class PurchaseOrderController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody PurchaseOrderBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         purchaseOrderService.insertByBo(bo);
         return R.ok();
     }
@@ -103,6 +104,7 @@ public class PurchaseOrderController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody PurchaseOrderBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         purchaseOrderService.updateByBo(bo);
         return R.ok();
     }

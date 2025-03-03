@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import cn.hutool.core.collection.CollUtil;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
@@ -17,6 +18,8 @@ import com.ruoyi.erp.purchase.mapper.PurchaseTradeDetailMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+
+import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
 /**
  * 采购入库单明细Service业务层处理
@@ -89,5 +92,12 @@ public class PurchaseTradeDetailService {
      */
     public void deleteByIds(Collection<Long> ids) {
         purchaseTradeDetailMapper.deleteBatchIds(ids);
+    }
+
+    public void saveDetails(List<PurchaseTradeDetail> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        saveOrUpdateBatch(list);
     }
 }

@@ -2,6 +2,7 @@ package com.ruoyi.erp.purchase.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.core.constant.ServiceConstants;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -76,6 +77,7 @@ public class PurchaseTradeController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody PurchaseTradeBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         purchaseTradeService.insertByBo(bo);
         return R.ok();
     }
@@ -88,6 +90,7 @@ public class PurchaseTradeController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody PurchaseTradeBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         purchaseTradeService.updateByBo(bo);
         return R.ok();
     }

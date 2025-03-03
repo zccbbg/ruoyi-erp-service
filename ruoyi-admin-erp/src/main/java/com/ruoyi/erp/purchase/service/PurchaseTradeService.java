@@ -1,12 +1,19 @@
 package com.ruoyi.erp.purchase.service;
 
 import com.ruoyi.common.core.utils.MapstructUtils;
+import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.base.service.BaseDocService;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
@@ -26,9 +33,10 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @Service
-public class PurchaseTradeService {
+public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
 
     private final PurchaseTradeMapper purchaseTradeMapper;
+    private final PurchaseTradeDetailService purchaseTradeDetailService;
 
     /**
      * 查询采购入库单
@@ -58,20 +66,15 @@ public class PurchaseTradeService {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<PurchaseTrade> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getOrderId() != null, PurchaseTrade::getOrderId, bo.getOrderId());
+        lqw.between(params.get("beginDocDate") != null && params.get("endDocDate") != null,
+            PurchaseTrade::getDocDate ,params.get("beginDocDate"), params.get("endDocDate"));
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), PurchaseTrade::getDocNo, bo.getDocNo());
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), PurchaseTrade::getOrderNo, bo.getOrderNo());
-        lqw.eq(bo.getDocDate() != null, PurchaseTrade::getDocDate, bo.getDocDate());
         lqw.eq(bo.getCheckedStatus() != null, PurchaseTrade::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getRefundStatus() != null, PurchaseTrade::getRefundStatus, bo.getRefundStatus());
-        lqw.eq(bo.getRefundAmount() != null, PurchaseTrade::getRefundAmount, bo.getRefundAmount());
-        lqw.eq(bo.getPaidAmount() != null, PurchaseTrade::getPaidAmount, bo.getPaidAmount());
         lqw.eq(bo.getBankAccountId() != null, PurchaseTrade::getBankAccountId, bo.getBankAccountId());
         lqw.eq(bo.getMerchantId() != null, PurchaseTrade::getMerchantId, bo.getMerchantId());
-        lqw.eq(bo.getGoodsQty() != null, PurchaseTrade::getGoodsQty, bo.getGoodsQty());
-        lqw.eq(bo.getGoodsAmount() != null, PurchaseTrade::getGoodsAmount, bo.getGoodsAmount());
-        lqw.eq(bo.getOtherExpensesAmount() != null, PurchaseTrade::getOtherExpensesAmount, bo.getOtherExpensesAmount());
-        lqw.eq(bo.getDiscountAmount() != null, PurchaseTrade::getDiscountAmount, bo.getDiscountAmount());
-        lqw.eq(bo.getActualAmount() != null, PurchaseTrade::getActualAmount, bo.getActualAmount());
+        lqw.orderByDesc(BaseEntity::getUpdateTime);
         return lqw;
     }
 
@@ -80,7 +83,17 @@ public class PurchaseTradeService {
      */
     public void insertByBo(PurchaseTradeBo bo) {
         PurchaseTrade add = MapstructUtils.convert(bo, PurchaseTrade.class);
+        List<PurchaseTradeDetailBo> detailBoList = bo.getDetails();
+        List<PurchaseTradeDetail> addDetailList = MapstructUtils.convert(detailBoList, PurchaseTradeDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(addDetailList);
+        add.setWarehouseId(sameWarehouseId);
         purchaseTradeMapper.insert(add);
+        bo.setId(add.getId());
+        addDetailList.forEach(it -> {
+            it.setPid(add.getId());
+        });
+        // 创建入库单明细
+        purchaseTradeDetailService.saveDetails(addDetailList);
     }
 
     /**
@@ -88,7 +101,13 @@ public class PurchaseTradeService {
      */
     public void updateByBo(PurchaseTradeBo bo) {
         PurchaseTrade update = MapstructUtils.convert(bo, PurchaseTrade.class);
+        List<PurchaseTradeDetail> detailList = MapstructUtils.convert(bo.getDetails(), PurchaseTradeDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(detailList);
+        update.setWarehouseId(sameWarehouseId);
         purchaseTradeMapper.updateById(update);
+        // 保存入库单明细
+        detailList.forEach(it -> it.setPid(bo.getId()));
+        purchaseTradeDetailService.saveDetails(detailList);
     }
 
     /**
