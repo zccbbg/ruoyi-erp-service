@@ -119,13 +119,4 @@ public class PurchaseOrderDetailService {
         }
         saveOrUpdateBatch(list);
     }
-
-    public List<PurchaseOrderDetailVo> listByOrderId(Long orderId) {
-        List<PurchaseOrderDetailVo> details = purchaseOrderDetailMapper.selectVoList(Wrappers.lambdaQuery(PurchaseOrderDetail.class).eq(PurchaseOrderDetail::getPid, orderId));
-        if (CollUtil.isEmpty(details)) {
-            return Collections.emptyList();
-        }
-        skuService.setSkuMap(details);
-        return details;
-    }
 }

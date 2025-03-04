@@ -106,8 +106,8 @@ public class PurchaseTradeDetailService {
         saveOrUpdateBatch(list);
     }
 
-    public List<PurchaseTradeDetailVo> listByTradeId(Long tradeId) {
-        List<PurchaseTradeDetailVo> details = purchaseTradeDetailMapper.selectVoList(Wrappers.lambdaQuery(PurchaseTradeDetail.class).eq(PurchaseTradeDetail::getPid, tradeId));
+    public List<PurchaseTradeDetailVo> queryByPid(Long pid) {
+        List<PurchaseTradeDetailVo> details = purchaseTradeDetailMapper.selectVoList(Wrappers.lambdaQuery(PurchaseTradeDetail.class).eq(PurchaseTradeDetail::getPid, pid));
         if (CollUtil.isEmpty(details)) {
             return Collections.emptyList();
         }

@@ -42,7 +42,9 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
      * 查询采购入库单
      */
     public PurchaseTradeVo queryById(Long id){
-        return purchaseTradeMapper.selectVoById(id);
+        PurchaseTradeVo purchaseTradeVo = purchaseTradeMapper.selectVoById(id);
+        purchaseTradeVo.setDetails(purchaseTradeDetailService.queryByPid(id));
+        return purchaseTradeVo;
     }
 
     /**

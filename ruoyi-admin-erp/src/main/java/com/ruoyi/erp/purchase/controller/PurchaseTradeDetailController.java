@@ -110,6 +110,6 @@ public class PurchaseTradeDetailController extends BaseController {
     @SaCheckPermission("purchase:tradeDetail:all")
     @GetMapping("/listByTradeId/{tradeId}")
     public R<List<PurchaseTradeDetailVo>> listByTradeId(@NotNull @PathVariable Long tradeId) {
-        return R.ok(purchaseTradeDetailService.listByTradeId(tradeId));
+        return R.ok(purchaseTradeDetailService.queryByPid(tradeId));
     }
 }

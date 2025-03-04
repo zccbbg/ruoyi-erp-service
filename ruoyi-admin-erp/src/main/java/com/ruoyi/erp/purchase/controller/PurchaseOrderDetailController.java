@@ -110,6 +110,6 @@ public class PurchaseOrderDetailController extends BaseController {
     @SaCheckPermission("purchase:orderDetail:all")
     @GetMapping("/listByOrderId/{orderId}")
     public R<List<PurchaseOrderDetailVo>> listByOrderId(@NotNull @PathVariable Long orderId) {
-        return R.ok(purchaseOrderDetailService.listByOrderId(orderId));
+        return R.ok(purchaseOrderDetailService.queryByPid(orderId));
     }
 }
