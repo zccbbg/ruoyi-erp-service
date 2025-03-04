@@ -8,6 +8,9 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
+import com.ruoyi.erp.purchase.domain.vo.PurchaseOrderDetailVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
@@ -15,6 +18,7 @@ import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseTradeDetailMapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -32,6 +36,7 @@ import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 public class PurchaseTradeDetailService {
 
     private final PurchaseTradeDetailMapper purchaseTradeDetailMapper;
+    private final SkuService skuService;
 
     /**
      * 查询采购入库单明细
@@ -99,5 +104,14 @@ public class PurchaseTradeDetailService {
             return;
         }
         saveOrUpdateBatch(list);
+    }
+
+    public List<PurchaseTradeDetailVo> listByTradeId(Long tradeId) {
+        List<PurchaseTradeDetailVo> details = purchaseTradeDetailMapper.selectVoList(Wrappers.lambdaQuery(PurchaseTradeDetail.class).eq(PurchaseTradeDetail::getPid, tradeId));
+        if (CollUtil.isEmpty(details)) {
+            return Collections.emptyList();
+        }
+        skuService.setSkuMap(details);
+        return details;
     }
 }

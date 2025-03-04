@@ -2,6 +2,7 @@ package com.ruoyi.erp.purchase.controller;
 
 import java.util.List;
 
+import com.ruoyi.erp.purchase.domain.vo.PurchaseOrderDetailVo;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -104,5 +105,11 @@ public class PurchaseTradeDetailController extends BaseController {
                           @PathVariable Long[] ids) {
         purchaseTradeDetailService.deleteByIds(List.of(ids));
         return R.ok();
+    }
+
+    @SaCheckPermission("purchase:tradeDetail:all")
+    @GetMapping("/listByTradeId/{tradeId}")
+    public R<List<PurchaseTradeDetailVo>> listByTradeId(@NotNull @PathVariable Long tradeId) {
+        return R.ok(purchaseTradeDetailService.listByTradeId(tradeId));
     }
 }
