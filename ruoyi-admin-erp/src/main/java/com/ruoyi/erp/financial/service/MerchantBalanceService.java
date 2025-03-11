@@ -7,10 +7,12 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.base.domain.bo.BaseOrderBo;
 import com.ruoyi.erp.base.domain.bo.BaseVoucherBo;
 import com.ruoyi.erp.financial.domain.bo.ReceiptVoucherBo;
 import com.ruoyi.erp.financial.domain.bo.TransHistoryBo;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
+import com.ruoyi.erp.sales.domain.bo.SalesOrderBo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.MerchantBalanceBo;
@@ -139,6 +141,39 @@ public class MerchantBalanceService {
         transHistoryService.insertByBo(transHistoryBo);
     }
 
+    public void add(BaseOrderBo bo) {
+        Long merchantId = bo.getMerchantId();
+        MerchantBalance merchantBalance = queryByMerchantId(merchantId);
+        BigDecimal balanceChange = bo.getPrepayAmount();
+        TransHistoryBo transHistoryBo = new TransHistoryBo();
+        transHistoryBo.setMerchantId(merchantId);
+        transHistoryBo.setTransType("销售订单");
+        transHistoryBo.setRelatedNo(bo.getDocNo());
+        transHistoryBo.setBankAccountId(bo.getBankAccountId());
+        transHistoryBo.setRelatedId(bo.getId());
+        transHistoryBo.setPaidAmount(bo.getPrepayAmount());
+        transHistoryBo.setBalanceChange(balanceChange);
+        if (merchantBalance == null) {
+            merchantBalance = new MerchantBalance();
+            merchantBalance.setMerchantId(merchantId);
+            merchantBalance.setInitialBalance(BigDecimal.ZERO);
+            merchantBalance.setBalance(balanceChange);
+            merchantBalanceMapper.insert(merchantBalance);
+            transHistoryBo.setBeforeBalance(BigDecimal.ZERO);
+            transHistoryBo.setAfterBalance(balanceChange);
+        }else {
+            BigDecimal beforeBalance = merchantBalance.getBalance();
+            BigDecimal afterBalance = beforeBalance.subtract(bo.getPrepayAmount());
+            merchantBalance.setBalance(afterBalance);
+            merchantBalanceMapper.updateById(merchantBalance);
+            transHistoryBo.setBeforeBalance(beforeBalance);
+            transHistoryBo.setAfterBalance(afterBalance);
+        }
+        transHistoryService.insertByBo(transHistoryBo);
+
+
+    }
+
     public void subtract(BaseVoucherBo bo) {
         Long merchantId = bo.getMerchantId();
         MerchantBalance merchantBalance = queryByMerchantId(merchantId);
@@ -166,7 +201,7 @@ public class MerchantBalanceService {
         transHistoryService.insertByBo(transHistoryBo);
     }
 
-    public void subtract(PurchaseOrderBo bo) {
+    public void subtract(BaseOrderBo bo) {
         Long merchantId = bo.getMerchantId();
         MerchantBalance merchantBalance = queryByMerchantId(merchantId);
         BigDecimal balanceChange = bo.getPrepayAmount().negate();
