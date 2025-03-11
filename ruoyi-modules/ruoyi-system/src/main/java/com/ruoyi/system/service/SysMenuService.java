@@ -428,4 +428,8 @@ public class SysMenuService {
         return StringUtils.replaceEach(path, new String[]{Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":"},
             new String[]{"", "", "", "/", "/"});
     }
+
+    public List<RouterVo> resetChildrenName(List<RouterVo> routerVos) {
+        return null;
+    }
 }
