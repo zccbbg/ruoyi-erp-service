@@ -133,7 +133,7 @@ public class SysLoginController {
     public R<List<RouterVo>> getRouters() {
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
         List<RouterVo> routerVos = menuService.buildMenus(menus);
-        //todo children 的那么重新设置
+        //todo children 的name重新设置
         return R.ok(menuService.resetChildrenName(routerVos));
     }
 }
