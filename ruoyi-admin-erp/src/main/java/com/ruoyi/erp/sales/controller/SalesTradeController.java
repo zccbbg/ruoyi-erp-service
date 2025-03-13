@@ -3,6 +3,7 @@ package com.ruoyi.erp.sales.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.excel.utils.ExcelUtil;
@@ -35,7 +36,7 @@ import java.util.List;
 @RequestMapping("/sales/trade")
 public class SalesTradeController extends BaseController {
 
-    private final SalesTradeService SalesTradeService;
+    private final SalesTradeService salesTradeService;
 
     /**
      * 查询销售入库单列表
@@ -43,7 +44,7 @@ public class SalesTradeController extends BaseController {
     @SaCheckPermission("sales:trade:list")
     @GetMapping("/list")
     public TableDataInfo<SalesTradeVo> list(SalesTradeBo bo, PageQuery pageQuery) {
-        return SalesTradeService.queryPageList(bo, pageQuery);
+        return salesTradeService.queryPageList(bo, pageQuery);
     }
 
     /**
@@ -53,7 +54,7 @@ public class SalesTradeController extends BaseController {
     @Log(title = "销售入库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesTradeBo bo, HttpServletResponse response) {
-        List<SalesTradeVo> list = SalesTradeService.queryList(bo);
+        List<SalesTradeVo> list = salesTradeService.queryList(bo);
         ExcelUtil.exportExcel(list, "销售入库单", SalesTradeVo.class, response);
     }
 
@@ -66,7 +67,7 @@ public class SalesTradeController extends BaseController {
     @GetMapping("/{id}")
     public R<SalesTradeVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
-        return R.ok(SalesTradeService.queryById(id));
+        return R.ok(salesTradeService.queryById(id));
     }
 
     /**
@@ -78,7 +79,7 @@ public class SalesTradeController extends BaseController {
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SalesTradeBo bo) {
         bo.setCheckedStatus(ServiceConstants.Status.PENDING);
-        SalesTradeService.insertByBo(bo);
+        salesTradeService.insertByBo(bo);
         return R.ok();
     }
 
@@ -91,7 +92,7 @@ public class SalesTradeController extends BaseController {
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SalesTradeBo bo) {
         bo.setCheckedStatus(ServiceConstants.Status.PENDING);
-        SalesTradeService.updateByBo(bo);
+        salesTradeService.updateByBo(bo);
         return R.ok();
     }
 
@@ -105,7 +106,20 @@ public class SalesTradeController extends BaseController {
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
-        SalesTradeService.deleteByIds(List.of(ids));
+        salesTradeService.deleteByIds(List.of(ids));
+        return R.ok();
+    }
+
+    @SaCheckPermission("sales:trade:all")
+    @Log(title = "销售入库单", businessType = BusinessType.INSERT)
+    @RepeatSubmit()
+    @PostMapping("/pass")
+    public R<Void> pass(@Validated(AddGroup.class) @RequestBody SalesTradeBo bo) {
+        if(bo.getMerchantId()==null){
+            throw new ServiceException("请选择商家！");
+        }
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        salesTradeService.pass(bo);
         return R.ok();
     }
 }

@@ -3,12 +3,15 @@ package com.ruoyi.erp.sales.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
+import com.ruoyi.erp.basic.types.TransType;
+import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeBo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesTrade;
@@ -16,12 +19,16 @@ import com.ruoyi.erp.sales.domain.entity.SalesTradeDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesTradeVo;
 import com.ruoyi.erp.sales.mapper.SalesTradeMapper;
 import com.ruoyi.erp.sales.service.SalesTradeDetailService;
+import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
+import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 销售入库单Service业务层处理
@@ -35,6 +42,9 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
 
     private final SalesTradeMapper salesTradeMapper;
     private final SalesTradeDetailService salesTradeDetailService;
+    private final MerchantBalanceService merchantBalanceService;
+    private final InventoryService inventoryService;
+    private final InventoryHistoryService inventoryHistoryService;
 
     /**
      * 查询销售入库单
@@ -115,5 +125,18 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
      */
     public void deleteByIds(Collection<Long> ids) {
         salesTradeMapper.deleteBatchIds(ids);
+    }
+
+    @Transactional
+    public void pass(SalesTradeBo bo) {
+        if (Objects.isNull(bo.getId())) {
+            insertByBo(bo);
+        } else {
+            updateByBo(bo);
+        }
+
+        merchantBalanceService.doTrade(bo, TransType.SALES_TRADE);
+        inventoryService.subtract(bo.getDetails());
+        inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.SALES,true);
     }
 }
