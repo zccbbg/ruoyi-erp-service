@@ -9,6 +9,7 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
+import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 
 import com.ruoyi.erp.sales.domain.bo.SalesOrderBo;
@@ -120,7 +121,7 @@ public class SalesOrderService extends BaseDocService<SalesOrderDetail> {
             updateByBo(bo);
         }
         if(bo.getPrepayAmount()!=null && bo.getBankAccountId()!=null){
-            merchantBalanceService.add(bo);
+            merchantBalanceService.doOrder(bo, TransType.SALES_ORDER);
         }
     }
 }

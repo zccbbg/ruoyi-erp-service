@@ -3,6 +3,8 @@ package com.ruoyi.erp.purchase.controller;
 import java.util.List;
 
 import com.ruoyi.common.core.constant.ServiceConstants;
+import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -106,6 +108,19 @@ public class PurchaseTradeController extends BaseController {
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         purchaseTradeService.deleteByIds(List.of(ids));
+        return R.ok();
+    }
+
+    @SaCheckPermission("purchase:trade:all")
+    @Log(title = "采购订单", businessType = BusinessType.INSERT)
+    @RepeatSubmit()
+    @PostMapping("/pass")
+    public R<Void> pass(@Validated(AddGroup.class) @RequestBody PurchaseTradeBo bo) {
+        if(bo.getMerchantId()==null){
+            throw new ServiceException("请选择商家！");
+        }
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        purchaseTradeService.pass(bo);
         return R.ok();
     }
 }

@@ -9,6 +9,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
+import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.domain.bo.PaymentVoucherBo;
 
 import com.ruoyi.erp.financial.domain.entity.PaymentVoucher;
@@ -86,7 +87,7 @@ public class PaymentVoucherService {
         } else {
             updateByBo(bo);
         }
-        merchantBalanceService.subtract(bo);
+        merchantBalanceService.doVoucher(bo, TransType.PAYMENT_VOUCHER);
     }
 
     private LambdaQueryWrapper<PaymentVoucher> buildQueryWrapper(PaymentVoucherBo bo) {

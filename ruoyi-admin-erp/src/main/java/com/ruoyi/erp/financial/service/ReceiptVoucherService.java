@@ -8,9 +8,8 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ruoyi.erp.basic.service.BankAccountService;
+import com.ruoyi.erp.basic.types.TransType;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.ReceiptVoucherBo;
 import com.ruoyi.erp.financial.domain.vo.ReceiptVoucherVo;
@@ -103,6 +102,6 @@ public class ReceiptVoucherService {
         } else {
             updateByBo(bo);
         }
-        merchantBalanceService.add(bo);
+        merchantBalanceService.doVoucher(bo, TransType.RECEIPT_VOUCHER);
     }
 }

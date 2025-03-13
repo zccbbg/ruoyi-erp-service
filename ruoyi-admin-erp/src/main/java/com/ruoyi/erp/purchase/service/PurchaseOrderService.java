@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.service.BaseDocService;
+import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
@@ -127,7 +128,7 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
             updateByBo(bo);
         }
         if(bo.getPrepayAmount()!=null && bo.getBankAccountId()!=null){
-            merchantBalanceService.subtract(bo);
+            merchantBalanceService.doOrder(bo, TransType.PURCHASE_ORDER);
         }
     }
 }

@@ -8,11 +8,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.domain.bo.BaseOrderBo;
+import com.ruoyi.erp.base.domain.bo.BaseTradeBo;
 import com.ruoyi.erp.base.domain.bo.BaseVoucherBo;
-import com.ruoyi.erp.financial.domain.bo.ReceiptVoucherBo;
+import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.domain.bo.TransHistoryBo;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
-import com.ruoyi.erp.sales.domain.bo.SalesOrderBo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.MerchantBalanceBo;
@@ -25,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 商家余额Service业务层处理
@@ -103,119 +103,84 @@ public class MerchantBalanceService {
         merchantBalanceMapper.deleteBatchIds(ids);
     }
 
-    private TransHistoryBo getTransHistoryBo(BaseVoucherBo bo,Long merchantId ,String transType){
+    private TransHistoryBo getTransHistoryBo(BaseVoucherBo bo ,String transType){
         TransHistoryBo transHistoryBo = new TransHistoryBo();
-        transHistoryBo.setMerchantId(merchantId);
+        transHistoryBo.setMerchantId(bo.getMerchantId());
         transHistoryBo.setTotalAmount(bo.getTotalAmount());
         transHistoryBo.setTransType(transType);
         transHistoryBo.setRelatedNo(bo.getVoucherNo());
         transHistoryBo.setDiscountAmount(bo.getDiscountAmount());
         transHistoryBo.setBankAccountId(bo.getBankAccountId());
         transHistoryBo.setRelatedId(bo.getId());
+        transHistoryBo.setPaidAmount(bo.getPaidAmount());
+        return transHistoryBo;
+    }
+
+    private TransHistoryBo getTransHistoryBo(BaseOrderBo bo, String transType) {
+        TransHistoryBo transHistoryBo = new TransHistoryBo();
+        transHistoryBo.setMerchantId(bo.getMerchantId());
+        transHistoryBo.setTransType(transType);
+        transHistoryBo.setRelatedNo(bo.getDocNo());
+        transHistoryBo.setBankAccountId(bo.getBankAccountId());
+        transHistoryBo.setRelatedId(bo.getId());
+        return transHistoryBo;
+    }
+
+    private TransHistoryBo getTransHistoryBo(BaseTradeBo bo, String transType) {
+        TransHistoryBo transHistoryBo = new TransHistoryBo();
+        transHistoryBo.setMerchantId(bo.getMerchantId());
+        transHistoryBo.setTransType(transType);
+        transHistoryBo.setRelatedNo(bo.getDocNo());
+        transHistoryBo.setBankAccountId(bo.getBankAccountId());
+        transHistoryBo.setRelatedId(bo.getId());
         return transHistoryBo;
     }
 
     @Transactional
-    public void add(BaseVoucherBo bo) {
-        Long merchantId = bo.getMerchantId();
-        MerchantBalance merchantBalance = queryByMerchantId(merchantId);
-        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, merchantId, "收款单");
-        transHistoryBo.setPaidAmount(bo.getPaidAmount());
+    public void doVoucher(BaseVoucherBo bo,String voucherType) {
+        MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
+        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, voucherType);
+        BigDecimal balanceChange = bo.getTotalAmount();
+        if(voucherType.equals(TransType.PAYMENT_VOUCHER)){
+            balanceChange = balanceChange.negate();
+        }
         transHistoryBo.setBalanceChange(bo.getTotalAmount());
-        if (merchantBalance == null) {
-            merchantBalance = new MerchantBalance();
-            merchantBalance.setMerchantId(merchantId);
-            merchantBalance.setInitialBalance(BigDecimal.ZERO);
-            merchantBalance.setBalance(bo.getTotalAmount());
-            merchantBalanceMapper.insert(merchantBalance);
-            transHistoryBo.setBeforeBalance(BigDecimal.ZERO);
-            transHistoryBo.setAfterBalance(bo.getTotalAmount());
-        }else {
-            BigDecimal beforeBalance = merchantBalance.getBalance();
-            BigDecimal afterBalance = beforeBalance.add(bo.getTotalAmount());
-            merchantBalance.setBalance(afterBalance);
-            merchantBalanceMapper.updateById(merchantBalance);
-            transHistoryBo.setBeforeBalance(beforeBalance);
-            transHistoryBo.setAfterBalance(afterBalance);
-        }
-        transHistoryService.insertByBo(transHistoryBo);
+        this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
 
-    public void add(BaseOrderBo bo) {
-        Long merchantId = bo.getMerchantId();
-        MerchantBalance merchantBalance = queryByMerchantId(merchantId);
+    @Transactional
+    public void doOrder(BaseOrderBo bo,String transType) {
+        MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
         BigDecimal balanceChange = bo.getPrepayAmount();
-        TransHistoryBo transHistoryBo = new TransHistoryBo();
-        transHistoryBo.setMerchantId(merchantId);
-        transHistoryBo.setTransType("销售订单");
-        transHistoryBo.setRelatedNo(bo.getDocNo());
-        transHistoryBo.setBankAccountId(bo.getBankAccountId());
-        transHistoryBo.setRelatedId(bo.getId());
-        transHistoryBo.setPaidAmount(bo.getPrepayAmount());
-        transHistoryBo.setBalanceChange(balanceChange);
-        if (merchantBalance == null) {
-            merchantBalance = new MerchantBalance();
-            merchantBalance.setMerchantId(merchantId);
-            merchantBalance.setInitialBalance(BigDecimal.ZERO);
-            merchantBalance.setBalance(balanceChange);
-            merchantBalanceMapper.insert(merchantBalance);
-            transHistoryBo.setBeforeBalance(BigDecimal.ZERO);
-            transHistoryBo.setAfterBalance(balanceChange);
-        }else {
-            BigDecimal beforeBalance = merchantBalance.getBalance();
-            BigDecimal afterBalance = beforeBalance.subtract(bo.getPrepayAmount());
-            merchantBalance.setBalance(afterBalance);
-            merchantBalanceMapper.updateById(merchantBalance);
-            transHistoryBo.setBeforeBalance(beforeBalance);
-            transHistoryBo.setAfterBalance(afterBalance);
+        if(transType.equals(TransType.PURCHASE_TRADE)){
+            balanceChange = balanceChange.negate();
         }
-        transHistoryService.insertByBo(transHistoryBo);
 
-
+        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
+        transHistoryBo.setBalanceChange(balanceChange);
+        this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
 
-    public void subtract(BaseVoucherBo bo) {
-        Long merchantId = bo.getMerchantId();
-        MerchantBalance merchantBalance = queryByMerchantId(merchantId);
-        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, merchantId, "付款单");
-        BigDecimal paidAmount = bo.getPaidAmount().negate();
-        transHistoryBo.setPaidAmount(paidAmount);
-        BigDecimal balanceChange = bo.getTotalAmount().negate();
-        transHistoryBo.setBalanceChange(balanceChange);
-        if (merchantBalance == null) {
-            merchantBalance = new MerchantBalance();
-            merchantBalance.setMerchantId(merchantId);
-            merchantBalance.setInitialBalance(BigDecimal.ZERO);
-            merchantBalance.setBalance(balanceChange);
-            merchantBalanceMapper.insert(merchantBalance);
-            transHistoryBo.setBeforeBalance(BigDecimal.ZERO);
-            transHistoryBo.setAfterBalance(balanceChange);
+    @Transactional
+    public void doTrade(BaseTradeBo bo, String transType) {
+        BigDecimal actualAmount = Objects.requireNonNullElse(bo.getActualAmount(), BigDecimal.ZERO);
+        BigDecimal paidAmount = Objects.requireNonNullElse(bo.getPaidAmount(), BigDecimal.ZERO);
+        MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
+        BigDecimal balanceChange;
+        if(transType.equals(TransType.PURCHASE_TRADE)){
+            balanceChange = actualAmount.subtract(paidAmount);
         }else {
-            BigDecimal beforeBalance = merchantBalance.getBalance();
-            BigDecimal afterBalance = beforeBalance.subtract(bo.getTotalAmount());
-            merchantBalance.setBalance(afterBalance);
-            merchantBalanceMapper.updateById(merchantBalance);
-            transHistoryBo.setBeforeBalance(beforeBalance);
-            transHistoryBo.setAfterBalance(afterBalance);
+            balanceChange = paidAmount.subtract(actualAmount);
         }
-        transHistoryService.insertByBo(transHistoryBo);
+        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
+        transHistoryBo.setBalanceChange(balanceChange);
+        this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
 
-    public void subtract(BaseOrderBo bo) {
-        Long merchantId = bo.getMerchantId();
-        MerchantBalance merchantBalance = queryByMerchantId(merchantId);
-        BigDecimal balanceChange = bo.getPrepayAmount().negate();
-        TransHistoryBo transHistoryBo = new TransHistoryBo();
-        transHistoryBo.setMerchantId(merchantId);
-        transHistoryBo.setTransType("采购订单");
-        transHistoryBo.setRelatedNo(bo.getDocNo());
-        transHistoryBo.setBankAccountId(bo.getBankAccountId());
-        transHistoryBo.setRelatedId(bo.getId());
-        transHistoryBo.setPaidAmount(bo.getPrepayAmount().negate());
-        transHistoryBo.setBalanceChange(balanceChange);
+    private void updateBalance(MerchantBalance merchantBalance, BigDecimal balanceChange, TransHistoryBo transHistoryBo) {
         if (merchantBalance == null) {
             merchantBalance = new MerchantBalance();
-            merchantBalance.setMerchantId(merchantId);
+            merchantBalance.setMerchantId(transHistoryBo.getMerchantId());
             merchantBalance.setInitialBalance(BigDecimal.ZERO);
             merchantBalance.setBalance(balanceChange);
             merchantBalanceMapper.insert(merchantBalance);
@@ -223,7 +188,7 @@ public class MerchantBalanceService {
             transHistoryBo.setAfterBalance(balanceChange);
         }else {
             BigDecimal beforeBalance = merchantBalance.getBalance();
-            BigDecimal afterBalance = beforeBalance.subtract(bo.getPrepayAmount());
+            BigDecimal afterBalance = beforeBalance.add(balanceChange);
             merchantBalance.setBalance(afterBalance);
             merchantBalanceMapper.updateById(merchantBalance);
             transHistoryBo.setBeforeBalance(beforeBalance);

@@ -9,10 +9,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.service.BaseDocService;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
+import com.ruoyi.erp.basic.types.TransType;
+import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 采购入库单Service业务层处理
@@ -37,6 +37,7 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
 
     private final PurchaseTradeMapper purchaseTradeMapper;
     private final PurchaseTradeDetailService purchaseTradeDetailService;
+    private final MerchantBalanceService merchantBalanceService;
 
     /**
      * 查询采购入库单
@@ -117,5 +118,16 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
      */
     public void deleteByIds(Collection<Long> ids) {
         purchaseTradeMapper.deleteBatchIds(ids);
+    }
+
+    public void pass(PurchaseTradeBo bo) {
+        if (Objects.isNull(bo.getId())) {
+            insertByBo(bo);
+        } else {
+            updateByBo(bo);
+        }
+        if(bo.getPaidAmount()!=null && bo.getBankAccountId()!=null){
+            merchantBalanceService.doTrade(bo, TransType.PURCHASE_TRADE);
+        }
     }
 }
