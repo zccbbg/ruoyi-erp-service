@@ -10,6 +10,8 @@ public class ServiceConstants {
         public static final Integer SHIPMENT = 2;
         public static final Integer MOVEMENT = 3;
         public static final Integer CHECK = 4;
+        public static final Integer PURCHASE = 5;
+        public static final Integer SALES = 6;
     }
 
     /**

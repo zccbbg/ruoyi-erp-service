@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
@@ -13,12 +14,15 @@ import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
+import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
+import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeVo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
 import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +42,8 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
     private final PurchaseTradeMapper purchaseTradeMapper;
     private final PurchaseTradeDetailService purchaseTradeDetailService;
     private final MerchantBalanceService merchantBalanceService;
+    private final InventoryService inventoryService;
+    private final InventoryHistoryService inventoryHistoryService;
 
     /**
      * 查询采购入库单
@@ -120,14 +126,18 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
         purchaseTradeMapper.deleteBatchIds(ids);
     }
 
+    @Transactional
     public void pass(PurchaseTradeBo bo) {
         if (Objects.isNull(bo.getId())) {
             insertByBo(bo);
         } else {
             updateByBo(bo);
         }
+
         if(bo.getPaidAmount()!=null && bo.getBankAccountId()!=null){
             merchantBalanceService.doTrade(bo, TransType.PURCHASE_TRADE);
         }
+        inventoryService.add(bo.getDetails());
+        inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.PURCHASE,true);
     }
 }

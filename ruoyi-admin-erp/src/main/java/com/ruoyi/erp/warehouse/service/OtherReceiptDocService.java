@@ -15,6 +15,7 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherReceiptDocBo;
 import com.ruoyi.erp.warehouse.domain.bo.OtherReceiptDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDoc;
