@@ -134,9 +134,7 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
             updateByBo(bo);
         }
 
-        if(bo.getPaidAmount()!=null && bo.getBankAccountId()!=null){
-            merchantBalanceService.doTrade(bo, TransType.PURCHASE_TRADE);
-        }
+        merchantBalanceService.doTrade(bo, TransType.PURCHASE_TRADE);
         inventoryService.add(bo.getDetails());
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.PURCHASE,true);
     }
