@@ -7,7 +7,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 /**
- * 销售入库单明细视图对象 Sales_trade_detail
+ * 销售出库单明细视图对象 Sales_trade_detail
  *
  *
  * @date 2025-03-12

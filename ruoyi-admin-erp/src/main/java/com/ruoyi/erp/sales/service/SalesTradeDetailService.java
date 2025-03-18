@@ -23,7 +23,7 @@ import java.util.Map;
 import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
 /**
- * 销售入库单明细Service业务层处理
+ * 销售出库单明细Service业务层处理
  *
  * @author zcc
  * @date 2025-02-07
@@ -36,14 +36,14 @@ public class SalesTradeDetailService {
     private final SkuService skuService;
 
     /**
-     * 查询销售入库单明细
+     * 查询销售出库单明细
      */
     public SalesTradeDetailVo queryById(Long id){
         return SalesTradeDetailMapper.selectVoById(id);
     }
 
     /**
-     * 查询销售入库单明细列表
+     * 查询销售出库单明细列表
      */
     public TableDataInfo<SalesTradeDetailVo> queryPageList(SalesTradeDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<SalesTradeDetail> lqw = buildQueryWrapper(bo);
@@ -52,7 +52,7 @@ public class SalesTradeDetailService {
     }
 
     /**
-     * 查询销售入库单明细列表
+     * 查询销售出库单明细列表
      */
     public List<SalesTradeDetailVo> queryList(SalesTradeDetailBo bo) {
         LambdaQueryWrapper<SalesTradeDetail> lqw = buildQueryWrapper(bo);
@@ -74,7 +74,7 @@ public class SalesTradeDetailService {
     }
 
     /**
-     * 新增销售入库单明细
+     * 新增销售出库单明细
      */
     public void insertByBo(SalesTradeDetailBo bo) {
         SalesTradeDetail add = MapstructUtils.convert(bo, SalesTradeDetail.class);
@@ -82,7 +82,7 @@ public class SalesTradeDetailService {
     }
 
     /**
-     * 修改销售入库单明细
+     * 修改销售出库单明细
      */
     public void updateByBo(SalesTradeDetailBo bo) {
         SalesTradeDetail update = MapstructUtils.convert(bo, SalesTradeDetail.class);
@@ -90,7 +90,7 @@ public class SalesTradeDetailService {
     }
 
     /**
-     * 批量删除销售入库单明细
+     * 批量删除销售出库单明细
      */
     public void deleteByIds(Collection<Long> ids) {
         SalesTradeDetailMapper.deleteBatchIds(ids);

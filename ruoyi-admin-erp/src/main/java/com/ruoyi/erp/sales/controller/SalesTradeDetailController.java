@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 销售入库单明细
+ * 销售出库单明细
  *
  * @author zcc
  * @date 2025-02-07
@@ -38,7 +38,7 @@ public class SalesTradeDetailController extends BaseController {
     private final SalesTradeDetailService SalesTradeDetailService;
 
     /**
-     * 查询销售入库单明细列表
+     * 查询销售出库单明细列表
      */
     @SaCheckPermission("sales:tradeDetail:list")
     @GetMapping("/list")
@@ -47,18 +47,18 @@ public class SalesTradeDetailController extends BaseController {
     }
 
     /**
-     * 导出销售入库单明细列表
+     * 导出销售出库单明细列表
      */
     @SaCheckPermission("sales:tradeDetail:export")
-    @Log(title = "销售入库单明细", businessType = BusinessType.EXPORT)
+    @Log(title = "销售出库单明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesTradeDetailBo bo, HttpServletResponse response) {
         List<SalesTradeDetailVo> list = SalesTradeDetailService.queryList(bo);
-        ExcelUtil.exportExcel(list, "销售入库单明细", SalesTradeDetailVo.class, response);
+        ExcelUtil.exportExcel(list, "销售出库单明细", SalesTradeDetailVo.class, response);
     }
 
     /**
-     * 获取销售入库单明细详细信息
+     * 获取销售出库单明细详细信息
      *
      * @param id 主键
      */
@@ -70,10 +70,10 @@ public class SalesTradeDetailController extends BaseController {
     }
 
     /**
-     * 新增销售入库单明细
+     * 新增销售出库单明细
      */
     @SaCheckPermission("sales:tradeDetail:add")
-    @Log(title = "销售入库单明细", businessType = BusinessType.INSERT)
+    @Log(title = "销售出库单明细", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SalesTradeDetailBo bo) {
@@ -82,10 +82,10 @@ public class SalesTradeDetailController extends BaseController {
     }
 
     /**
-     * 修改销售入库单明细
+     * 修改销售出库单明细
      */
     @SaCheckPermission("sales:tradeDetail:edit")
-    @Log(title = "销售入库单明细", businessType = BusinessType.UPDATE)
+    @Log(title = "销售出库单明细", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SalesTradeDetailBo bo) {
@@ -94,12 +94,12 @@ public class SalesTradeDetailController extends BaseController {
     }
 
     /**
-     * 删除销售入库单明细
+     * 删除销售出库单明细
      *
      * @param ids 主键串
      */
     @SaCheckPermission("sales:tradeDetail:remove")
-    @Log(title = "销售入库单明细", businessType = BusinessType.DELETE)
+    @Log(title = "销售出库单明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {

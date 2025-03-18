@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 销售入库单Service业务层处理
+ * 销售出库单Service业务层处理
  *
  * @author zcc
  * @date 2025-02-07
@@ -47,7 +47,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     private final InventoryHistoryService inventoryHistoryService;
 
     /**
-     * 查询销售入库单
+     * 查询销售出库单
      */
     public SalesTradeVo queryById(Long id){
         SalesTradeVo salesTradeVo = salesTradeMapper.selectVoById(id);
@@ -56,7 +56,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     }
 
     /**
-     * 查询销售入库单列表
+     * 查询销售出库单列表
      */
     public TableDataInfo<SalesTradeVo> queryPageList(SalesTradeBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<SalesTrade> lqw = buildQueryWrapper(bo);
@@ -65,7 +65,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     }
 
     /**
-     * 查询销售入库单列表
+     * 查询销售出库单列表
      */
     public List<SalesTradeVo> queryList(SalesTradeBo bo) {
         LambdaQueryWrapper<SalesTrade> lqw = buildQueryWrapper(bo);
@@ -89,7 +89,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     }
 
     /**
-     * 新增销售入库单
+     * 新增销售出库单
      */
     public void insertByBo(SalesTradeBo bo) {
         SalesTrade add = MapstructUtils.convert(bo, SalesTrade.class);
@@ -107,7 +107,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     }
 
     /**
-     * 修改销售入库单
+     * 修改销售出库单
      */
     public void updateByBo(SalesTradeBo bo) {
         SalesTrade update = MapstructUtils.convert(bo, SalesTrade.class);
@@ -121,7 +121,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     }
 
     /**
-     * 批量删除销售入库单
+     * 批量删除销售出库单
      */
     public void deleteByIds(Collection<Long> ids) {
         salesTradeMapper.deleteBatchIds(ids);

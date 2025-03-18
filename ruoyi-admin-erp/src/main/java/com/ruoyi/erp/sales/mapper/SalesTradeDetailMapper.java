@@ -5,7 +5,7 @@ import com.ruoyi.erp.sales.domain.entity.SalesTradeDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesTradeDetailVo;
 
 /**
- * 销售入库单明细Mapper接口
+ * 销售出库单明细Mapper接口
  *
  * @author zcc
  * @date 2025-02-07

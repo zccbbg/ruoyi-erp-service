@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 销售入库单
+ * 销售出库单
  *
  * @date 2025-03-12
  */
@@ -39,7 +39,7 @@ public class SalesTradeController extends BaseController {
     private final SalesTradeService salesTradeService;
 
     /**
-     * 查询销售入库单列表
+     * 查询销售出库单列表
      */
     @SaCheckPermission("sales:trade:list")
     @GetMapping("/list")
@@ -48,18 +48,18 @@ public class SalesTradeController extends BaseController {
     }
 
     /**
-     * 导出销售入库单列表
+     * 导出销售出库单列表
      */
     @SaCheckPermission("sales:trade:export")
-    @Log(title = "销售入库单", businessType = BusinessType.EXPORT)
+    @Log(title = "销售出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesTradeBo bo, HttpServletResponse response) {
         List<SalesTradeVo> list = salesTradeService.queryList(bo);
-        ExcelUtil.exportExcel(list, "销售入库单", SalesTradeVo.class, response);
+        ExcelUtil.exportExcel(list, "销售出库单", SalesTradeVo.class, response);
     }
 
     /**
-     * 获取销售入库单详细信息
+     * 获取销售出库单详细信息
      *
      * @param id 主键
      */
@@ -71,10 +71,10 @@ public class SalesTradeController extends BaseController {
     }
 
     /**
-     * 新增销售入库单
+     * 新增销售出库单
      */
     @SaCheckPermission("sales:trade:add")
-    @Log(title = "销售入库单", businessType = BusinessType.INSERT)
+    @Log(title = "销售出库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SalesTradeBo bo) {
@@ -84,10 +84,10 @@ public class SalesTradeController extends BaseController {
     }
 
     /**
-     * 修改销售入库单
+     * 修改销售出库单
      */
     @SaCheckPermission("sales:trade:edit")
-    @Log(title = "销售入库单", businessType = BusinessType.UPDATE)
+    @Log(title = "销售出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SalesTradeBo bo) {
@@ -97,12 +97,12 @@ public class SalesTradeController extends BaseController {
     }
 
     /**
-     * 删除销售入库单
+     * 删除销售出库单
      *
      * @param ids 主键串
      */
     @SaCheckPermission("sales:trade:remove")
-    @Log(title = "销售入库单", businessType = BusinessType.DELETE)
+    @Log(title = "销售出库单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
@@ -111,7 +111,7 @@ public class SalesTradeController extends BaseController {
     }
 
     @SaCheckPermission("sales:trade:all")
-    @Log(title = "销售入库单", businessType = BusinessType.INSERT)
+    @Log(title = "销售出库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping("/pass")
     public R<Void> pass(@Validated(AddGroup.class) @RequestBody SalesTradeBo bo) {
