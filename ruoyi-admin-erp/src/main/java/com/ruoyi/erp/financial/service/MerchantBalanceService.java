@@ -133,6 +133,12 @@ public class MerchantBalanceService {
         transHistoryBo.setRelatedNo(bo.getDocNo());
         transHistoryBo.setBankAccountId(bo.getBankAccountId());
         transHistoryBo.setRelatedId(bo.getId());
+        transHistoryBo.setPaidAmount(bo.getPaidAmount());
+        transHistoryBo.setDiscountAmount(bo.getDiscountAmount());
+        transHistoryBo.setActualAmount(bo.getActualAmount());
+        BigDecimal goodsAmount = bo.getGoodsAmount() == null ? BigDecimal.ZERO : bo.getGoodsAmount();
+        BigDecimal otherExpenses = bo.getOtherExpensesAmount() == null ? BigDecimal.ZERO : bo.getOtherExpensesAmount();
+        transHistoryBo.setTotalAmount(goodsAmount.add(otherExpenses));
         return transHistoryBo;
     }
 
