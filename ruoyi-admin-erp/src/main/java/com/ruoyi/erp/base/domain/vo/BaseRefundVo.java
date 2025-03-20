@@ -18,14 +18,4 @@ public class BaseRefundVo<T extends BaseRefundDetailVo> extends BaseBillVo<T> {
      */
     private BigDecimal paidAmount;
 
-    /**
-     * 已抵扣退款金额
-     */
-    private BigDecimal deductedAmount;
-
-    /**
-     * 未付金额
-     * 未付金额=实际金额-已付退款金额-已抵扣退款金额
-     */
-    private BigDecimal dueAmount;
 }
