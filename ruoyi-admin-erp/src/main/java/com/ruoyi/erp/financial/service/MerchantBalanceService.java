@@ -8,10 +8,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.domain.bo.BaseOrderBo;
+import com.ruoyi.erp.base.domain.bo.BaseRefundBo;
 import com.ruoyi.erp.base.domain.bo.BaseTradeBo;
 import com.ruoyi.erp.base.domain.bo.BaseVoucherBo;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.domain.bo.TransHistoryBo;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.MerchantBalanceBo;
@@ -141,6 +143,21 @@ public class MerchantBalanceService {
         transHistoryBo.setTotalAmount(goodsAmount.add(otherExpenses));
         return transHistoryBo;
     }
+    private TransHistoryBo getTransHistoryBo(BaseRefundBo bo, String transType) {
+        TransHistoryBo transHistoryBo = new TransHistoryBo();
+        transHistoryBo.setMerchantId(bo.getMerchantId());
+        transHistoryBo.setTransType(transType);
+        transHistoryBo.setRelatedNo(bo.getDocNo());
+        transHistoryBo.setRelatedId(bo.getId());
+        transHistoryBo.setBankAccountId(bo.getBankAccountId());
+        transHistoryBo.setPaidAmount(bo.getPaidAmount());
+        transHistoryBo.setDiscountAmount(bo.getDiscountAmount());
+        transHistoryBo.setActualAmount(bo.getActualAmount());
+        BigDecimal goodsAmount = bo.getGoodsAmount() == null ? BigDecimal.ZERO : bo.getGoodsAmount();
+        BigDecimal otherExpenses = bo.getOtherExpensesAmount() == null ? BigDecimal.ZERO : bo.getOtherExpensesAmount();
+        transHistoryBo.setTotalAmount(goodsAmount.add(otherExpenses));
+        return transHistoryBo;
+    }
 
     @Transactional
     public void doVoucher(BaseVoucherBo bo,String voucherType) {
@@ -201,5 +218,21 @@ public class MerchantBalanceService {
             transHistoryBo.setAfterBalance(afterBalance);
         }
         transHistoryService.insertByBo(transHistoryBo);
+    }
+    @Transactional
+    public void doRefund(PurchaseRefundBo bo, String transType) {
+        BigDecimal actualAmount = Objects.requireNonNullElse(bo.getActualAmount(), BigDecimal.ZERO);
+        BigDecimal paidAmount = Objects.requireNonNullElse(bo.getPaidAmount(), BigDecimal.ZERO);
+        MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
+        BigDecimal balanceChange;
+        if(transType.equals(TransType.PURCHASE_RETURN)){
+            //退款单余额变动等于实际付款金额
+            balanceChange = bo.getActualAmount();
+        }else {
+            balanceChange = paidAmount.subtract(actualAmount);
+        }
+        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
+        transHistoryBo.setBalanceChange(balanceChange);
+        this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
 }

@@ -2,6 +2,8 @@ package com.ruoyi.erp.purchase.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.core.constant.ServiceConstants;
+import com.ruoyi.common.core.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
@@ -103,6 +105,21 @@ public class PurchaseRefundController extends BaseController {
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         purchaseRefundService.deleteByIds(List.of(ids));
+        return R.ok();
+    }
+    /**
+     * 完成采购退货单
+     */
+    @SaCheckPermission("purchase:refund:all")
+    @Log(title = "采购退货单", businessType = BusinessType.INSERT)
+    @RepeatSubmit()
+    @PostMapping("/pass")
+    public R<Void> pass(@Validated(AddGroup.class) @RequestBody PurchaseRefundBo bo) {
+        if(bo.getMerchantId()==null){
+            throw new ServiceException("请选择商家！");
+        }
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        purchaseRefundService.pass(bo);
         return R.ok();
     }
 }

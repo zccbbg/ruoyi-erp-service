@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 public class BaseRefundBo<T extends BaseRefundDetailBo> extends BaseBillBo<T>{
     private Long tradeId;
-
+    private Long bankAccountId;
     /**
      * 已支付退款金额
      */
@@ -25,4 +25,5 @@ public class BaseRefundBo<T extends BaseRefundDetailBo> extends BaseBillBo<T>{
      * 未付金额=实际金额-已付退款金额-已抵扣退款金额
      */
     private BigDecimal dueAmount;
+
 }

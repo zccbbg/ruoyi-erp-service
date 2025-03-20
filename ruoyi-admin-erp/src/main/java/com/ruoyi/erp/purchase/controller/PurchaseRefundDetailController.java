@@ -105,4 +105,9 @@ public class PurchaseRefundDetailController extends BaseController {
         purchaseRefundDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
+    @SaCheckPermission("purchase:refundDetail:all")
+    @GetMapping("/listByRefundId/{refundId}")
+    public R<List<PurchaseRefundDetailVo>> listByRefundId(@NotNull @PathVariable Long refundId) {
+        return R.ok(purchaseRefundDetailService.queryByPid(refundId));
+    }
 }

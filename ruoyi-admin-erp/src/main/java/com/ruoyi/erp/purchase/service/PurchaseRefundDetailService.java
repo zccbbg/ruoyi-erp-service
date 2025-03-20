@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import cn.hutool.core.collection.CollUtil;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
@@ -7,6 +8,9 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
+import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundDetailBo;
@@ -14,9 +18,12 @@ import com.ruoyi.erp.purchase.domain.vo.PurchaseRefundDetailVo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseRefundDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseRefundDetailMapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+
+import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
 /**
  * 采购退货单明细Service业务层处理
@@ -29,6 +36,7 @@ import java.util.Collection;
 public class PurchaseRefundDetailService {
 
     private final PurchaseRefundDetailMapper purchaseRefundDetailMapper;
+    private final SkuService skuService;
 
     /**
      * 查询采购退货单明细
@@ -89,5 +97,24 @@ public class PurchaseRefundDetailService {
      */
     public void deleteByIds(Collection<Long> ids) {
         purchaseRefundDetailMapper.deleteBatchIds(ids);
+    }
+
+    /**
+     * 添加采购退货单明细
+     * @param addDetailList
+     */
+    public void saveDetails(List<PurchaseRefundDetail> addDetailList) {
+        if (CollUtil.isEmpty(addDetailList)) {
+            return;
+        }
+        saveOrUpdateBatch(addDetailList);
+    }
+    public List<PurchaseRefundDetailVo> queryByPid(Long pid) {
+        List<PurchaseRefundDetailVo> details = purchaseRefundDetailMapper.selectVoList(Wrappers.lambdaQuery(PurchaseRefundDetail.class).eq(PurchaseRefundDetail::getPid, pid));
+        if (CollUtil.isEmpty(details)) {
+            return Collections.emptyList();
+        }
+        skuService.setSkuMap(details);
+        return details;
     }
 }
