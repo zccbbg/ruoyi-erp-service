@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import com.ruoyi.erp.basic.domain.entity.Sku;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -94,6 +95,8 @@ public class SkuBo extends BaseEntity {
      * 商品分类
      */
     private Long categoryId;
+
+    private List<Long> skuIds;
 
     private Long brandId;
 }

@@ -63,6 +63,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.barcode != null and bo.barcode != ''">
                 and sku.barcode like concat('%', #{bo.barcode}, '%')
             </if>
+            <if test="bo.skuIds !=null and bo.skuIds.size>0">
+                and sku.id in
+                <foreach collection="bo.skuIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+
             <if test="bo.categoryId != null">
                 and (category.id=#{bo.categoryId} or category.pid=#{bo.categoryId})
             </if>

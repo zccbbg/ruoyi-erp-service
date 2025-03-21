@@ -39,6 +39,19 @@ public class SkuController extends BaseController {
     public TableDataInfo<SkuMapVo> list(SkuBo bo, PageQuery pageQuery) {
         return skuService.queryPageList(bo, pageQuery);
     }
+
+    /**
+     * 根据skuIds查询
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+
+    @PostMapping("/list")
+    @SaCheckPermission("basic:goods:list")
+    public TableDataInfo<SkuMapVo> listBySkuIds(@RequestBody SkuBo bo,PageQuery pageQuery) {
+        return skuService.queryPageList(bo, pageQuery);
+    }
     /**
      * 查询sku信息列表
      */
