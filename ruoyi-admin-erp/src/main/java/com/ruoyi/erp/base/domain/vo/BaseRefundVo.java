@@ -18,4 +18,8 @@ public class BaseRefundVo<T extends BaseRefundDetailVo> extends BaseBillVo<T> {
      */
     private BigDecimal paidAmount;
 
+    private String tradeNo;
+
+    private Long bankAccountId;
+
 }

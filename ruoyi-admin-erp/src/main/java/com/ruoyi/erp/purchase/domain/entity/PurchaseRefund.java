@@ -9,4 +9,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("purchase_refund")
 public class PurchaseRefund extends BaseRefund {
+
 }

@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -12,6 +13,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
@@ -24,6 +26,7 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
 import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -124,6 +127,25 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
      */
     public void deleteByIds(Collection<Long> ids) {
         purchaseTradeMapper.deleteBatchIds(ids);
+    }
+
+    public void refund(PurchaseRefundBo bo){
+        QueryWrapper<PurchaseTrade> qw = new QueryWrapper<>();
+        qw.eq("doc_no", bo.getTradeNo());
+        qw.eq("checked_status",1);
+        PurchaseTrade purchaseTrade = purchaseTradeMapper.selectOne(qw);
+        if(purchaseTrade !=null){
+            purchaseTrade.setRefundStatus(1);
+            //设置退款金额为入库单的实际付款金额
+            BigDecimal refundAmount = purchaseTrade.getRefundAmount();
+            if(refundAmount==null){
+                refundAmount = bo.getActualAmount();
+            }else {
+                refundAmount = refundAmount.add(bo.getActualAmount());
+            }
+            purchaseTrade.setRefundAmount(refundAmount);
+            purchaseTradeMapper.updateById(purchaseTrade);
+        }
     }
 
     @Transactional

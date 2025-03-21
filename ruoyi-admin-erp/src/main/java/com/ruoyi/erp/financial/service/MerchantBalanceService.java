@@ -14,6 +14,8 @@ import com.ruoyi.erp.base.domain.bo.BaseVoucherBo;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.domain.bo.TransHistoryBo;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
+import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
+import com.ruoyi.erp.purchase.service.PurchaseTradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.MerchantBalanceBo;
@@ -220,7 +222,7 @@ public class MerchantBalanceService {
         transHistoryService.insertByBo(transHistoryBo);
     }
     @Transactional
-    public void doRefund(PurchaseRefundBo bo, String transType) {
+    public void doRefund(BaseRefundBo bo, String transType) {
         BigDecimal actualAmount = Objects.requireNonNullElse(bo.getActualAmount(), BigDecimal.ZERO);
         BigDecimal paidAmount = Objects.requireNonNullElse(bo.getPaidAmount(), BigDecimal.ZERO);
         MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
@@ -231,6 +233,7 @@ public class MerchantBalanceService {
         }else {
             balanceChange = paidAmount.subtract(actualAmount);
         }
+        //查询采购入库单
         TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         transHistoryBo.setBalanceChange(balanceChange);
         this.updateBalance(merchantBalance, balanceChange, transHistoryBo);

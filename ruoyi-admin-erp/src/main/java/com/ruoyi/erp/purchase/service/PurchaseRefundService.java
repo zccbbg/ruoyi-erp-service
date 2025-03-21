@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -18,10 +19,13 @@ import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundDetailBo;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseRefundDetail;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeVo;
+import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseRefundVo;
@@ -29,6 +33,7 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseRefund;
 import com.ruoyi.erp.purchase.mapper.PurchaseRefundMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -49,6 +54,8 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
     private final PurchaseRefundDetailService purchaseRefundDetailService;
+    private final PurchaseTradeService purchaseTradeService;
+    private final PurchaseTradeMapper purchaseTradeMapper;
 
 
 
@@ -91,8 +98,6 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
         lqw.eq(bo.getDiscountAmount() != null, PurchaseRefund::getDiscountAmount, bo.getDiscountAmount());
         lqw.eq(bo.getActualAmount() != null, PurchaseRefund::getActualAmount, bo.getActualAmount());
         lqw.eq(bo.getPaidAmount() != null, PurchaseRefund::getPaidAmount, bo.getPaidAmount());
-        lqw.eq(bo.getDeductedAmount() != null, PurchaseRefund::getDeductedAmount, bo.getDeductedAmount());
-        lqw.eq(bo.getDueAmount() != null, PurchaseRefund::getDueAmount, bo.getDueAmount());
         lqw.orderByDesc(BaseEntity::getUpdateTime);
         return lqw;
     }
@@ -106,7 +111,8 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
         List<PurchaseRefundDetail> addDetailList = MapstructUtils.convert(detailBoList, PurchaseRefundDetail.class);
         Long sameWarehouseId = getSameWarehouseId(addDetailList);
         add.setWarehouseId(sameWarehouseId);
-        add.setCheckedStatus(0);
+        //add.setCheckedStatus(0);
+        add.setTradeNo(bo.getTradeNo());
         purchaseRefundMapper.insert(add);
         bo.setId(add.getId());
         addDetailList.forEach(it -> {
@@ -145,5 +151,7 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
         merchantBalanceService.doRefund(bo, TransType.PURCHASE_RETURN);
         inventoryService.add(bo.getDetails());
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.REFUND,true);
+        purchaseTradeService.refund(bo);
+
     }
 }

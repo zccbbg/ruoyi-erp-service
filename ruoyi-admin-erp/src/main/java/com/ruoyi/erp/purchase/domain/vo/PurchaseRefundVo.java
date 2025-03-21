@@ -26,4 +26,5 @@ import java.io.Serial;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = PurchaseRefund.class)
 public class PurchaseRefundVo<T extends PurchaseRefundDetailVo> extends BaseRefundVo<T> {
+    private String tradeNo;
 }

@@ -26,5 +26,5 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = PurchaseRefund.class, reverseConvertGenerate = false)
 public class PurchaseRefundBo<T extends PurchaseRefundDetailBo> extends BaseRefundBo<T> {
-    private Long warehouseId;
+
 }

@@ -67,8 +67,6 @@ public class SalesRefundService {
         lqw.eq(bo.getDiscountAmount() != null, SalesRefund::getDiscountAmount, bo.getDiscountAmount());
         lqw.eq(bo.getActualAmount() != null, SalesRefund::getActualAmount, bo.getActualAmount());
         lqw.eq(bo.getPaidAmount() != null, SalesRefund::getPaidAmount, bo.getPaidAmount());
-        lqw.eq(bo.getDeductedAmount() != null, SalesRefund::getDeductedAmount, bo.getDeductedAmount());
-        lqw.eq(bo.getDueAmount() != null, SalesRefund::getDueAmount, bo.getDueAmount());
         return lqw;
     }
 
