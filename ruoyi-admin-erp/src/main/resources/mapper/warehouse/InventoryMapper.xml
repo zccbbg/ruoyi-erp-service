@@ -53,7 +53,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="queryWarehouseBoardList" resultMap="inventoryVoMap">
         <include refid="selectVoListByBo"/>
-        order by inventory.warehouse_id,sku.goods_id,sku.id
+        <if test="skuIds != null and !skuIds.isEmpty()">
+            and sku.id in
+            <foreach collection="skuIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        order by inventory.warehouse_id, sku.goods_id, sku.id
     </select>
 
     <select id="queryGoodsBoardList" resultMap="inventoryVoMap">

@@ -7,6 +7,9 @@ import com.ruoyi.erp.warehouse.domain.entity.Inventory;
 import com.ruoyi.erp.warehouse.domain.vo.InventoryVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * 库存Mapper接口
  *
@@ -16,6 +19,6 @@ import org.apache.ibatis.annotations.Param;
 public interface InventoryMapper extends BaseMapperPlus<Inventory, InventoryVo> {
 
     Page<InventoryVo> queryGoodsBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
-    Page<InventoryVo> queryWarehouseBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
+    Page<InventoryVo> queryWarehouseBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo, @Param("skuIds") Set<Long> skuIds);
 
 }

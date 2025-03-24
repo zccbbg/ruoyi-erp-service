@@ -108,7 +108,10 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     public TableDataInfo<InventoryVo> queryWarehouseBoardList(InventoryBo bo, PageQuery pageQuery) {
-            return TableDataInfo.build(inventoryMapper.queryWarehouseBoardList(pageQuery.build(), bo));
+            return TableDataInfo.build(inventoryMapper.queryWarehouseBoardList(pageQuery.build(), bo,null));
+    }
+    public TableDataInfo<InventoryVo> queryWarehouseBoardList(InventoryBo bo, PageQuery pageQuery,Set<Long> skuIds) {
+        return TableDataInfo.build(inventoryMapper.queryWarehouseBoardList(pageQuery.build(), bo,skuIds));
     }
 
     public TableDataInfo<InventoryVo> queryItemBoardList(InventoryBo bo, PageQuery pageQuery) {

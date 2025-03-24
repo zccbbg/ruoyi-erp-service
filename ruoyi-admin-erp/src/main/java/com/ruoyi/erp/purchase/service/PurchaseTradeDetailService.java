@@ -18,10 +18,8 @@ import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseTradeDetailMapper;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
@@ -104,6 +102,13 @@ public class PurchaseTradeDetailService {
             return;
         }
         saveOrUpdateBatch(list);
+    }
+
+    public Set<Long> getSkuIds(Long pid){
+        PurchaseTradeDetailBo purchaseTradeDetailBo = new PurchaseTradeDetailBo();
+        purchaseTradeDetailBo.setPid(pid);
+        List<PurchaseTradeDetailVo> purchaseTradeDetailVos = this.queryList(purchaseTradeDetailBo);
+        return purchaseTradeDetailVos.stream().map(PurchaseTradeDetailVo::getSkuId).collect(Collectors.toSet());
     }
 
     public List<PurchaseTradeDetailVo> queryByPid(Long pid) {

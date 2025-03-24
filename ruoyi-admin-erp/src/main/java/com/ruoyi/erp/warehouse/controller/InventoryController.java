@@ -11,6 +11,10 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
+import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
+import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
+import com.ruoyi.erp.purchase.service.PurchaseTradeDetailService;
 import com.ruoyi.erp.warehouse.domain.bo.InventoryBo;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +26,9 @@ import org.springframework.web.bind.annotation.*;
 import com.ruoyi.erp.warehouse.domain.vo.InventoryVo;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 库存
@@ -36,6 +43,7 @@ import java.util.List;
 public class InventoryController extends BaseController {
 
     private final InventoryService inventoryService;
+    private final PurchaseTradeDetailService purchaseTradeDetailService;
 
     /**
      * 查询库存列表商品维度
@@ -53,6 +61,17 @@ public class InventoryController extends BaseController {
     @GetMapping("/boardList/warehouse")
     public TableDataInfo<InventoryVo> queryWarehouseBoardList(InventoryBo bo, PageQuery pageQuery) {
         return inventoryService.queryWarehouseBoardList(bo, pageQuery);
+    }
+
+    @SaCheckPermission("wms:inventory:all")
+    @GetMapping("/boardList/warehouse/tradeId")
+    public TableDataInfo<InventoryVo> queryWarehouseBoardList(InventoryBo bo, Long tradeId,PageQuery pageQuery) {
+        if(tradeId == null){
+            return inventoryService.queryWarehouseBoardList(bo, pageQuery);
+        }else {
+            Set<Long> skuIds = purchaseTradeDetailService.getSkuIds(tradeId);
+            return inventoryService.queryWarehouseBoardList(bo, pageQuery,skuIds);
+        }
     }
 
     /**
