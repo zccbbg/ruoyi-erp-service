@@ -12,7 +12,9 @@ public class ServiceConstants {
         public static final Integer CHECK = 4;
         public static final Integer PURCHASE = 5;
         public static final Integer SALES = 6;
-        public static final Integer REFUND = 7;
+        public static final Integer PURCHASE_REFUND = 7;
+        public static final Integer SALES_REFUND = 8;
+
     }
 
     /**

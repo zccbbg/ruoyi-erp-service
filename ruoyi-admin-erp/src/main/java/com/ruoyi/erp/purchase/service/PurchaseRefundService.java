@@ -1,6 +1,5 @@
 package com.ruoyi.erp.purchase.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -11,21 +10,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.erp.base.service.BaseDocService;
-import com.ruoyi.erp.basic.domain.entity.Merchant;
-import com.ruoyi.erp.basic.mapper.MerchantMapper;
-import com.ruoyi.erp.basic.service.MerchantService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundDetailBo;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseRefundDetail;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
-import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeVo;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseRefundVo;
@@ -33,7 +27,6 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseRefund;
 import com.ruoyi.erp.purchase.mapper.PurchaseRefundMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -127,7 +120,13 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
      */
     public void updateByBo(PurchaseRefundBo bo) {
         PurchaseRefund update = MapstructUtils.convert(bo, PurchaseRefund.class);
+        List<PurchaseRefundDetail> detailList = MapstructUtils.convert(bo.getDetails(), PurchaseRefundDetail.class);
+        Long sameWarehouseId = getSameWarehouseId(detailList);
+        update.setWarehouseId(sameWarehouseId);
         purchaseRefundMapper.updateById(update);
+        // 保存入库单明细
+        detailList.forEach(it -> it.setPid(bo.getId()));
+        purchaseRefundDetailService.saveDetails(detailList);
     }
 
     /**
@@ -149,8 +148,8 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
             updateByBo(bo);
         }
         merchantBalanceService.doRefund(bo, TransType.PURCHASE_RETURN);
-        inventoryService.add(bo.getDetails());
-        inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.REFUND,true);
+        inventoryService.subtract(bo.getDetails());
+        inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.PURCHASE_REFUND,true);
         purchaseTradeService.refund(bo);
 
     }

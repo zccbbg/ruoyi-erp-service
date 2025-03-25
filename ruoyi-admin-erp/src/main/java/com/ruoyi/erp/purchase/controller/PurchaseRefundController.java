@@ -91,6 +91,7 @@ public class PurchaseRefundController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody PurchaseRefundBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         purchaseRefundService.updateByBo(bo);
         return R.ok();
     }

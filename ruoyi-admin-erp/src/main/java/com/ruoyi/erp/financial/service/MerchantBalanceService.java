@@ -236,6 +236,7 @@ public class MerchantBalanceService {
         //查询采购入库单
         TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         transHistoryBo.setBalanceChange(balanceChange);
+        transHistoryBo.setRelatedId(bo.getTradeId());
         this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
 }
