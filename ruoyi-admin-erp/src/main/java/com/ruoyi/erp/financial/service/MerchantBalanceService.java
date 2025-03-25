@@ -177,12 +177,12 @@ public class MerchantBalanceService {
     public void doOrder(BaseOrderBo bo,String transType) {
         MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
         BigDecimal balanceChange = bo.getPrepayAmount();
-        if(transType.equals(TransType.PURCHASE_TRADE)){
+        if(transType.equals(TransType.PURCHASE_ORDER)){
             balanceChange = balanceChange.negate();
         }
-
         TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         transHistoryBo.setBalanceChange(balanceChange);
+        transHistoryBo.setPaidAmount(balanceChange);
         this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
 
@@ -228,8 +228,7 @@ public class MerchantBalanceService {
         MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
         BigDecimal balanceChange;
         if(transType.equals(TransType.PURCHASE_RETURN)){
-            //退款单余额变动等于实际付款金额
-            balanceChange = bo.getActualAmount().negate();
+            balanceChange = actualAmount.subtract(paidAmount);
         }else {
             balanceChange = paidAmount.subtract(actualAmount);
         }
