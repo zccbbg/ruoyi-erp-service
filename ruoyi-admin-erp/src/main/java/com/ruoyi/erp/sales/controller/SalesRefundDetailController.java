@@ -35,6 +35,7 @@ import java.util.List;
 public class SalesRefundDetailController extends BaseController {
 
     private final SalesRefundDetailService SalesRefundDetailService;
+    private final SalesRefundDetailService salesRefundDetailService;
 
     /**
      * 查询销售退货单明细列表
@@ -104,5 +105,10 @@ public class SalesRefundDetailController extends BaseController {
                           @PathVariable Long[] ids) {
         SalesRefundDetailService.deleteByIds(List.of(ids));
         return R.ok();
+    }
+    @SaCheckPermission("sales:refundDetail:all")
+    @GetMapping("/listByRefundId/{refundId}")
+    public R<List<SalesRefundDetailVo>> listByRefundId(@NotNull @PathVariable Long refundId) {
+        return R.ok(salesRefundDetailService.queryByPid(refundId));
     }
 }

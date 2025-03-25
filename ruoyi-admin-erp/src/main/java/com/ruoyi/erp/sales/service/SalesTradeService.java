@@ -1,6 +1,7 @@
 package com.ruoyi.erp.sales.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.constant.ServiceConstants;
@@ -12,6 +13,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
+import com.ruoyi.erp.sales.domain.bo.SalesRefundBo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeBo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesTrade;
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +87,7 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
         lqw.eq(bo.getRefundStatus() != null, SalesTrade::getRefundStatus, bo.getRefundStatus());
         lqw.eq(bo.getBankAccountId() != null, SalesTrade::getBankAccountId, bo.getBankAccountId());
         lqw.eq(bo.getMerchantId() != null, SalesTrade::getMerchantId, bo.getMerchantId());
-        lqw.orderByDesc(BaseEntity::getUpdateTime);
+        lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
 
@@ -134,9 +137,26 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
         } else {
             updateByBo(bo);
         }
-
         merchantBalanceService.doTrade(bo, TransType.SALES_TRADE);
         inventoryService.subtract(bo.getDetails());
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.SALES,true);
+    }
+
+    public void refund(SalesRefundBo bo) {
+        QueryWrapper<SalesTrade> qw = new QueryWrapper<>();
+        qw.eq("doc_no", bo.getTradeNo());
+        qw.eq("checked_status",1);
+        SalesTrade salesTrade = salesTradeMapper.selectOne(qw);
+        if(salesTrade !=null){
+            salesTrade.setRefundStatus(1);
+            BigDecimal refundAmount = salesTrade.getRefundAmount();
+            if(refundAmount==null){
+                refundAmount = bo.getActualAmount();
+            }else {
+                refundAmount = refundAmount.add(bo.getActualAmount());
+            }
+            salesTrade.setRefundAmount(refundAmount);
+            salesTradeMapper.updateById(salesTrade);
+        }
     }
 }

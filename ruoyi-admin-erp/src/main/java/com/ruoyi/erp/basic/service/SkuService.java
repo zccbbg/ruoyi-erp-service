@@ -18,6 +18,8 @@ import com.ruoyi.erp.base.domain.vo.BaseDocDetailVo;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
 import com.ruoyi.erp.basic.mapper.SkuMapper;
+import com.ruoyi.erp.warehouse.domain.bo.InventoryBo;
+import com.ruoyi.erp.warehouse.domain.vo.InventoryVo;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,8 +62,11 @@ public class SkuService extends ServiceImpl<SkuMapper, Sku> {
 
     public TableDataInfo<SkuMapVo> queryPageList(SkuBo bo, PageQuery pageQuery) {
         //开始查sku
-        IPage<SkuMapVo> result = skuMapper.selectByBo(pageQuery.build(), bo);
+        IPage<SkuMapVo> result = skuMapper.selectByBo(pageQuery.build(), bo,null);
         return TableDataInfo.build(result);
+    }
+    public TableDataInfo<SkuMapVo> queryPageList(SkuBo bo, PageQuery pageQuery, Set<Long> skuIds) {
+        return TableDataInfo.build(skuMapper.selectByBo(pageQuery.build(), bo,skuIds));
     }
 
     /**

@@ -15,6 +15,9 @@ import com.ruoyi.erp.basic.domain.bo.SkuBo;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
 import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.sales.mapper.SalesRefundDetailMapper;
+import com.ruoyi.erp.sales.service.SalesRefundDetailService;
+import com.ruoyi.erp.sales.service.SalesTradeDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Validated
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ import java.util.List;
 public class SkuController extends BaseController {
 
     private final SkuService skuService;
+    private final SalesTradeDetailService salesTradeDetailService;
 
     /**
      * 查询sku信息列表
@@ -38,6 +43,16 @@ public class SkuController extends BaseController {
     @SaCheckPermission("basic:goods:list")
     public TableDataInfo<SkuMapVo> list(SkuBo bo, PageQuery pageQuery) {
         return skuService.queryPageList(bo, pageQuery);
+    }
+
+    @GetMapping("/list/tradeId")
+    @SaCheckPermission("basic:goods:list")
+    public TableDataInfo<SkuMapVo> list(SkuBo bo, Long tradeId,PageQuery pageQuery) {
+        if(tradeId==null){
+            return skuService.queryPageList(bo, pageQuery);
+        }
+        Set<Long> skuIds = salesTradeDetailService.getSkuIds(tradeId);
+        return skuService.queryPageList(bo, pageQuery,skuIds);
     }
 
     /**

@@ -8,6 +8,8 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
+import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesTradeDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesTradeDetailVo;
@@ -15,10 +17,8 @@ import com.ruoyi.erp.sales.mapper.SalesTradeDetailMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
@@ -110,5 +110,12 @@ public class SalesTradeDetailService {
         }
         skuService.setSkuMap(details);
         return details;
+    }
+
+    public Set<Long> getSkuIds(Long pid) {
+        SalesTradeDetailBo salesTradeDetailBo = new SalesTradeDetailBo();
+        salesTradeDetailBo.setPid(pid);
+        List<SalesTradeDetailVo> salesTradeDetailVos = this.queryList(salesTradeDetailBo);
+        return salesTradeDetailVos.stream().map(SalesTradeDetailVo::getSkuId).collect(Collectors.toSet());
     }
 }

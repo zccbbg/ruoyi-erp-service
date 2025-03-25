@@ -86,7 +86,7 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
         lqw.eq(bo.getRefundStatus() != null, PurchaseTrade::getRefundStatus, bo.getRefundStatus());
         lqw.eq(bo.getBankAccountId() != null, PurchaseTrade::getBankAccountId, bo.getBankAccountId());
         lqw.eq(bo.getMerchantId() != null, PurchaseTrade::getMerchantId, bo.getMerchantId());
-        lqw.orderByDesc(BaseEntity::getUpdateTime);
+        lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }
 

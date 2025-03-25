@@ -10,10 +10,11 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface SkuMapper extends BaseMapperPlus<Sku, SkuVo> {
 
-    IPage<SkuMapVo> selectByBo(IPage<SkuVo> page, @Param("bo") SkuBo bo);
+    IPage<SkuMapVo> selectByBo(IPage<SkuVo> page, @Param("bo") SkuBo bo ,@Param("skuIds") Set<Long> skuIds);
 
     List<SkuMapVo> querySkuMapVos(Collection<Long> ids);
 

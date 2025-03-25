@@ -229,7 +229,7 @@ public class MerchantBalanceService {
         BigDecimal balanceChange;
         if(transType.equals(TransType.PURCHASE_RETURN)){
             //退款单余额变动等于实际付款金额
-            balanceChange = bo.getActualAmount();
+            balanceChange = bo.getActualAmount().negate();
         }else {
             balanceChange = paidAmount.subtract(actualAmount);
         }

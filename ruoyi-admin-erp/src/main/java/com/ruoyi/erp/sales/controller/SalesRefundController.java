@@ -1,7 +1,9 @@
 package com.ruoyi.erp.sales.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.ruoyi.common.core.constant.ServiceConstants;
 import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.excel.utils.ExcelUtil;
@@ -76,6 +78,7 @@ public class SalesRefundController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody SalesRefundBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         salesRefundService.insertByBo(bo);
         return R.ok();
     }
@@ -88,6 +91,7 @@ public class SalesRefundController extends BaseController {
     @RepeatSubmit()
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody SalesRefundBo bo) {
+        bo.setCheckedStatus(ServiceConstants.Status.PENDING);
         salesRefundService.updateByBo(bo);
         return R.ok();
     }
@@ -103,6 +107,21 @@ public class SalesRefundController extends BaseController {
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ids) {
         salesRefundService.deleteByIds(List.of(ids));
+        return R.ok();
+    }
+    /**
+     * 完成销售退货单
+     */
+    @SaCheckPermission("sales:refund:all")
+    @Log(title = "销售退货单", businessType = BusinessType.INSERT)
+    @RepeatSubmit()
+    @PostMapping("/pass")
+    public R<Void> pass(@Validated(AddGroup.class) @RequestBody SalesRefundBo bo) {
+        if(bo.getMerchantId()==null){
+            throw new ServiceException("请选择商家！");
+        }
+        bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        salesRefundService.pass(bo);
         return R.ok();
     }
 }
