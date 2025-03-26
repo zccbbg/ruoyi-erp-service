@@ -15,6 +15,7 @@ import com.ruoyi.erp.basic.domain.bo.SkuBo;
 import com.ruoyi.erp.basic.domain.vo.SkuMapVo;
 import com.ruoyi.erp.basic.domain.vo.SkuVo;
 import com.ruoyi.erp.basic.service.SkuService;
+import com.ruoyi.erp.purchase.service.PurchaseOrderDetailService;
 import com.ruoyi.erp.sales.mapper.SalesRefundDetailMapper;
 import com.ruoyi.erp.sales.service.SalesRefundDetailService;
 import com.ruoyi.erp.sales.service.SalesTradeDetailService;
@@ -35,6 +36,7 @@ public class SkuController extends BaseController {
 
     private final SkuService skuService;
     private final SalesTradeDetailService salesTradeDetailService;
+    private final PurchaseOrderDetailService purchaseOrderDetailService;
 
     /**
      * 查询sku信息列表
@@ -47,11 +49,20 @@ public class SkuController extends BaseController {
 
     @GetMapping("/list/tradeId")
     @SaCheckPermission("basic:goods:list")
-    public TableDataInfo<SkuMapVo> list(SkuBo bo, Long tradeId,PageQuery pageQuery) {
+    public TableDataInfo<SkuMapVo> listByTradeId(SkuBo bo,Long tradeId,PageQuery pageQuery) {
         if(tradeId==null){
             return skuService.queryPageList(bo, pageQuery);
         }
         Set<Long> skuIds = salesTradeDetailService.getSkuIds(tradeId);
+        return skuService.queryPageList(bo, pageQuery,skuIds);
+    }
+    @GetMapping("/list/orderId")
+    @SaCheckPermission("basic:goods:list")
+    public TableDataInfo<SkuMapVo> listByOrderId(SkuBo bo,Long orderId,PageQuery pageQuery) {
+        if(orderId==null){
+            return skuService.queryPageList(bo, pageQuery);
+        }
+        Set<Long> skuIds = purchaseOrderDetailService.getSkuIds(orderId);
         return skuService.queryPageList(bo, pageQuery,skuIds);
     }
 

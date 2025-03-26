@@ -20,10 +20,8 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.erp.purchase.mapper.PurchaseOrderDetailMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
@@ -118,5 +116,15 @@ public class PurchaseOrderDetailService {
             return;
         }
         saveOrUpdateBatch(list);
+    }
+
+    public Set<Long> getSkuIds(Long orderId) {
+        PurchaseOrderDetailBo bo = new PurchaseOrderDetailBo();
+        bo.setPid(orderId);
+        List<PurchaseOrderDetailVo> details = queryList(bo);
+        if (CollUtil.isEmpty(details)) {
+            return Collections.emptySet();
+        }
+        return details.stream().map(PurchaseOrderDetailVo::getSkuId).collect(Collectors.toSet());
     }
 }
