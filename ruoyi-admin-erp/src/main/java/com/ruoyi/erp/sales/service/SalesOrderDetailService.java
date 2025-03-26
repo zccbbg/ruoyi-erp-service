@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.baomidou.mybatisplus.extension.toolkit.Db.saveOrUpdateBatch;
 
@@ -104,5 +106,15 @@ public class SalesOrderDetailService extends BaseDocService<SalesOrderDetail> {
         }
         skuService.setSkuMap(details);
         return details;
+    }
+
+    public Set<Long> getSkuIds(Long orderId) {
+        SalesOrderDetailBo bo = new SalesOrderDetailBo();
+        bo.setPid(orderId);
+        List<SalesOrderDetailVo> details = queryList(bo);
+        if (CollUtil.isEmpty(details)) {
+            return Collections.emptySet();
+        }
+        return details.stream().map(SalesOrderDetailVo::getSkuId).collect(Collectors.toSet());
     }
 }

@@ -15,6 +15,7 @@ import com.ruoyi.erp.basic.service.SkuService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
 import com.ruoyi.erp.purchase.service.PurchaseTradeDetailService;
+import com.ruoyi.erp.sales.service.SalesOrderDetailService;
 import com.ruoyi.erp.warehouse.domain.bo.InventoryBo;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,6 +45,7 @@ public class InventoryController extends BaseController {
 
     private final InventoryService inventoryService;
     private final PurchaseTradeDetailService purchaseTradeDetailService;
+    private final SalesOrderDetailService salesOrderDetailService;
 
     /**
      * 查询库存列表商品维度
@@ -70,6 +72,16 @@ public class InventoryController extends BaseController {
             return inventoryService.queryWarehouseBoardList(bo, pageQuery);
         }else {
             Set<Long> skuIds = purchaseTradeDetailService.getSkuIds(tradeId);
+            return inventoryService.queryWarehouseBoardList(bo, pageQuery,skuIds);
+        }
+    }
+    @SaCheckPermission("wms:inventory:all")
+    @GetMapping("/boardList/warehouse/orderId")
+    public TableDataInfo<InventoryVo> queryWarehouseBoardListByOrderId(InventoryBo bo, Long orderId,PageQuery pageQuery) {
+        if(orderId == null){
+            return inventoryService.queryWarehouseBoardList(bo, pageQuery);
+        }else {
+            Set<Long> skuIds = salesOrderDetailService.getSkuIds(orderId);
             return inventoryService.queryWarehouseBoardList(bo, pageQuery,skuIds);
         }
     }
