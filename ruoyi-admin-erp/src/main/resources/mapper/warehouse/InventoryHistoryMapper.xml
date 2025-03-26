@@ -24,29 +24,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join basic_sku sku on history.sku_id=sku.id
         left join basic_goods goods on sku.goods_id=goods.id
         <where>
-            <if test="bo.optType != null">
-                history.opt_type=#{bo.optType}
+            <if test="query.optType != null">
+                history.opt_type=#{query.optType}
             </if>
-            <if test="bo.optNo != null and bo.optNo != ''">
-                and history.opt_no=#{bo.optNo}
+            <choose>
+                <when test="query.summaryType == 1">
+                    and history.qty &gt; 0
+                </when>
+                <when test="query.summaryType == -1">
+                    and history.qty &lt; 0
+                </when>
+            </choose>
+            <if test="query.optNo != null and query.optNo != ''">
+                and history.opt_no=#{query.optNo}
             </if>
-            <if test="bo.goodsName != null and bo.goodsName != ''">
-                and goods.goods_name like concat('%', #{bo.goodsName}, '%')
+            <if test="query.goodsName != null and query.goodsName != ''">
+                and goods.goods_name like concat('%', #{query.goodsName}, '%')
             </if>
-            <if test="bo.goodsNo != null and bo.goodsNo != ''">
-                and goods.goods_no like concat('%', #{bo.goodsNo}, '%')
+            <if test="query.goodsNo != null and query.goodsNo != ''">
+                and goods.goods_no like concat('%', #{query.goodsNo}, '%')
             </if>
-            <if test="bo.skuName != null and bo.skuName != ''">
-                and sku.sku_name like concat('%', #{bo.skuName}, '%')
+            <if test="query.skuName != null and query.skuName != ''">
+                and sku.sku_name like concat('%', #{query.skuName}, '%')
             </if>
-            <if test="bo.skuNo != null and bo.skuNo != ''">
-                and sku.sku_no like concat('%', #{bo.skuNo}, '%')
+            <if test="query.skuNo != null and query.skuNo != ''">
+                and sku.sku_no like concat('%', #{query.skuNo}, '%')
             </if>
-            <if test="bo.warehouseId != null">
-                and history.warehouse_id=#{bo.warehouseId}
+            <if test="query.warehouseId != null">
+                and history.warehouse_id=#{query.warehouseId}
             </if>
-            <if test="bo.startTime != null and bo.startTime != '' and bo.endTime != null and bo.endTime != ''">
-                and (history.create_time between #{bo.startTime} and #{bo.endTime})
+            <if test="query.startTime != null and query.startTime != '' and query.endTime != null and query.endTime != ''">
+                and (history.create_time between #{query.startTime} and #{query.endTime})
             </if>
         </where>
         order by history.create_time desc

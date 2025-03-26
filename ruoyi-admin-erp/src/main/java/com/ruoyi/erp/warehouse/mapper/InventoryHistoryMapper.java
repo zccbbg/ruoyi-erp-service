@@ -2,7 +2,7 @@ package com.ruoyi.erp.warehouse.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.erp.warehouse.domain.bo.InventoryHistoryBo;
+import com.ruoyi.erp.warehouse.domain.query.InventoryHistoryQuery;
 import com.ruoyi.erp.warehouse.domain.vo.InventoryHistoryVo;
 import com.ruoyi.erp.warehouse.domain.entity.InventoryHistory;
 import org.apache.ibatis.annotations.Param;
@@ -15,5 +15,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface InventoryHistoryMapper extends BaseMapperPlus<InventoryHistory, InventoryHistoryVo> {
 
-    Page<InventoryHistoryVo> selectVoPageByBo(Page<Object> page, @Param("bo") InventoryHistoryBo bo);
+    Page<InventoryHistoryVo> selectVoPageByBo(Page<Object> page, @Param("query") InventoryHistoryQuery query);
 }

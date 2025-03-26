@@ -12,6 +12,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.erp.warehouse.domain.bo.InventoryHistoryBo;
+import com.ruoyi.erp.warehouse.domain.query.InventoryHistoryQuery;
 import com.ruoyi.erp.warehouse.domain.vo.InventoryHistoryVo;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,8 +43,8 @@ public class InventoryHistoryController extends BaseController {
      */
     @SaCheckPermission("wms:inventoryHistory:all")
     @GetMapping("/list")
-    public TableDataInfo<InventoryHistoryVo> list(InventoryHistoryBo bo, PageQuery pageQuery) {
-        return inventoryHistoryService.queryPageList(bo, pageQuery);
+    public TableDataInfo<InventoryHistoryVo> list(InventoryHistoryQuery query, PageQuery pageQuery) {
+        return inventoryHistoryService.queryPageList(query, pageQuery);
     }
 
     /**

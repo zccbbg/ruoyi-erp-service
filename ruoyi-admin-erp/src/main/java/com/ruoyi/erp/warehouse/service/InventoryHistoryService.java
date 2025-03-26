@@ -10,6 +10,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.domain.bo.BaseDocBo;
 import com.ruoyi.erp.base.domain.bo.BaseDocDetailBo;
 import com.ruoyi.erp.warehouse.domain.bo.InventoryHistoryBo;
+import com.ruoyi.erp.warehouse.domain.query.InventoryHistoryQuery;
 import com.ruoyi.erp.warehouse.domain.vo.InventoryHistoryVo;
 import com.ruoyi.erp.warehouse.domain.entity.InventoryHistory;
 import com.ruoyi.erp.warehouse.mapper.InventoryHistoryMapper;
@@ -65,8 +66,8 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
     /**
      * 查询库存记录列表
      */
-    public TableDataInfo<InventoryHistoryVo> queryPageList(InventoryHistoryBo bo, PageQuery pageQuery) {
-        Page<InventoryHistoryVo> result = inventoryHistoryMapper.selectVoPageByBo(pageQuery.build(), bo);
+    public TableDataInfo<InventoryHistoryVo> queryPageList(InventoryHistoryQuery query, PageQuery pageQuery) {
+        Page<InventoryHistoryVo> result = inventoryHistoryMapper.selectVoPageByBo(pageQuery.build(), query);
         return TableDataInfo.build(result);
     }
 
