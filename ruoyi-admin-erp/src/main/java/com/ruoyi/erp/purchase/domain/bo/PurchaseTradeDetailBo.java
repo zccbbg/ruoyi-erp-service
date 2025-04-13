@@ -5,6 +5,9 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
+import com.ruoyi.erp.warehouse.domain.entity.Inventory;
+import com.ruoyi.erp.warehouse.domain.entity.OtherReceiptDocDetail;
+import io.github.linpeilie.annotations.AutoMappers;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
@@ -21,7 +24,10 @@ import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AutoMapper(target = PurchaseTradeDetail.class, reverseConvertGenerate = false)
+@AutoMappers({
+    @AutoMapper(target = PurchaseTradeDetail.class, reverseConvertGenerate = false),
+    @AutoMapper(target = Inventory.class, reverseConvertGenerate = false)
+})
 public class PurchaseTradeDetailBo extends BaseTradeDetailBo
 {
 
