@@ -74,6 +74,8 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
             PurchaseOrder::getDocDate ,params.get("beginDocDate"), params.get("endDocDate"));
         lqw.between(params.get("beginDeliveryDate") != null && params.get("endDeliveryDate") != null,
             PurchaseOrder::getDeliveryDate ,params.get("beginDeliveryDate"), params.get("endDeliveryDate"));
+        lqw.between(params.get("beginBillDate")!= null && params.get("endBillDate") != null,
+            PurchaseOrder::getDocDate, params.get("beginBillDate"), params.get("endBillDate"));
         lqw.eq(bo.getCheckedStatus() != null, PurchaseOrder::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getStockStatus() != null, PurchaseOrder::getStockStatus, bo.getStockStatus());
         lqw.orderByDesc(BaseEntity::getUpdateTime);

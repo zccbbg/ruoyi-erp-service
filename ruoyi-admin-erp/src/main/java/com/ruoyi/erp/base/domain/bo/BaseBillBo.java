@@ -1,7 +1,5 @@
 package com.ruoyi.erp.base.domain.bo;
 
-import com.ruoyi.erp.base.domain.entity.BaseBill;
-import com.ruoyi.erp.base.domain.entity.BaseDoc;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
