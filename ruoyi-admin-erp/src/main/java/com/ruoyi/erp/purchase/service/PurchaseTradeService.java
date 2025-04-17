@@ -80,6 +80,8 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
         lqw.eq(bo.getOrderId() != null, PurchaseTrade::getOrderId, bo.getOrderId());
         lqw.between(params.get("beginDocDate") != null && params.get("endDocDate") != null,
             PurchaseTrade::getDocDate ,params.get("beginDocDate"), params.get("endDocDate"));
+        lqw.between(params.get("beginBillDate") != null && params.get("endBillDate") != null,
+            PurchaseTrade::getDocDate ,params.get("beginBillDate"), params.get("endBillDate"));
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), PurchaseTrade::getDocNo, bo.getDocNo());
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), PurchaseTrade::getOrderNo, bo.getOrderNo());
         lqw.eq(bo.getCheckedStatus() != null, PurchaseTrade::getCheckedStatus, bo.getCheckedStatus());

@@ -20,7 +20,6 @@ import com.ruoyi.erp.sales.domain.entity.SalesTrade;
 import com.ruoyi.erp.sales.domain.entity.SalesTradeDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesTradeVo;
 import com.ruoyi.erp.sales.mapper.SalesTradeMapper;
-import com.ruoyi.erp.sales.service.SalesTradeDetailService;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -81,6 +80,8 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
         lqw.eq(bo.getOrderId() != null, SalesTrade::getOrderId, bo.getOrderId());
         lqw.between(params.get("beginDocDate") != null && params.get("endDocDate") != null,
             SalesTrade::getDocDate ,params.get("beginDocDate"), params.get("endDocDate"));
+        lqw.between(params.get("beginBillDate")!= null && params.get("endBillDate") != null,
+            SalesTrade::getDocNo, params.get("beginBillDate"), params.get("endBillDate"));
         lqw.eq(StringUtils.isNotBlank(bo.getDocNo()), SalesTrade::getDocNo, bo.getDocNo());
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), SalesTrade::getOrderNo, bo.getOrderNo());
         lqw.eq(bo.getCheckedStatus() != null, SalesTrade::getCheckedStatus, bo.getCheckedStatus());

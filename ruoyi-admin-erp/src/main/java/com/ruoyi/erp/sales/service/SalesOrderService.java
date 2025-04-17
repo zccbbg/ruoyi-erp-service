@@ -67,6 +67,8 @@ public class SalesOrderService extends BaseDocService<SalesOrderDetail> {
             SalesOrder::getDocDate ,params.get("beginDocDate"), params.get("endDocDate"));
         lqw.between(params.get("beginDeliveryDate") != null && params.get("endDeliveryDate") != null,
             SalesOrder::getDeliveryDate ,params.get("beginDeliveryDate"), params.get("endDeliveryDate"));
+        lqw.between(params.get("beginBillDate")!= null && params.get("endBillDate") != null,
+            SalesOrder::getDocNo, params.get("beginBillDate"), params.get("endBillDate"));
         lqw.eq(bo.getCheckedStatus() != null, SalesOrder::getCheckedStatus, bo.getCheckedStatus());
         lqw.eq(bo.getStockStatus() != null, SalesOrder::getStockStatus, bo.getStockStatus());
         lqw.orderByDesc(BaseEntity::getUpdateTime);

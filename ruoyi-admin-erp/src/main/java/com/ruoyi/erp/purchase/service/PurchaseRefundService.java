@@ -13,9 +13,7 @@ import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundDetailBo;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseRefundDetail;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
+import com.ruoyi.erp.purchase.domain.entity.*;
 import com.ruoyi.erp.purchase.mapper.PurchaseTradeMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
@@ -23,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
 import com.ruoyi.erp.purchase.domain.vo.PurchaseRefundVo;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseRefund;
 import com.ruoyi.erp.purchase.mapper.PurchaseRefundMapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,6 +88,8 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
         lqw.eq(bo.getDiscountAmount() != null, PurchaseRefund::getDiscountAmount, bo.getDiscountAmount());
         lqw.eq(bo.getActualAmount() != null, PurchaseRefund::getActualAmount, bo.getActualAmount());
         lqw.eq(bo.getPaidAmount() != null, PurchaseRefund::getPaidAmount, bo.getPaidAmount());
+        lqw.between(params.get("beginBillDate")!= null && params.get("endBillDate") != null,
+            PurchaseRefund::getDocDate, params.get("beginBillDate"), params.get("endBillDate"));
         lqw.orderByDesc(BaseEntity::getUpdateTime);
         return lqw;
     }

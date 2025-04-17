@@ -11,15 +11,11 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundDetailBo;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseRefund;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseRefundDetail;
 import com.ruoyi.erp.sales.domain.bo.SalesRefundBo;
 import com.ruoyi.erp.sales.domain.bo.SalesRefundDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesRefund;
 import com.ruoyi.erp.sales.domain.entity.SalesRefundDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesRefundVo;
-import com.ruoyi.erp.sales.domain.vo.SalesTradeVo;
 import com.ruoyi.erp.sales.mapper.SalesRefundMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
@@ -87,6 +83,8 @@ public class SalesRefundService extends BaseDocService<SalesRefundDetail> {
         lqw.eq(bo.getDiscountAmount() != null, SalesRefund::getDiscountAmount, bo.getDiscountAmount());
         lqw.eq(bo.getActualAmount() != null, SalesRefund::getActualAmount, bo.getActualAmount());
         lqw.eq(bo.getPaidAmount() != null, SalesRefund::getPaidAmount, bo.getPaidAmount());
+        lqw.between(params.get("beginBillDate")!= null && params.get("endBillDate") != null,
+            SalesRefund::getDocNo, params.get("beginBillDate"), params.get("endBillDate"));
         lqw.orderByDesc(SalesRefund::getCreateTime);
         return lqw;
     }
