@@ -8,8 +8,6 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.basic.service.SkuService;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
-import com.ruoyi.erp.purchase.domain.vo.PurchaseTradeDetailVo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesTradeDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesTradeDetailVo;

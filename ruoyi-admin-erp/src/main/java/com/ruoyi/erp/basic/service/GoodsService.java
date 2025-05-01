@@ -120,8 +120,12 @@ public class GoodsService {
         validateBoBeforeSave(bo);
         Goods goods = MapstructUtils.convert(bo, Goods.class);
         goodsMapper.insert(goods);
-        skuService.setGoodsId(bo.getSku(), goods.getId());
-        skuService.saveOrUpdateBatchByBo(bo.getSku());
+        List<SkuBo> skuList = bo.getSku();
+        Long goodsId = goods.getId();
+        skuList.forEach(skuBo -> {
+            skuBo.setGoodsId(goodsId);
+        });
+        skuService.saveOrUpdateBatchByBo(skuList);
     }
 
     /**
@@ -133,7 +137,11 @@ public class GoodsService {
     public void updateByForm(GoodsBo bo) {
         validateBoBeforeSave(bo);
         goodsMapper.updateById(MapstructUtils.convert(bo, Goods.class));
-        skuService.setGoodsId(bo.getSku(),bo.getId());
+        List<SkuBo> skuList = bo.getSku();
+        Long goodsId = bo.getId();
+        skuList.forEach(skuBo -> {
+            skuBo.setGoodsId(goodsId);
+        });
         skuService.saveOrUpdateBatchByBo(bo.getSku());
     }
 

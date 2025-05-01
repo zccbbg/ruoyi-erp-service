@@ -150,14 +150,6 @@ public class SkuService extends ServiceImpl<SkuMapper, Sku> {
         saveOrUpdateBatch(skuList);
     }
 
-    public void setGoodsId(List<SkuBo> itemSkuList, Long itemId) {
-        for (SkuBo skuBo : itemSkuList) {
-            if (StrUtil.isBlank(skuBo.getBarcode())) {
-                skuBo.setGoodsId(itemId);
-            }
-        }
-    }
-
     /**
      * 查询sku列表
      *
