@@ -192,12 +192,13 @@ public class MerchantBalanceService {
         BigDecimal paidAmount = Objects.requireNonNullElse(bo.getPaidAmount(), BigDecimal.ZERO);
         MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
         BigDecimal balanceChange;
+        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         if(transType.equals(TransType.PURCHASE_TRADE)){
+            transHistoryBo.setPaidAmount(paidAmount.negate());
             balanceChange = actualAmount.subtract(paidAmount);
         }else {
             balanceChange = paidAmount.subtract(actualAmount);
         }
-        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         transHistoryBo.setBalanceChange(balanceChange);
         this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
     }
@@ -227,13 +228,14 @@ public class MerchantBalanceService {
         BigDecimal paidAmount = Objects.requireNonNullElse(bo.getPaidAmount(), BigDecimal.ZERO);
         MerchantBalance merchantBalance = queryByMerchantId(bo.getMerchantId());
         BigDecimal balanceChange;
+        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         if(transType.equals(TransType.PURCHASE_RETURN)){
             balanceChange = actualAmount.subtract(paidAmount);
         }else {
+            transHistoryBo.setPaidAmount(paidAmount.negate());
             balanceChange = paidAmount.subtract(actualAmount);
         }
         //查询采购入库单
-        TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         transHistoryBo.setBalanceChange(balanceChange);
         transHistoryBo.setRelatedId(bo.getTradeId());
         this.updateBalance(merchantBalance, balanceChange, transHistoryBo);
