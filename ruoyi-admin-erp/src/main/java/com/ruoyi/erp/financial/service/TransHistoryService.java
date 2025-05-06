@@ -9,6 +9,7 @@ import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.erp.financial.domain.entity.PaymentVoucher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.financial.domain.bo.TransHistoryBo;
@@ -63,6 +64,8 @@ public class TransHistoryService {
         lqw.eq(bo.getBankAccountId() != null, TransHistory::getBankAccountId, bo.getBankAccountId());
         lqw.eq(StringUtils.isNotBlank(bo.getTransType()), TransHistory::getTransType, bo.getTransType());
         lqw.eq(StringUtils.isNotBlank(bo.getRelatedNo()), TransHistory::getRelatedNo, bo.getRelatedNo());
+        lqw.between(params.get("beginTransDate") != null && params.get("endTransDate") != null,
+            TransHistory::getCreateTime ,params.get("beginTransDate"), params.get("endTransDate"));
         lqw.orderByDesc(BaseHistoryEntity::getCreateTime);
         return lqw;
     }
