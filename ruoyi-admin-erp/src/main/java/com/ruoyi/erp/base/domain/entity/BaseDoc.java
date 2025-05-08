@@ -29,6 +29,7 @@ public class BaseDoc extends BaseEntity {
     /**
      * 单据日期
      */
+    @TableField(updateStrategy=FieldStrategy.ALWAYS)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate docDate;
 

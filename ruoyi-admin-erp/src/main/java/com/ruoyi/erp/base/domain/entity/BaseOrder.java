@@ -1,5 +1,7 @@
 package com.ruoyi.erp.base.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class BaseOrder extends BaseBill{
     /**
      * 交货日期
      */
+    @TableField(updateStrategy= FieldStrategy.ALWAYS)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate deliveryDate;
     /**
