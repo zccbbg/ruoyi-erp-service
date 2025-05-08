@@ -1,7 +1,7 @@
 package com.ruoyi.erp.warehouse.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ruoyi.common.core.constant.ServiceConstants;
+import com.ruoyi.erp.base.constant.ServiceConstants;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;

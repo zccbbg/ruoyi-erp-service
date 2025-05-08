@@ -2,7 +2,7 @@ package com.ruoyi.erp.financial.controller;
 
 import java.util.List;
 
-import com.ruoyi.common.core.constant.ServiceConstants;
+import com.ruoyi.erp.base.constant.ServiceConstants;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;

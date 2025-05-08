@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.constant;
+package com.ruoyi.erp.base.constant;
 
 public class ServiceConstants {
 
