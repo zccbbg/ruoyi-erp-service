@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.erp.base.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -24,6 +25,7 @@ import com.ruoyi.erp.purchase.domain.vo.PurchaseRefundVo;
 import com.ruoyi.erp.purchase.mapper.PurchaseRefundMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -44,7 +46,6 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
     private final PurchaseRefundDetailService purchaseRefundDetailService;
-    private final PurchaseTradeService purchaseTradeService;
     private final PurchaseTradeMapper purchaseTradeMapper;
 
 
@@ -149,7 +150,31 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
         merchantBalanceService.doRefund(bo, TransType.PURCHASE_RETURN);
         inventoryService.subtract(bo.getDetails());
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.PURCHASE_REFUND,true);
-        purchaseTradeService.refund(bo);
+        this.refund(bo);
 
+    }
+    private void refund(PurchaseRefundBo bo){
+        QueryWrapper<PurchaseTrade> qw = new QueryWrapper<>();
+        qw.eq("doc_no", bo.getTradeNo());
+        qw.eq("checked_status",1);
+        PurchaseTrade purchaseTrade = purchaseTradeMapper.selectOne(qw);
+        if(purchaseTrade !=null){
+            purchaseTrade.setRefundStatus(1);
+            //设置退款金额为入库单的实际付款金额
+            BigDecimal refundAmount = purchaseTrade.getRefundAmount();
+            if(refundAmount==null){
+                refundAmount = bo.getActualAmount();
+            }else {
+                refundAmount = refundAmount.add(bo.getActualAmount());
+            }
+            purchaseTrade.setRefundAmount(refundAmount);
+            purchaseTradeMapper.updateById(purchaseTrade);
+        }
+    }
+    public List<PurchaseRefund> getRefundNoByOrderNoAndOrderId(List<Long> idList, List<String> docNoList) {
+        QueryWrapper<PurchaseRefund> qw = new QueryWrapper<>();
+        qw.in("trade_no", docNoList);
+        qw.in("trade_id", idList);
+        return purchaseRefundMapper.selectList(qw);
     }
 }

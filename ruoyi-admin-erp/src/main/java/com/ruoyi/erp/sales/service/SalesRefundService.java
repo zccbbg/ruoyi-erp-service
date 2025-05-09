@@ -1,6 +1,7 @@
 package com.ruoyi.erp.sales.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.erp.base.constant.ServiceConstants;
@@ -15,13 +16,16 @@ import com.ruoyi.erp.sales.domain.bo.SalesRefundBo;
 import com.ruoyi.erp.sales.domain.bo.SalesRefundDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesRefund;
 import com.ruoyi.erp.sales.domain.entity.SalesRefundDetail;
+import com.ruoyi.erp.sales.domain.entity.SalesTrade;
 import com.ruoyi.erp.sales.domain.vo.SalesRefundVo;
 import com.ruoyi.erp.sales.mapper.SalesRefundMapper;
+import com.ruoyi.erp.sales.mapper.SalesTradeMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +44,8 @@ public class SalesRefundService extends BaseDocService<SalesRefundDetail> {
     private final MerchantBalanceService merchantBalanceService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
-    private final SalesTradeService salesTradeService;
     private final SalesRefundDetailService salesRefundDetailService;
+    private final SalesTradeMapper salesTradeMapper;
 
     /**
      * 查询销售退货单
@@ -146,8 +150,32 @@ public class SalesRefundService extends BaseDocService<SalesRefundDetail> {
         //添加库存记录
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.SALES_REFUND, true);
         //添加销售单
-        salesTradeService.refund(bo);
+        this.refund(bo);
 
 
+    }
+    private void refund(SalesRefundBo bo) {
+        QueryWrapper<SalesTrade> qw = new QueryWrapper<>();
+        qw.eq("doc_no", bo.getTradeNo());
+        qw.eq("checked_status",1);
+        SalesTrade salesTrade = salesTradeMapper.selectOne(qw);
+        if(salesTrade !=null){
+            salesTrade.setRefundStatus(1);
+            BigDecimal refundAmount = salesTrade.getRefundAmount();
+            if(refundAmount==null){
+                refundAmount = bo.getActualAmount();
+            }else {
+                refundAmount = refundAmount.add(bo.getActualAmount());
+            }
+            salesTrade.setRefundAmount(refundAmount);
+            salesTradeMapper.updateById(salesTrade);
+        }
+    }
+
+    public List<SalesRefund> getRefundNoByOrderNoAndOrderId(List<Long> idList, List<String> docNoList) {
+        QueryWrapper<SalesRefund> qw = new QueryWrapper<>();
+        qw.in("trade_no", docNoList);
+        qw.in("trade_id", idList);
+        return salesRefundMapper.selectList(qw);
     }
 }

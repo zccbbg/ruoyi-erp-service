@@ -1,27 +1,25 @@
 package com.ruoyi.erp.purchase.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ruoyi.common.core.utils.MapstructUtils;
-import com.ruoyi.common.mybatis.core.domain.BaseEntity;
-import com.ruoyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.common.mybatis.core.page.PageQuery;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ruoyi.common.core.utils.MapstructUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.mybatis.core.domain.BaseEntity;
+import com.ruoyi.common.mybatis.core.page.PageQuery;
+import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
+import com.ruoyi.erp.purchase.domain.vo.PurchaseOrderVo;
+import com.ruoyi.erp.purchase.mapper.PurchaseOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
-import com.ruoyi.erp.purchase.domain.vo.PurchaseOrderVo;
-import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
-import com.ruoyi.erp.purchase.mapper.PurchaseOrderMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -71,7 +69,7 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
                 strings = new LinkedList<>();
                 map.put(it.getOrderNo(), strings);
             }
-            strings.add(it.getOrderNo());
+            strings.add(it.getDocNo());
 
         });
         records.forEach(it -> {

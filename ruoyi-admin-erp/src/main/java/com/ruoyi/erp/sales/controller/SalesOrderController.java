@@ -121,4 +121,14 @@ public class SalesOrderController {
         salesOrderService.deleteByIds(List.of(ids));
         return R.ok();
     }
+    /**
+     * 根据id更新订单状态
+     */
+    @SaCheckPermission("sales:order:edit")
+    @Log(title = "销售订单", businessType = BusinessType.UPDATE)
+    @PostMapping("/finishStock")
+    public R<Void> finishStockById(@RequestParam Long id) {
+        salesOrderService.finishStockById(id);
+        return R.ok();
+    }
 }

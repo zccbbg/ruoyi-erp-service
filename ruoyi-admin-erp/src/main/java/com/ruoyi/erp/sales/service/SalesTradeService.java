@@ -4,21 +4,23 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ruoyi.erp.base.constant.ServiceConstants;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
+import com.ruoyi.erp.base.constant.ServiceConstants;
 import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
-import com.ruoyi.erp.sales.domain.bo.SalesRefundBo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeBo;
 import com.ruoyi.erp.sales.domain.bo.SalesTradeDetailBo;
+import com.ruoyi.erp.sales.domain.entity.SalesOrder;
+import com.ruoyi.erp.sales.domain.entity.SalesRefund;
 import com.ruoyi.erp.sales.domain.entity.SalesTrade;
 import com.ruoyi.erp.sales.domain.entity.SalesTradeDetail;
 import com.ruoyi.erp.sales.domain.vo.SalesTradeVo;
+import com.ruoyi.erp.sales.mapper.SalesOrderMapper;
 import com.ruoyi.erp.sales.mapper.SalesTradeMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
@@ -26,11 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 销售出库单Service业务层处理
@@ -47,6 +45,8 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     private final MerchantBalanceService merchantBalanceService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
+    private final SalesOrderMapper salesOrderMapper;
+    private final SalesRefundService salesRefundService;
 
     /**
      * 查询销售出库单
@@ -63,6 +63,29 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
     public TableDataInfo<SalesTradeVo> queryPageList(SalesTradeBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<SalesTrade> lqw = buildQueryWrapper(bo);
         Page<SalesTradeVo> result = salesTradeMapper.selectVoPage(pageQuery.build(), lqw);
+        List<Long> idList = new LinkedList<>();
+        List<String> docNoList = new LinkedList<>();
+        List<SalesTradeVo> records = result.getRecords();
+        records.forEach(it -> {
+            idList.add(it.getId());
+            docNoList.add(it.getDocNo());
+        });
+        List<SalesRefund> salesRefunds = salesRefundService.getRefundNoByOrderNoAndOrderId(idList, docNoList);
+        Map<String,List<String>> map = new HashMap<>();
+        salesRefunds.forEach(it -> {
+            List<String> strings = map.get(it.getTradeNo());
+            if(strings == null){
+                strings = new LinkedList<>();
+                map.put(it.getTradeNo(), strings);
+            }
+            strings.add(it.getDocNo());
+
+        });
+        records.forEach(it -> {
+            if(map.get(it.getDocNo()) != null){
+                it.setRefundNoList(map.get(it.getDocNo()));
+            }
+        });
         return TableDataInfo.build(result);
     }
 
@@ -141,23 +164,25 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
         merchantBalanceService.doTrade(bo, TransType.SALES_TRADE);
         inventoryService.subtract(bo.getDetails());
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.SALES,true);
+        this.updateSalesStockStatus(bo);
+    }
+    private void updateSalesStockStatus(SalesTradeBo bo) {
+        QueryWrapper<SalesOrder> qw = new QueryWrapper<>();
+        qw.eq("doc_no",  bo.getOrderNo());
+        qw.eq("checked_status",1);
+        SalesOrder salesOrder = salesOrderMapper.selectOne(qw);
+        if(salesOrder !=null){
+            salesOrder.setStockStatus(1);
+        }
+        salesOrderMapper.updateById(salesOrder);
     }
 
-    public void refund(SalesRefundBo bo) {
+
+
+    public List<SalesTrade> getTradeNoByOrderNoAndOrderId(List<Long> idList, List<String> docNoList) {
         QueryWrapper<SalesTrade> qw = new QueryWrapper<>();
-        qw.eq("doc_no", bo.getTradeNo());
-        qw.eq("checked_status",1);
-        SalesTrade salesTrade = salesTradeMapper.selectOne(qw);
-        if(salesTrade !=null){
-            salesTrade.setRefundStatus(1);
-            BigDecimal refundAmount = salesTrade.getRefundAmount();
-            if(refundAmount==null){
-                refundAmount = bo.getActualAmount();
-            }else {
-                refundAmount = refundAmount.add(bo.getActualAmount());
-            }
-            salesTrade.setRefundAmount(refundAmount);
-            salesTradeMapper.updateById(salesTrade);
-        }
+        qw.in("order_no", docNoList);
+        qw.in("order_id", idList);
+        return salesTradeMapper.selectList(qw);
     }
 }

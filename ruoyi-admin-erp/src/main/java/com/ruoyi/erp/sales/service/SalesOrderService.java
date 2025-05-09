@@ -11,27 +11,26 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
-
 import com.ruoyi.erp.sales.domain.bo.SalesOrderBo;
 import com.ruoyi.erp.sales.domain.bo.SalesOrderDetailBo;
 import com.ruoyi.erp.sales.domain.entity.SalesOrder;
 import com.ruoyi.erp.sales.domain.entity.SalesOrderDetail;
+import com.ruoyi.erp.sales.domain.entity.SalesTrade;
 import com.ruoyi.erp.sales.domain.vo.SalesOrderVo;
 import com.ruoyi.erp.sales.mapper.SalesOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 @RequiredArgsConstructor
 @Service
 public class SalesOrderService extends BaseDocService<SalesOrderDetail> {
     private final SalesOrderMapper salesOrderMapper;
     private final SalesOrderDetailService salesOrderDetailService;
     private final MerchantBalanceService merchantBalanceService;
+    private final SalesTradeService salesTradeService;
 
     /**
      * 查询销售订单
@@ -48,6 +47,29 @@ public class SalesOrderService extends BaseDocService<SalesOrderDetail> {
     public TableDataInfo<SalesOrderVo> queryPageList(SalesOrderBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<SalesOrder> lqw = buildQueryWrapper(bo);
         Page<SalesOrderVo> result = salesOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        List<Long> idList = new LinkedList<>();
+        List<String> docNoList = new LinkedList<>();
+        List<SalesOrderVo> records = result.getRecords();
+        records.forEach(it -> {
+            idList.add(it.getId());
+            docNoList.add(it.getDocNo());
+        });
+        List<SalesTrade> salesTrade = salesTradeService.getTradeNoByOrderNoAndOrderId(idList, docNoList);
+        Map<String,List<String>> map = new HashMap<>();
+        salesTrade.forEach(it -> {
+            List<String> strings = map.get(it.getOrderNo());
+            if(strings == null){
+                strings = new LinkedList<>();
+                map.put(it.getOrderNo(), strings);
+            }
+            strings.add(it.getDocNo());
+
+        });
+        records.forEach(it -> {
+            if(map.get(it.getDocNo()) != null){
+                it.setTradeNoList(map.get(it.getDocNo()));
+            }
+        });
         return TableDataInfo.build(result);
     }
 
@@ -125,5 +147,12 @@ public class SalesOrderService extends BaseDocService<SalesOrderDetail> {
         if(bo.getPrepayAmount()!=null && bo.getBankAccountId()!=null){
             merchantBalanceService.doOrder(bo, TransType.SALES_ORDER);
         }
+    }
+
+    public void finishStockById(Long id) {
+        SalesOrder salesOrder = salesOrderMapper.selectById(id);
+        //将状态设置为入库完成
+        salesOrder.setStockStatus(2);
+        salesOrderMapper.updateById(salesOrder);
     }
 }
