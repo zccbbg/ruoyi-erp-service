@@ -1,5 +1,6 @@
 package com.ruoyi.erp.purchase.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
@@ -12,7 +13,9 @@ import com.ruoyi.erp.base.service.BaseDocService;
 import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderDetailBo;
+import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeBo;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseOrderDetail;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseTrade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseOrderBo;
@@ -21,10 +24,7 @@ import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
 import com.ruoyi.erp.purchase.mapper.PurchaseOrderMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 采购订单Service业务层处理
@@ -39,6 +39,7 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
     private final PurchaseOrderMapper purchaseOrderMapper;
     private final PurchaseOrderDetailService purchaseOrderDetailService;
     private final MerchantBalanceService merchantBalanceService;
+    private final PurchaseTradeService purchaseTradeService;
 
     /**
      * 查询采购订单
@@ -55,6 +56,29 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
     public TableDataInfo<PurchaseOrderVo> queryPageList(PurchaseOrderBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<PurchaseOrder> lqw = buildQueryWrapper(bo);
         Page<PurchaseOrderVo> result = purchaseOrderMapper.selectVoPage(pageQuery.build(), lqw);
+        List<Long> idList = new LinkedList<>();
+        List<String> docNoList = new LinkedList<>();
+        List<PurchaseOrderVo> records = result.getRecords();
+        records.forEach(it -> {
+            idList.add(it.getId());
+            docNoList.add(it.getDocNo());
+        });
+        List<PurchaseTrade> purchaseTrades = purchaseTradeService.getTradeNoByOrderNoAndOrderId(idList, docNoList);
+        Map<String,List<String>> map = new HashMap<>();
+        purchaseTrades.forEach(it -> {
+            List<String> strings = map.get(it.getOrderNo());
+            if(strings == null){
+                strings = new LinkedList<>();
+                map.put(it.getOrderNo(), strings);
+            }
+            strings.add(it.getOrderNo());
+
+        });
+        records.forEach(it -> {
+            if(map.get(it.getDocNo()) != null){
+                it.setTradeNoList(map.get(it.getDocNo()));
+            }
+        });
         return TableDataInfo.build(result);
     }
 
@@ -132,5 +156,12 @@ public class PurchaseOrderService extends BaseDocService<PurchaseOrderDetail> {
         if(bo.getPrepayAmount()!=null && bo.getBankAccountId()!=null){
             merchantBalanceService.doOrder(bo, TransType.PURCHASE_ORDER);
         }
+    }
+
+    public void finishStockById(Long id) {
+        PurchaseOrder purchaseOrder = purchaseOrderMapper.selectById(id);
+        //将状态设置为入库完成
+        purchaseOrder.setStockStatus(2);
+        purchaseOrderMapper.updateById(purchaseOrder);
     }
 }

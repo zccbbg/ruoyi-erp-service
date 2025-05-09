@@ -15,7 +15,9 @@ import com.ruoyi.erp.basic.types.TransType;
 import com.ruoyi.erp.financial.service.MerchantBalanceService;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseRefundBo;
 import com.ruoyi.erp.purchase.domain.bo.PurchaseTradeDetailBo;
+import com.ruoyi.erp.purchase.domain.entity.PurchaseOrder;
 import com.ruoyi.erp.purchase.domain.entity.PurchaseTradeDetail;
+import com.ruoyi.erp.purchase.mapper.PurchaseOrderMapper;
 import com.ruoyi.erp.warehouse.service.InventoryHistoryService;
 import com.ruoyi.erp.warehouse.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,7 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
     private final MerchantBalanceService merchantBalanceService;
     private final InventoryService inventoryService;
     private final InventoryHistoryService inventoryHistoryService;
+    private final PurchaseOrderMapper purchaseOrderMapper;
 
     /**
      * 查询采购入库单
@@ -161,5 +164,25 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
         merchantBalanceService.doTrade(bo, TransType.PURCHASE_TRADE);
         inventoryService.add(bo.getDetails());
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.PURCHASE,true);
+        this.updateOrderStockStatus(bo);
+    }
+
+    private void updateOrderStockStatus(PurchaseTradeBo bo) {
+        QueryWrapper<PurchaseOrder> qw = new QueryWrapper<>();
+        qw.eq("doc_no",  bo.getOrderNo());
+        qw.eq("checked_status",1);
+        PurchaseOrder purchaseOrder = purchaseOrderMapper.selectOne(qw);
+        if(purchaseOrder !=null){
+            purchaseOrder.setStockStatus(1);
+        }
+        purchaseOrderMapper.updateById(purchaseOrder);
+    }
+
+    public List<PurchaseTrade> getTradeNoByOrderNoAndOrderId(List<Long> idList, List<String> orderNoList) {
+        QueryWrapper<PurchaseTrade> qw = new QueryWrapper<>();
+        qw.in("order_no", orderNoList);
+        qw.in("order_id", idList);
+        List<PurchaseTrade> purchaseTrades = purchaseTradeMapper.selectList(qw);
+        return purchaseTrades;
     }
 }

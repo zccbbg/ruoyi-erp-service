@@ -122,4 +122,15 @@ public class PurchaseOrderController extends BaseController {
         purchaseOrderService.deleteByIds(List.of(ids));
         return R.ok();
     }
+    /**
+     * 根据id更新订单状态
+     */
+    @SaCheckPermission("purchase:order:edit")
+    @Log(title = "采购订单", businessType = BusinessType.UPDATE)
+    @PostMapping("/finishStock")
+    public R<Void> finishStockById(@RequestParam Long id) {
+        purchaseOrderService.finishStockById(id);
+        return R.ok();
+    }
+
 }

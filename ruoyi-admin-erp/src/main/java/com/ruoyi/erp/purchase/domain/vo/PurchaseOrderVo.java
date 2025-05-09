@@ -15,6 +15,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 
 import java.io.Serializable;
 import java.io.Serial;
+import java.util.List;
 
 /**
  * 采购订单视图对象 purchase_order
@@ -26,5 +27,5 @@ import java.io.Serial;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = PurchaseOrder.class)
 public class PurchaseOrderVo extends BaseOrderVo<PurchaseOrderDetailVo> {
-
+    private List<String> tradeNoList;
 }
