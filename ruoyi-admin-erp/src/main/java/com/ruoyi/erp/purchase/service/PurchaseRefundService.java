@@ -26,10 +26,7 @@ import com.ruoyi.erp.purchase.mapper.PurchaseRefundMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 采购退货单Service业务层处理
@@ -172,6 +169,9 @@ public class PurchaseRefundService extends BaseDocService<PurchaseRefundDetail> 
         }
     }
     public List<PurchaseRefund> getRefundNoByOrderNoAndOrderId(List<Long> idList, List<String> docNoList) {
+        if(idList.isEmpty() || docNoList.isEmpty()){
+            return new LinkedList<>();
+        }
         QueryWrapper<PurchaseRefund> qw = new QueryWrapper<>();
         qw.in("trade_no", docNoList);
         qw.in("trade_id", idList);

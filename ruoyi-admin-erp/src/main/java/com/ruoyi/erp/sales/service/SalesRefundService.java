@@ -26,10 +26,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 销售退货单Service业务层处理
@@ -173,6 +170,9 @@ public class SalesRefundService extends BaseDocService<SalesRefundDetail> {
     }
 
     public List<SalesRefund> getRefundNoByOrderNoAndOrderId(List<Long> idList, List<String> docNoList) {
+        if(idList.isEmpty() || docNoList.isEmpty()){
+            return new LinkedList<>();
+        }
         QueryWrapper<SalesRefund> qw = new QueryWrapper<>();
         qw.in("trade_no", docNoList);
         qw.in("trade_id", idList);

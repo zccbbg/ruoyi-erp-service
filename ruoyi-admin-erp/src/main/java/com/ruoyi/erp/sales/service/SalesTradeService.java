@@ -180,6 +180,9 @@ public class SalesTradeService extends BaseDocService<SalesTradeDetail> {
 
 
     public List<SalesTrade> getTradeNoByOrderNoAndOrderId(List<Long> idList, List<String> docNoList) {
+        if(idList.isEmpty() || docNoList.isEmpty()){
+            return new LinkedList<>();
+        }
         QueryWrapper<SalesTrade> qw = new QueryWrapper<>();
         qw.in("order_no", docNoList);
         qw.in("order_id", idList);

@@ -182,6 +182,9 @@ public class PurchaseTradeService extends BaseDocService<PurchaseTradeDetail> {
     }
 
     public List<PurchaseTrade> getTradeNoByOrderNoAndOrderId(List<Long> idList, List<String> orderNoList) {
+        if(idList.isEmpty() || orderNoList.isEmpty()){
+            return new LinkedList<>();
+        }
         QueryWrapper<PurchaseTrade> qw = new QueryWrapper<>();
         qw.in("order_no", orderNoList);
         qw.in("order_id", idList);
