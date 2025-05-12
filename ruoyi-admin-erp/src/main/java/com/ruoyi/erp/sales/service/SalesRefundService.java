@@ -146,7 +146,7 @@ public class SalesRefundService extends BaseDocService<SalesRefundDetail> {
         inventoryService.add(bo.getDetails());
         //添加库存记录
         inventoryHistoryService.saveInventoryHistory(bo, ServiceConstants.InventoryHistoryBizType.SALES_REFUND, true);
-        //添加销售单
+        //添加销售退货单
         this.refund(bo);
 
 

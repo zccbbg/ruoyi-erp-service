@@ -230,10 +230,10 @@ public class MerchantBalanceService {
         BigDecimal balanceChange;
         TransHistoryBo transHistoryBo = this.getTransHistoryBo(bo, transType);
         if(transType.equals(TransType.PURCHASE_RETURN)){
-            balanceChange = actualAmount.subtract(paidAmount);
+            balanceChange = paidAmount.subtract(actualAmount);
         }else {
             transHistoryBo.setPaidAmount(paidAmount.negate());
-            balanceChange = paidAmount.subtract(actualAmount);
+            balanceChange = actualAmount.subtract(paidAmount);
         }
         //查询采购入库单
         transHistoryBo.setBalanceChange(balanceChange);
