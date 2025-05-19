@@ -91,6 +91,7 @@ public class SalesOrderController {
             throw new ServiceException("请选择商家！");
         }
         bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        bo.setStockStatus(ServiceConstants.Status.PENDING);
         salesOrderService.pass(bo);
         return R.ok();
     }

@@ -92,6 +92,7 @@ public class PurchaseOrderController extends BaseController {
             throw new ServiceException("请选择商家！");
         }
         bo.setCheckedStatus(ServiceConstants.Status.FINISH);
+        bo.setStockStatus(ServiceConstants.Status.PENDING);
         purchaseOrderService.pass(bo);
         return R.ok();
     }
