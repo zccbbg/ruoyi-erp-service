@@ -31,4 +31,8 @@ public class BaseBill extends BaseDoc {
      * 供应商id
      */
     private Long merchantId;
+    /**
+     * 预付金额
+     */
+    private BigDecimal prepayAmount;
 }

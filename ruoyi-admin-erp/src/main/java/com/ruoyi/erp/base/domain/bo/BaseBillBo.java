@@ -25,4 +25,8 @@ public class BaseBillBo<T extends BaseBillDetailBo> extends BaseDocBo<T> {
      * 供应商id
      */
     private Long merchantId;
+    /**
+     * 预付金额
+     */
+    private BigDecimal prepayAmount;
 }
