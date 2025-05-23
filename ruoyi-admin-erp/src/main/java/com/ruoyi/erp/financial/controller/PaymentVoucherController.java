@@ -53,7 +53,7 @@ public class PaymentVoucherController extends BaseController {
     /**
      * 导出付款单列表
      */
-    @SaCheckPermission("financial:paymentVoucher:export")
+    @SaCheckPermission("financial:paymentVoucher:list")
     @Log(title = "付款单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(PaymentVoucherBo bo, HttpServletResponse response) {
@@ -67,7 +67,7 @@ public class PaymentVoucherController extends BaseController {
      * @param id 主键
      */
 
-    @SaCheckPermission("financial:paymentVoucher:query")
+    @SaCheckPermission("financial:paymentVoucher:list")
     @GetMapping("/{id}")
     public R<PaymentVoucherVo> getInfo(@NotNull(message = "主键不能为空")
                                        @PathVariable Long id) {
@@ -77,7 +77,7 @@ public class PaymentVoucherController extends BaseController {
     /**
      * 新增付款单
      */
-    @SaCheckPermission("financial:paymentVoucher:add")
+    @SaCheckPermission("financial:paymentVoucher:list")
     @Log(title = "付款单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -90,7 +90,7 @@ public class PaymentVoucherController extends BaseController {
     /**
      * 修改付款单
      */
-    @SaCheckPermission("financial:paymentVoucher:edit")
+    @SaCheckPermission("financial:paymentVoucher:list")
     @Log(title = "付款单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -103,7 +103,7 @@ public class PaymentVoucherController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("financial:paymentVoucher:remove")
+    @SaCheckPermission("financial:paymentVoucher:list")
     @Log(title = "付款单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -116,7 +116,7 @@ public class PaymentVoucherController extends BaseController {
     /**
      * 付款完成
      */
-    @SaCheckPermission("financial:paymentVoucher:all")
+    @SaCheckPermission("financial:paymentVoucher:list")
     @Log(title = "付款单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping("/finish")

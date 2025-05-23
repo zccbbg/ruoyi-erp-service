@@ -49,7 +49,7 @@ public class ReceiptVoucherController extends BaseController {
     /**
      * 导出收款单列表
      */
-    @SaCheckPermission("financial:receiptVoucher:export")
+    @SaCheckPermission("financial:receiptVoucher:list")
     @Log(title = "收款单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(ReceiptVoucherBo bo, HttpServletResponse response) {
@@ -62,7 +62,7 @@ public class ReceiptVoucherController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("financial:receiptVoucher:query")
+    @SaCheckPermission("financial:receiptVoucher:list")
     @GetMapping("/{id}")
     public R<ReceiptVoucherVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -72,7 +72,7 @@ public class ReceiptVoucherController extends BaseController {
     /**
      * 新增收款单
      */
-    @SaCheckPermission("financial:receiptVoucher:add")
+    @SaCheckPermission("financial:receiptVoucher:list")
     @Log(title = "收款单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -85,7 +85,7 @@ public class ReceiptVoucherController extends BaseController {
     /**
      * 收款完成
      */
-    @SaCheckPermission("financial:receiptVoucher:all")
+    @SaCheckPermission("financial:receiptVoucher:list")
     @Log(title = "收款单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping("/finish")
@@ -98,7 +98,7 @@ public class ReceiptVoucherController extends BaseController {
     /**
      * 修改收款单
      */
-    @SaCheckPermission("financial:receiptVoucher:edit")
+    @SaCheckPermission("financial:receiptVoucher:list")
     @Log(title = "收款单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -112,7 +112,7 @@ public class ReceiptVoucherController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("financial:receiptVoucher:remove")
+    @SaCheckPermission("financial:receiptVoucher:list")
     @Log(title = "收款单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
