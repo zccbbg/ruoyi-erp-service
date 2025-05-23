@@ -117,7 +117,7 @@ sa-token:
   # token前缀
   token-prefix: "Bearer"
   # jwt秘钥
-  jwt-secret-key: abcdefghijklmnopqrstuvwxyz
+  jwt-secret-key: mnopqrstuvwxyzabcdefghijkl
 
 # security配置
 security:
