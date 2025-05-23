@@ -64,13 +64,9 @@ https://docs.ichengle.top/wms/open/ops2.html
 ## 演示图
 ![首页](docs/首页.png)
 ![大屏](docs/大屏.png)
-![入库单](docs/入库单.jpg)
-![编辑入库单](docs/编辑入库单.jpg)
 ![打印](docs/打印.jpg)
-![库存盘点](docs/库存盘点.jpg)
-![库存统计](docs/库存统计.jpg)
-![库存明细](docs/库存明细.jpg)
-![库存记录](docs/库存记录.jpg)
+![交易流水](docs/交易流水.png)
+![采购订单](docs/采购订单.png)
 
 ## 贡献代码
 
