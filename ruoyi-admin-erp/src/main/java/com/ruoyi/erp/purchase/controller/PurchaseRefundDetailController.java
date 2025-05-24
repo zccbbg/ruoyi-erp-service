@@ -39,7 +39,7 @@ public class PurchaseRefundDetailController extends BaseController {
     /**
      * 查询采购退货单明细列表
      */
-    @SaCheckPermission("purchase:refundDetail:list")
+    @SaCheckPermission("purchase:refund:all")
     @GetMapping("/list")
     public TableDataInfo<PurchaseRefundDetailVo> list(PurchaseRefundDetailBo bo, PageQuery pageQuery) {
         return purchaseRefundDetailService.queryPageList(bo, pageQuery);
@@ -48,7 +48,7 @@ public class PurchaseRefundDetailController extends BaseController {
     /**
      * 导出采购退货单明细列表
      */
-    @SaCheckPermission("purchase:refundDetail:export")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(PurchaseRefundDetailBo bo, HttpServletResponse response) {
@@ -61,7 +61,7 @@ public class PurchaseRefundDetailController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("purchase:refundDetail:query")
+    @SaCheckPermission("purchase:refund:all")
     @GetMapping("/{id}")
     public R<PurchaseRefundDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -71,7 +71,7 @@ public class PurchaseRefundDetailController extends BaseController {
     /**
      * 新增采购退货单明细
      */
-    @SaCheckPermission("purchase:refundDetail:add")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单明细", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -83,7 +83,7 @@ public class PurchaseRefundDetailController extends BaseController {
     /**
      * 修改采购退货单明细
      */
-    @SaCheckPermission("purchase:refundDetail:edit")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单明细", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -97,7 +97,7 @@ public class PurchaseRefundDetailController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("purchase:refundDetail:remove")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -105,7 +105,7 @@ public class PurchaseRefundDetailController extends BaseController {
         purchaseRefundDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
-    @SaCheckPermission("purchase:refundDetail:all")
+    @SaCheckPermission("purchase:refund:all")
     @GetMapping("/listByRefundId/{refundId}")
     public R<List<PurchaseRefundDetailVo>> listByRefundId(@NotNull @PathVariable Long refundId) {
         return R.ok(purchaseRefundDetailService.queryByPid(refundId));

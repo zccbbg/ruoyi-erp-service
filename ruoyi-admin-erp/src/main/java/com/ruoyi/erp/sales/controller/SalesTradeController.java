@@ -41,7 +41,7 @@ public class SalesTradeController extends BaseController {
     /**
      * 查询销售出库单列表
      */
-    @SaCheckPermission("sales:trade:list")
+    @SaCheckPermission("sales:trade:all")
     @GetMapping("/list")
     public TableDataInfo<SalesTradeVo> list(SalesTradeBo bo, PageQuery pageQuery) {
         return salesTradeService.queryPageList(bo, pageQuery);
@@ -50,7 +50,7 @@ public class SalesTradeController extends BaseController {
     /**
      * 导出销售出库单列表
      */
-    @SaCheckPermission("sales:trade:export")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesTradeBo bo, HttpServletResponse response) {
@@ -63,7 +63,7 @@ public class SalesTradeController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("sales:trade:query")
+    @SaCheckPermission("sales:trade:all")
     @GetMapping("/{id}")
     public R<SalesTradeVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -73,7 +73,7 @@ public class SalesTradeController extends BaseController {
     /**
      * 新增销售出库单
      */
-    @SaCheckPermission("sales:trade:add")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -86,7 +86,7 @@ public class SalesTradeController extends BaseController {
     /**
      * 修改销售出库单
      */
-    @SaCheckPermission("sales:trade:edit")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -101,7 +101,7 @@ public class SalesTradeController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("sales:trade:remove")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")

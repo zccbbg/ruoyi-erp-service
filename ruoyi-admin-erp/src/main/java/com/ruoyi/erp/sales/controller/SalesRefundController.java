@@ -41,7 +41,7 @@ public class SalesRefundController extends BaseController {
     /**
      * 查询销售退货单列表
      */
-    @SaCheckPermission("sales:refund:list")
+    @SaCheckPermission("sales:refund:all")
     @GetMapping("/list")
     public TableDataInfo<SalesRefundVo> list(SalesRefundBo bo, PageQuery pageQuery) {
         return salesRefundService.queryPageList(bo, pageQuery);
@@ -50,7 +50,7 @@ public class SalesRefundController extends BaseController {
     /**
      * 导出销售退货单列表
      */
-    @SaCheckPermission("sales:refund:export")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesRefundBo bo, HttpServletResponse response) {
@@ -63,7 +63,7 @@ public class SalesRefundController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("sales:refund:query")
+    @SaCheckPermission("sales:refund:all")
     @GetMapping("/{id}")
     public R<SalesRefundVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -73,7 +73,7 @@ public class SalesRefundController extends BaseController {
     /**
      * 新增销售退货单
      */
-    @SaCheckPermission("sales:refund:add")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -86,7 +86,7 @@ public class SalesRefundController extends BaseController {
     /**
      * 修改销售退货单
      */
-    @SaCheckPermission("sales:refund:edit")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -101,7 +101,7 @@ public class SalesRefundController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("sales:refund:remove")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")

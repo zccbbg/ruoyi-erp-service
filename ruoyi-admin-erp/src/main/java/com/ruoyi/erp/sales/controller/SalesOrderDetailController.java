@@ -35,7 +35,7 @@ public class SalesOrderDetailController {
     /**
      * 查询销售订单明细列表
      */
-    @SaCheckPermission("sales:orderDetail:list")
+    @SaCheckPermission("sales:order:all")
     @GetMapping("/list")
     public TableDataInfo<SalesOrderDetailVo> list(SalesOrderDetailBo bo, PageQuery pageQuery) {
         return salesOrderDetailService.queryPageList(bo, pageQuery);
@@ -44,7 +44,7 @@ public class SalesOrderDetailController {
     /**
      * 导出销售订单明细列表
      */
-    @SaCheckPermission("sales:orderDetail:export")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesOrderDetailBo bo, HttpServletResponse response) {
@@ -57,7 +57,7 @@ public class SalesOrderDetailController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("sales:orderDetail:query")
+    @SaCheckPermission("sales:order:all")
     @GetMapping("/{id}")
     public R<SalesOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                             @PathVariable Long id) {
@@ -67,7 +67,7 @@ public class SalesOrderDetailController {
     /**
      * 新增销售订单明细
      */
-    @SaCheckPermission("sales:orderDetail:add")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单明细", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -79,7 +79,7 @@ public class SalesOrderDetailController {
     /**
      * 修改销售订单明细
      */
-    @SaCheckPermission("sales:orderDetail:edit")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单明细", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -93,7 +93,7 @@ public class SalesOrderDetailController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("sales:orderDetail:remove")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -102,7 +102,7 @@ public class SalesOrderDetailController {
         return R.ok();
     }
 
-    @SaCheckPermission("sales:orderDetail:all")
+    @SaCheckPermission("sales:order:all")
     @GetMapping("/listByOrderId/{orderId}")
     public R<List<SalesOrderDetailVo>> listByOrderId(@NotNull @PathVariable Long orderId) {
         return R.ok(salesOrderDetailService.queryByPid(orderId));

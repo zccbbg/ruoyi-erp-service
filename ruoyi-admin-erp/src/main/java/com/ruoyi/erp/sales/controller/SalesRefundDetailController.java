@@ -40,7 +40,7 @@ public class SalesRefundDetailController extends BaseController {
     /**
      * 查询销售退货单明细列表
      */
-    @SaCheckPermission("sales:refundDetail:list")
+    @SaCheckPermission("sales:refund:all")
     @GetMapping("/list")
     public TableDataInfo<SalesRefundDetailVo> list(SalesRefundDetailBo bo, PageQuery pageQuery) {
         return SalesRefundDetailService.queryPageList(bo, pageQuery);
@@ -49,7 +49,7 @@ public class SalesRefundDetailController extends BaseController {
     /**
      * 导出销售退货单明细列表
      */
-    @SaCheckPermission("sales:refundDetail:export")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesRefundDetailBo bo, HttpServletResponse response) {
@@ -62,7 +62,7 @@ public class SalesRefundDetailController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("sales:refundDetail:query")
+    @SaCheckPermission("sales:refund:all")
     @GetMapping("/{id}")
     public R<SalesRefundDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -72,7 +72,7 @@ public class SalesRefundDetailController extends BaseController {
     /**
      * 新增销售退货单明细
      */
-    @SaCheckPermission("sales:refundDetail:add")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单明细", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -84,7 +84,7 @@ public class SalesRefundDetailController extends BaseController {
     /**
      * 修改销售退货单明细
      */
-    @SaCheckPermission("sales:refundDetail:edit")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单明细", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -98,7 +98,7 @@ public class SalesRefundDetailController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("sales:refundDetail:remove")
+    @SaCheckPermission("sales:refund:all")
     @Log(title = "销售退货单明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -106,7 +106,7 @@ public class SalesRefundDetailController extends BaseController {
         SalesRefundDetailService.deleteByIds(List.of(ids));
         return R.ok();
     }
-    @SaCheckPermission("sales:refundDetail:all")
+    @SaCheckPermission("sales:refund:all")
     @GetMapping("/listByRefundId/{refundId}")
     public R<List<SalesRefundDetailVo>> listByRefundId(@NotNull @PathVariable Long refundId) {
         return R.ok(salesRefundDetailService.queryByPid(refundId));

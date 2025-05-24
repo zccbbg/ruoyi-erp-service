@@ -40,7 +40,7 @@ public class SalesOrderController {
     /**
      * 分页查询销售订单列表
      */
-    @SaCheckPermission("sales:order:list")
+    @SaCheckPermission("sales:order:all")
     @GetMapping("/list")
     public TableDataInfo<SalesOrderVo> list(SalesOrderBo bo, PageQuery pageQuery) {
         return salesOrderService.queryPageList(bo, pageQuery);
@@ -49,7 +49,7 @@ public class SalesOrderController {
     /**
      * 导出销售订单列表
      */
-    @SaCheckPermission("sales:order:export")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesOrderBo bo, HttpServletResponse response) {
@@ -62,7 +62,7 @@ public class SalesOrderController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("sales:order:query")
+    @SaCheckPermission("sales:order:all")
     @GetMapping("/{id}")
     public R<SalesOrderVo> getInfo(@NotNull(message = "主键不能为空")
                                       @PathVariable Long id) {
@@ -72,7 +72,7 @@ public class SalesOrderController {
     /**
      * 新增销售订单
      */
-    @SaCheckPermission("sales:order:add")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -99,7 +99,7 @@ public class SalesOrderController {
     /**
      * 修改销售订单
      */
-    @SaCheckPermission("sales:order:edit")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -114,7 +114,7 @@ public class SalesOrderController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("sales:order:remove")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -125,7 +125,7 @@ public class SalesOrderController {
     /**
      * 根据id更新订单状态
      */
-    @SaCheckPermission("sales:order:edit")
+    @SaCheckPermission("sales:order:all")
     @Log(title = "销售订单", businessType = BusinessType.UPDATE)
     @PostMapping("/finishStock")
     public R<Void> finishStockById(@RequestParam Long id) {

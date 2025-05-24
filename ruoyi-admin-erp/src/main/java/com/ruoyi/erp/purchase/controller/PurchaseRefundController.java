@@ -41,7 +41,7 @@ public class PurchaseRefundController extends BaseController {
     /**
      * 查询采购退货单列表
      */
-    @SaCheckPermission("purchase:refund:list")
+    @SaCheckPermission("purchase:refund:all")
     @GetMapping("/list")
     public TableDataInfo<PurchaseRefundVo> list(PurchaseRefundBo bo, PageQuery pageQuery) {
         return purchaseRefundService.queryPageList(bo, pageQuery);
@@ -50,7 +50,7 @@ public class PurchaseRefundController extends BaseController {
     /**
      * 导出采购退货单列表
      */
-    @SaCheckPermission("purchase:refund:export")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(PurchaseRefundBo bo, HttpServletResponse response) {
@@ -63,7 +63,7 @@ public class PurchaseRefundController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("purchase:refund:query")
+    @SaCheckPermission("purchase:refund:all")
     @GetMapping("/{id}")
     public R<PurchaseRefundVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -73,7 +73,7 @@ public class PurchaseRefundController extends BaseController {
     /**
      * 新增采购退货单
      */
-    @SaCheckPermission("purchase:refund:add")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -86,7 +86,7 @@ public class PurchaseRefundController extends BaseController {
     /**
      * 修改采购退货单
      */
-    @SaCheckPermission("purchase:refund:edit")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -101,7 +101,7 @@ public class PurchaseRefundController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("purchase:refund:remove")
+    @SaCheckPermission("purchase:refund:all")
     @Log(title = "采购退货单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")

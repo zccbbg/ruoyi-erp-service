@@ -40,7 +40,7 @@ public class PurchaseOrderDetailController extends BaseController {
     /**
      * 查询采购订单明细列表
      */
-    @SaCheckPermission("purchase:orderDetail:list")
+    @SaCheckPermission("purchase:order:all")
     @GetMapping("/list")
     public TableDataInfo<PurchaseOrderDetailVo> list(PurchaseOrderDetailBo bo, PageQuery pageQuery) {
         return purchaseOrderDetailService.queryPageList(bo, pageQuery);
@@ -49,7 +49,7 @@ public class PurchaseOrderDetailController extends BaseController {
     /**
      * 导出采购订单明细列表
      */
-    @SaCheckPermission("purchase:orderDetail:export")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(PurchaseOrderDetailBo bo, HttpServletResponse response) {
@@ -62,7 +62,7 @@ public class PurchaseOrderDetailController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("purchase:orderDetail:query")
+    @SaCheckPermission("purchase:order:all")
     @GetMapping("/{id}")
     public R<PurchaseOrderDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -72,7 +72,7 @@ public class PurchaseOrderDetailController extends BaseController {
     /**
      * 新增采购订单明细
      */
-    @SaCheckPermission("purchase:orderDetail:add")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单明细", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -84,7 +84,7 @@ public class PurchaseOrderDetailController extends BaseController {
     /**
      * 修改采购订单明细
      */
-    @SaCheckPermission("purchase:orderDetail:edit")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单明细", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -98,7 +98,7 @@ public class PurchaseOrderDetailController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("purchase:orderDetail:remove")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -107,7 +107,7 @@ public class PurchaseOrderDetailController extends BaseController {
         return R.ok();
     }
 
-    @SaCheckPermission("purchase:orderDetail:all")
+    @SaCheckPermission("purchase:order:all")
     @GetMapping("/listByOrderId/{orderId}")
     public R<List<PurchaseOrderDetailVo>> listByOrderId(@NotNull @PathVariable Long orderId) {
         return R.ok(purchaseOrderDetailService.queryByPid(orderId));

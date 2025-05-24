@@ -40,7 +40,7 @@ public class SalesTradeDetailController extends BaseController {
     /**
      * 查询销售出库单明细列表
      */
-    @SaCheckPermission("sales:tradeDetail:list")
+    @SaCheckPermission("sales:trade:all")
     @GetMapping("/list")
     public TableDataInfo<SalesTradeDetailVo> list(SalesTradeDetailBo bo, PageQuery pageQuery) {
         return SalesTradeDetailService.queryPageList(bo, pageQuery);
@@ -49,7 +49,7 @@ public class SalesTradeDetailController extends BaseController {
     /**
      * 导出销售出库单明细列表
      */
-    @SaCheckPermission("sales:tradeDetail:export")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单明细", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(SalesTradeDetailBo bo, HttpServletResponse response) {
@@ -62,7 +62,7 @@ public class SalesTradeDetailController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("sales:tradeDetail:query")
+    @SaCheckPermission("sales:trade:all")
     @GetMapping("/{id}")
     public R<SalesTradeDetailVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -72,7 +72,7 @@ public class SalesTradeDetailController extends BaseController {
     /**
      * 新增销售出库单明细
      */
-    @SaCheckPermission("sales:tradeDetail:add")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单明细", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -84,7 +84,7 @@ public class SalesTradeDetailController extends BaseController {
     /**
      * 修改销售出库单明细
      */
-    @SaCheckPermission("sales:tradeDetail:edit")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单明细", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -98,7 +98,7 @@ public class SalesTradeDetailController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("sales:tradeDetail:remove")
+    @SaCheckPermission("sales:trade:all")
     @Log(title = "销售出库单明细", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -107,7 +107,7 @@ public class SalesTradeDetailController extends BaseController {
         return R.ok();
     }
 
-    @SaCheckPermission("sales:tradeDetail:all")
+    @SaCheckPermission("sales:trade:all")
     @GetMapping("/listByTradeId/{tradeId}")
     public R<List<SalesTradeDetailVo>> listByTradeId(@NotNull @PathVariable Long tradeId) {
         return R.ok(SalesTradeDetailService.queryByPid(tradeId));

@@ -41,7 +41,7 @@ public class PurchaseTradeController extends BaseController {
     /**
      * 查询采购入库单列表
      */
-    @SaCheckPermission("purchase:trade:list")
+    @SaCheckPermission("purchase:trade:all")
     @GetMapping("/list")
     public TableDataInfo<PurchaseTradeVo> list(PurchaseTradeBo bo, PageQuery pageQuery) {
         return purchaseTradeService.queryPageList(bo, pageQuery);
@@ -50,7 +50,7 @@ public class PurchaseTradeController extends BaseController {
     /**
      * 导出采购入库单列表
      */
-    @SaCheckPermission("purchase:trade:export")
+    @SaCheckPermission("purchase:trade:all")
     @Log(title = "采购入库单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(PurchaseTradeBo bo, HttpServletResponse response) {
@@ -63,7 +63,7 @@ public class PurchaseTradeController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("purchase:trade:query")
+    @SaCheckPermission("purchase:trade:all")
     @GetMapping("/{id}")
     public R<PurchaseTradeVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -73,7 +73,7 @@ public class PurchaseTradeController extends BaseController {
     /**
      * 新增采购入库单
      */
-    @SaCheckPermission("purchase:trade:add")
+    @SaCheckPermission("purchase:trade:all")
     @Log(title = "采购入库单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -86,7 +86,7 @@ public class PurchaseTradeController extends BaseController {
     /**
      * 修改采购入库单
      */
-    @SaCheckPermission("purchase:trade:edit")
+    @SaCheckPermission("purchase:trade:all")
     @Log(title = "采购入库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -101,7 +101,7 @@ public class PurchaseTradeController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("purchase:trade:remove")
+    @SaCheckPermission("purchase:trade:all")
     @Log(title = "采购入库单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")

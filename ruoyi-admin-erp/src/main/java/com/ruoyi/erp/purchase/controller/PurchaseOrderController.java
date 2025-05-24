@@ -41,7 +41,7 @@ public class PurchaseOrderController extends BaseController {
     /**
      * 查询采购订单列表
      */
-    @SaCheckPermission("purchase:order:list")
+    @SaCheckPermission("purchase:order:all")
     @GetMapping("/list")
     public TableDataInfo<PurchaseOrderVo> list(PurchaseOrderBo bo, PageQuery pageQuery) {
         return purchaseOrderService.queryPageList(bo, pageQuery);
@@ -50,7 +50,7 @@ public class PurchaseOrderController extends BaseController {
     /**
      * 导出采购订单列表
      */
-    @SaCheckPermission("purchase:order:export")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(PurchaseOrderBo bo, HttpServletResponse response) {
@@ -63,7 +63,7 @@ public class PurchaseOrderController extends BaseController {
      *
      * @param id 主键
      */
-    @SaCheckPermission("purchase:order:query")
+    @SaCheckPermission("purchase:order:all")
     @GetMapping("/{id}")
     public R<PurchaseOrderVo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable Long id) {
@@ -73,7 +73,7 @@ public class PurchaseOrderController extends BaseController {
     /**
      * 新增采购订单
      */
-    @SaCheckPermission("purchase:order:add")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单", businessType = BusinessType.INSERT)
     @RepeatSubmit()
     @PostMapping()
@@ -100,7 +100,7 @@ public class PurchaseOrderController extends BaseController {
     /**
      * 修改采购订单
      */
-    @SaCheckPermission("purchase:order:edit")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping()
@@ -115,7 +115,7 @@ public class PurchaseOrderController extends BaseController {
      *
      * @param ids 主键串
      */
-    @SaCheckPermission("purchase:order:remove")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
@@ -126,7 +126,7 @@ public class PurchaseOrderController extends BaseController {
     /**
      * 根据id更新订单状态
      */
-    @SaCheckPermission("purchase:order:edit")
+    @SaCheckPermission("purchase:order:all")
     @Log(title = "采购订单", businessType = BusinessType.UPDATE)
     @PostMapping("/finishStock")
     public R<Void> finishStockById(@RequestParam Long id) {
