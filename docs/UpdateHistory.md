@@ -1,5 +1,5 @@
-## 2024年
-ruoyi-erp 2.0版本发布，基于jdk17和vue3。
+## 2025年
+ruoyi-erp 发布，基于jdk17和vue3。
 
 ## 2024年
 ruoyi-wms 2.0版本发布，基于jdk17和vue3。
