@@ -308,7 +308,8 @@ public class SysLoginService {
      */
     private void checkLogin(LoginType loginType, String username, Supplier<Boolean> supplier) {
         String clientIP = ServletUtils.getClientIP();
-        String errorKey = CacheConstants.PWD_ERR_CNT_KEY + username+":"+clientIP;
+        // erp 演示账号按 IP 区分错误次数，其他账号按用户名全局统计
+        String errorKey = CacheConstants.PWD_ERR_CNT_KEY + username + ("erp".equals(username) ? ":" + clientIP : "");
         String loginFail = Constants.LOGIN_FAIL;
 
         // 获取用户登录错误次数，默认为0 (可自定义限制策略 例如: key + username + ip)
