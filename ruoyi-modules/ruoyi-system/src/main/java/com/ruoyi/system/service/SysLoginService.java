@@ -51,6 +51,7 @@ public class SysLoginService {
     private final SysPermissionService permissionService;
     private final SysRoleService roleService;
     private final SysDeptService deptService;
+    private final FeishuSecurityAlertService feishuSecurityAlertService;
 
     @Value("${user.password.maxRetryCount}")
     private Integer maxRetryCount;
@@ -264,6 +265,7 @@ public class SysLoginService {
             RedisUtils.deleteObject(errorKey);
             recordLogininfor(username, Constants.LOGIN_FAIL,
                 MessageUtils.message("user.captcha.ip.blocked", captchaIpLockTime));
+            feishuSecurityAlertService.sendCaptchaIpBlockAlert(username, clientIp, captchaIpMaxRetryCount, captchaIpLockTime);
             return true;
         }
         return false;

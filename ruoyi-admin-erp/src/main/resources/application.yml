@@ -27,6 +27,12 @@ captcha:
   # 字符验证码长度
   charLength: 4
 
+# 飞书机器人配置
+feishu:
+  bot:
+    # 通过部署环境变量配置，避免将机器人 Webhook 写入代码仓库
+    webhook: ${FEISHU_BOT_WEBHOOK:}
+
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
