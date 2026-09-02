@@ -11,6 +11,12 @@ ruoyi:
 
 captcha:
   enable: true
+  # 单个 IP 在统计窗口内允许的验证码失败次数
+  ipMaxRetryCount: 15
+  # 验证码失败次数统计窗口（分钟）
+  ipRetryWindow: 10
+  # 验证码失败 IP 封禁时间（分钟）
+  ipLockTime: 1440
   # 页面 <参数设置> 可开启关闭 验证码校验
   # 验证码类型 math 数组计算 char 字符验证
   type: MATH

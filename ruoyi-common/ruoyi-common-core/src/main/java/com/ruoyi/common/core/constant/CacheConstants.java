@@ -18,6 +18,16 @@ public interface CacheConstants {
     String CAPTCHA_CODE_KEY = "captcha_codes:";
 
     /**
+     * 验证码失败次数 redis key
+     */
+    String CAPTCHA_ERR_CNT_KEY = "captcha_err_cnt:";
+
+    /**
+     * 验证码失败 IP 封禁 redis key
+     */
+    String CAPTCHA_IP_BLOCK_KEY = "captcha_ip_block:";
+
+    /**
      * 参数管理 cache key
      */
     String SYS_CONFIG_KEY = "sys_config:";

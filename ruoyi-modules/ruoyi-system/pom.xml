@@ -88,6 +88,11 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-ratelimiter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common-doc</artifactId>
         </dependency>
 

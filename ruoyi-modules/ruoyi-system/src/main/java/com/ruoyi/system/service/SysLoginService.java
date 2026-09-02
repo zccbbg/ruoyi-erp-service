@@ -58,6 +58,15 @@ public class SysLoginService {
     @Value("${user.password.lockTime}")
     private Integer lockTime;
 
+    @Value("${captcha.ipMaxRetryCount}")
+    private Integer captchaIpMaxRetryCount;
+
+    @Value("${captcha.ipRetryWindow}")
+    private Integer captchaIpRetryWindow;
+
+    @Value("${captcha.ipLockTime}")
+    private Integer captchaIpLockTime;
+
     /**
      * 登录验证
      *
@@ -203,17 +212,61 @@ public class SysLoginService {
      * @param uuid     唯一标识
      */
     public void validateCaptcha(String username, String code, String uuid) {
+        checkCaptchaIpBlock();
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
         String captcha = RedisUtils.getCacheObject(verifyKey);
         RedisUtils.deleteObject(verifyKey);
         if (captcha == null) {
+            if (recordCaptchaFailure(username)) {
+                throw new UserException("user.captcha.ip.blocked", captchaIpLockTime);
+            }
             recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire"));
             throw new CaptchaExpireException();
         }
         if (!code.equalsIgnoreCase(captcha)) {
+            if (recordCaptchaFailure(username)) {
+                throw new UserException("user.captcha.ip.blocked", captchaIpLockTime);
+            }
             recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error"));
             throw new CaptchaException();
         }
+    }
+
+    /**
+     * 校验当前客户端 IP 是否因验证码失败次数过多而被封禁。
+     *
+     * @return 无返回值；IP 已封禁时抛出用户异常
+     */
+    private void checkCaptchaIpBlock() {
+        String clientIp = ServletUtils.getClientIP();
+        String blockKey = CacheConstants.CAPTCHA_IP_BLOCK_KEY + clientIp;
+        if (RedisUtils.isExistsObject(blockKey)) {
+            throw new UserException("user.captcha.ip.blocked", captchaIpLockTime);
+        }
+    }
+
+    /**
+     * 记录当前客户端 IP 的验证码失败次数，并在达到阈值时封禁该 IP。
+     *
+     * @param username 本次登录请求的用户名，用于记录触发封禁的登录日志
+     * @return 是否达到封禁阈值
+     */
+    private boolean recordCaptchaFailure(String username) {
+        String clientIp = ServletUtils.getClientIP();
+        String errorKey = CacheConstants.CAPTCHA_ERR_CNT_KEY + clientIp;
+        long errorNumber = RedisUtils.incrAtomicValue(errorKey);
+        if (errorNumber == 1) {
+            RedisUtils.expire(errorKey, Duration.ofMinutes(captchaIpRetryWindow));
+        }
+        if (errorNumber >= captchaIpMaxRetryCount) {
+            RedisUtils.setCacheObject(CacheConstants.CAPTCHA_IP_BLOCK_KEY + clientIp, Boolean.TRUE,
+                Duration.ofMinutes(captchaIpLockTime));
+            RedisUtils.deleteObject(errorKey);
+            recordLogininfor(username, Constants.LOGIN_FAIL,
+                MessageUtils.message("user.captcha.ip.blocked", captchaIpLockTime));
+            return true;
+        }
+        return false;
     }
 
     private SysUserVo loadUserByUsername(String username) {
