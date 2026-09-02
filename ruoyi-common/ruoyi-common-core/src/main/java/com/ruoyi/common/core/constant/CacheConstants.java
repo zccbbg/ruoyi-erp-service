@@ -51,4 +51,14 @@ public interface CacheConstants {
      * 登录账户密码错误次数 redis key
      */
     String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
+
+    /**
+     * 登录 IP 密码错误次数 redis key
+     */
+    String PWD_ERR_IP_CNT_KEY = "pwd_err_ip_cnt:";
+
+    /**
+     * 登录 IP 密码错误封禁 redis key
+     */
+    String PWD_ERR_IP_BLOCK_KEY = "pwd_err_ip_block:";
 }

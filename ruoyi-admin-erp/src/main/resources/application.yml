@@ -69,6 +69,10 @@ user:
     maxRetryCount: 5
     # 密码锁定时间（分钟）
     lockTime: 1440
+    # 单个 IP 在统计窗口内允许的密码错误次数
+    ipMaxRetryCount: 10
+    # 单个 IP 密码错误次数统计窗口（分钟）
+    ipRetryWindow: 20
 
 # Spring配置
 spring:

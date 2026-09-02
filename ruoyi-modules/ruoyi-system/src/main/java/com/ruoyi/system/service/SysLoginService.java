@@ -59,6 +59,12 @@ public class SysLoginService {
     @Value("${user.password.lockTime}")
     private Integer lockTime;
 
+    @Value("${user.password.ipMaxRetryCount}")
+    private Integer passwordIpMaxRetryCount;
+
+    @Value("${user.password.ipRetryWindow}")
+    private Integer passwordIpRetryWindow;
+
     @Value("${captcha.ipMaxRetryCount}")
     private Integer captchaIpMaxRetryCount;
 
@@ -363,6 +369,9 @@ public class SysLoginService {
      */
     private void checkLogin(LoginType loginType, String username, Supplier<Boolean> supplier) {
         String clientIP = ServletUtils.getClientIP();
+        if (LoginType.PASSWORD == loginType) {
+            checkPasswordIpBlock(clientIP);
+        }
         // erp 演示账号按 IP 区分错误次数，其他账号按用户名全局统计
         String errorKey = CacheConstants.PWD_ERR_CNT_KEY + username + ("erp".equals(username) ? ":" + clientIP : "");
         String loginFail = Constants.LOGIN_FAIL;
@@ -376,6 +385,9 @@ public class SysLoginService {
         }
 
         if (supplier.get()) {
+            if (LoginType.PASSWORD == loginType && recordPasswordIpFailure(username, clientIP)) {
+                throw new UserException("user.password.ip.blocked", lockTime);
+            }
             // 错误次数递增
             errorNumber++;
             RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
@@ -392,5 +404,42 @@ public class SysLoginService {
 
         // 登录成功 清空错误次数
         RedisUtils.deleteObject(errorKey);
+    }
+
+    /**
+     * 校验当前客户端 IP 是否因密码错误次数过多而被封禁。
+     *
+     * @param clientIp 当前客户端 IP
+     * @return 无返回值；IP 已封禁时抛出用户异常
+     */
+    private void checkPasswordIpBlock(String clientIp) {
+        if (RedisUtils.isExistsObject(CacheConstants.PWD_ERR_IP_BLOCK_KEY + clientIp)) {
+            throw new UserException("user.password.ip.blocked", lockTime);
+        }
+    }
+
+    /**
+     * 记录当前客户端 IP 的密码错误次数，并在达到阈值时封禁该 IP。
+     *
+     * @param username 本次登录请求的用户名，用于记录封禁日志和发送告警
+     * @param clientIp 当前客户端 IP
+     * @return 是否达到封禁阈值
+     */
+    private boolean recordPasswordIpFailure(String username, String clientIp) {
+        String errorKey = CacheConstants.PWD_ERR_IP_CNT_KEY + clientIp;
+        long errorNumber = RedisUtils.incrAtomicValue(errorKey);
+        if (errorNumber == 1) {
+            RedisUtils.expire(errorKey, Duration.ofMinutes(passwordIpRetryWindow));
+        }
+        if (errorNumber >= passwordIpMaxRetryCount) {
+            RedisUtils.setCacheObject(CacheConstants.PWD_ERR_IP_BLOCK_KEY + clientIp, Boolean.TRUE,
+                Duration.ofMinutes(lockTime));
+            RedisUtils.deleteObject(errorKey);
+            recordLogininfor(username, Constants.LOGIN_FAIL,
+                MessageUtils.message("user.password.ip.blocked", lockTime));
+            feishuSecurityAlertService.sendPasswordIpBlockAlert(username, clientIp, passwordIpMaxRetryCount, lockTime);
+            return true;
+        }
+        return false;
     }
 }

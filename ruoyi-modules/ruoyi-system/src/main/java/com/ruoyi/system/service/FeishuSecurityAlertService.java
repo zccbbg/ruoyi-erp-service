@@ -32,10 +32,38 @@ public class FeishuSecurityAlertService {
      */
     @Async
     public void sendCaptchaIpBlockAlert(String username, String clientIp, Integer retryCount, Integer lockTime) {
+        sendIpBlockAlert("验证码", username, clientIp, retryCount, lockTime);
+    }
+
+    /**
+     * 发送密码失败 IP 封禁告警。
+     *
+     * @param username 本次请求填写的用户名
+     * @param clientIp 触发封禁的客户端 IP
+     * @param retryCount 触发封禁的密码失败次数
+     * @param lockTime IP 封禁时长，单位分钟
+     * @return 无返回值
+     */
+    @Async
+    public void sendPasswordIpBlockAlert(String username, String clientIp, Integer retryCount, Integer lockTime) {
+        sendIpBlockAlert("密码", username, clientIp, retryCount, lockTime);
+    }
+
+    /**
+     * 发送 IP 封禁告警消息。
+     *
+     * @param failureType 触发封禁的失败类型
+     * @param username 本次请求填写的用户名
+     * @param clientIp 触发封禁的客户端 IP
+     * @param retryCount 触发封禁的失败次数
+     * @param lockTime IP 封禁时长，单位分钟
+     * @return 无返回值
+     */
+    private void sendIpBlockAlert(String failureType, String username, String clientIp, Integer retryCount, Integer lockTime) {
         if (StringUtils.isBlank(webhook)) {
             return;
         }
-        String content = "【ERP 安全告警】验证码失败次数达到封禁阈值\n"
+        String content = "【ERP 安全告警】" + failureType + "错误次数达到封禁阈值\n"
             + "IP：" + clientIp + "\n"
             + "用户名：" + username + "\n"
             + "失败次数：" + retryCount + "\n"

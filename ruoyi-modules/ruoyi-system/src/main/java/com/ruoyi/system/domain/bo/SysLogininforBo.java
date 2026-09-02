@@ -30,6 +30,11 @@ public class SysLogininforBo {
     private String userName;
 
     /**
+     * 是否排除演示账号
+     */
+    private Boolean excludeDemoAccount;
+
+    /**
      * 设备类型
      */
     private String deviceType;

@@ -96,6 +96,7 @@ public class SysLogininforService {
             .like(StringUtils.isNotBlank(logininfor.getIpaddr()), SysLogininfor::getIpaddr, logininfor.getIpaddr())
             .eq(StringUtils.isNotBlank(logininfor.getStatus()), SysLogininfor::getStatus, logininfor.getStatus())
             .like(StringUtils.isNotBlank(logininfor.getUserName()), SysLogininfor::getUserName, logininfor.getUserName())
+            .ne(Boolean.TRUE.equals(logininfor.getExcludeDemoAccount()), SysLogininfor::getUserName, "erp")
             .between(params.get("beginTime") != null && params.get("endTime") != null,
                 SysLogininfor::getLoginTime, params.get("beginTime"), params.get("endTime"));
         if (StringUtils.isBlank(pageQuery.getOrderByColumn())) {
@@ -129,6 +130,7 @@ public class SysLogininforService {
             .like(StringUtils.isNotBlank(logininfor.getIpaddr()), SysLogininfor::getIpaddr, logininfor.getIpaddr())
             .eq(StringUtils.isNotBlank(logininfor.getStatus()), SysLogininfor::getStatus, logininfor.getStatus())
             .like(StringUtils.isNotBlank(logininfor.getUserName()), SysLogininfor::getUserName, logininfor.getUserName())
+            .ne(Boolean.TRUE.equals(logininfor.getExcludeDemoAccount()), SysLogininfor::getUserName, "erp")
             .between(params.get("beginTime") != null && params.get("endTime") != null,
                 SysLogininfor::getLoginTime, params.get("beginTime"), params.get("endTime"))
             .orderByDesc(SysLogininfor::getInfoId));
