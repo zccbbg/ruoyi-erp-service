@@ -50,12 +50,6 @@
             <artifactId>ruoyi-common-ratelimiter</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-generator</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
