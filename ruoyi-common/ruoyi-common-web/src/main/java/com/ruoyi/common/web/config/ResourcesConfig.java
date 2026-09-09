@@ -2,6 +2,7 @@ package com.ruoyi.common.web.config;
 
 import com.ruoyi.common.web.handler.GlobalExceptionHandler;
 import com.ruoyi.common.web.interceptor.PlusWebInvokeTimeInterceptor;
+import com.ruoyi.common.web.service.FeishuExceptionNotifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
@@ -55,7 +56,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
      * 全局异常处理器
      */
     @Bean
-    public GlobalExceptionHandler globalExceptionHandler() {
-        return new GlobalExceptionHandler();
+    public GlobalExceptionHandler globalExceptionHandler(FeishuExceptionNotifier feishuExceptionNotifier) {
+        return new GlobalExceptionHandler(feishuExceptionNotifier);
     }
 }
