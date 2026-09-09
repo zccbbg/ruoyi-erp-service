@@ -37,7 +37,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 文件上传 服务层实现
@@ -47,6 +49,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class SysOssService implements OssService {
+
+    private static final Set<String> ALLOWED_UPLOAD_SUFFIXES = Set.of(
+        "bmp", "gif", "jpg", "jpeg", "png",
+        "pdf",
+        "doc", "docx", "xls", "xlsx", "ppt", "pptx"
+    );
 
     private final SysOssMapper ossMapper;
 
@@ -127,16 +135,18 @@ public class SysOssService implements OssService {
 
     public SysOssVo upload(MultipartFile file) {
         String originalfileName = file.getOriginalFilename();
-        String suffix = StringUtils.substring(originalfileName, originalfileName.lastIndexOf("."), originalfileName.length());
+        String suffix = getFileSuffix(originalfileName);
         OssClient storage = OssFactory.instance();
         UploadResult uploadResult;
         try {
-            uploadResult = storage.uploadSuffix(file.getBytes(), suffix, file.getContentType());
+            byte[] fileBytes = file.getBytes();
+            validateUploadFile(fileBytes, suffix);
+            uploadResult = storage.uploadSuffix(fileBytes, "." + suffix, getContentTypeBySuffix(suffix));
         } catch (IOException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException("读取上传文件失败");
         }
         // 保存文件信息
-        return buildResultEntity(originalfileName, suffix, storage.getConfigKey(), uploadResult);
+        return buildResultEntity(originalfileName, "." + suffix, storage.getConfigKey(), uploadResult);
     }
 
     public SysOssVo upload(File file) {
@@ -146,6 +156,115 @@ public class SysOssService implements OssService {
         UploadResult uploadResult = storage.uploadSuffix(file, suffix);
         // 保存文件信息
         return buildResultEntity(originalfileName, suffix, storage.getConfigKey(), uploadResult);
+    }
+
+    /**
+     * 方法用途：获取并规范化上传文件的扩展名。
+     * 参数：originalFileName 为客户端提交的原始文件名。
+     * 返回值：不包含点号的小写扩展名。
+     */
+    private String getFileSuffix(String originalFileName) {
+        if (StringUtils.isBlank(originalFileName)) {
+            throw new ServiceException("文件名不能为空");
+        }
+        int suffixIndex = originalFileName.lastIndexOf('.');
+        if (suffixIndex < 1 || suffixIndex == originalFileName.length() - 1) {
+            throw new ServiceException("文件扩展名不合法");
+        }
+        return originalFileName.substring(suffixIndex + 1).toLowerCase(Locale.ROOT);
+    }
+
+    /**
+     * 方法用途：校验上传文件的扩展名、文件大小和二进制文件头。
+     * 参数：fileBytes 为上传文件内容；suffix 为规范化后的扩展名。
+     * 返回值：无；校验失败时抛出业务异常。
+     */
+    private void validateUploadFile(byte[] fileBytes, String suffix) {
+        if (!ALLOWED_UPLOAD_SUFFIXES.contains(suffix)) {
+            throw new ServiceException("不支持的文件类型");
+        }
+        if (fileBytes.length == 0) {
+            throw new ServiceException("上传文件不能为空");
+        }
+        if (!isFileSignatureValid(fileBytes, suffix)) {
+            throw new ServiceException("文件内容与扩展名不匹配");
+        }
+    }
+
+    /**
+     * 方法用途：验证上传文件的魔数是否符合其允许的文件类型。
+     * 参数：fileBytes 为上传文件内容；suffix 为规范化后的扩展名。
+     * 返回值：文件头合法时返回 true，否则返回 false。
+     */
+    private boolean isFileSignatureValid(byte[] fileBytes, String suffix) {
+        return switch (suffix) {
+            case "jpg", "jpeg" -> hasFileHeader(fileBytes, 0xFF, 0xD8, 0xFF);
+            case "png" -> hasFileHeader(fileBytes, 0x89, 0x50, 0x4E, 0x47);
+            case "gif" -> hasFileHeader(fileBytes, "GIF87a".getBytes()) || hasFileHeader(fileBytes, "GIF89a".getBytes());
+            case "bmp" -> hasFileHeader(fileBytes, 0x42, 0x4D);
+            case "pdf" -> hasFileHeader(fileBytes, 0x25, 0x50, 0x44, 0x46, 0x2D);
+            case "doc", "xls", "ppt" -> hasFileHeader(fileBytes, 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1);
+            case "docx", "xlsx", "pptx" -> hasFileHeader(fileBytes, 0x50, 0x4B, 0x03, 0x04)
+                || hasFileHeader(fileBytes, 0x50, 0x4B, 0x05, 0x06)
+                || hasFileHeader(fileBytes, 0x50, 0x4B, 0x07, 0x08);
+            default -> false;
+        };
+    }
+
+    /**
+     * 方法用途：比对文件内容是否以指定的二进制文件头开头。
+     * 参数：fileBytes 为上传文件内容；header 为预期文件头字节。
+     * 返回值：文件头完全匹配时返回 true，否则返回 false。
+     */
+    private boolean hasFileHeader(byte[] fileBytes, int... header) {
+        if (fileBytes.length < header.length) {
+            return false;
+        }
+        for (int index = 0; index < header.length; index++) {
+            if ((fileBytes[index] & 0xFF) != header[index]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 方法用途：比对文件内容是否以指定的字节数组文件头开头。
+     * 参数：fileBytes 为上传文件内容；header 为预期文件头字节数组。
+     * 返回值：文件头完全匹配时返回 true，否则返回 false。
+     */
+    private boolean hasFileHeader(byte[] fileBytes, byte[] header) {
+        if (fileBytes.length < header.length) {
+            return false;
+        }
+        for (int index = 0; index < header.length; index++) {
+            if (fileBytes[index] != header[index]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 方法用途：根据受信任的扩展名确定对象存储使用的 MIME 类型。
+     * 参数：suffix 为规范化后的扩展名。
+     * 返回值：服务端确定的 MIME 类型。
+     */
+    private String getContentTypeBySuffix(String suffix) {
+        return switch (suffix) {
+            case "bmp" -> "image/bmp";
+            case "gif" -> "image/gif";
+            case "jpg", "jpeg" -> "image/jpeg";
+            case "png" -> "image/png";
+            case "pdf" -> "application/pdf";
+            case "doc" -> "application/msword";
+            case "docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            case "xls" -> "application/vnd.ms-excel";
+            case "xlsx" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            case "ppt" -> "application/vnd.ms-powerpoint";
+            case "pptx" -> "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+            default -> throw new ServiceException("不支持的文件类型");
+        };
     }
 
     private SysOssVo buildResultEntity(String originalfileName, String suffix, String configKey, UploadResult uploadResult) {

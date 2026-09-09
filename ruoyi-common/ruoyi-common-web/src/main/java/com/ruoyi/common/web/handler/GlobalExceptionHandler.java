@@ -5,11 +5,14 @@ import cn.hutool.http.HttpStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.exception.base.BaseException;
+import com.ruoyi.common.core.utils.ServletUtils;
 import com.ruoyi.common.core.utils.StreamUtils;
+import com.ruoyi.common.web.service.FeishuExceptionNotifier;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindException;
@@ -27,8 +30,11 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  * @author Lion Li
  */
 @Slf4j
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final FeishuExceptionNotifier feishuExceptionNotifier;
 
     /**
      * 请求方式不支持
@@ -111,7 +117,8 @@ public class GlobalExceptionHandler {
     public R<Void> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return R.fail(e.getMessage());
+        notifyServerError(request, e);
+        return R.fail("系统繁忙，请稍后再试");
     }
 
     /**
@@ -121,7 +128,8 @@ public class GlobalExceptionHandler {
     public R<Void> handleException(Exception e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
-        return R.fail(e.getMessage());
+        notifyServerError(request, e);
+        return R.fail("系统繁忙，请稍后再试");
     }
 
     /**
@@ -152,6 +160,20 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage());
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
         return R.fail(message);
+    }
+
+    /**
+     * 方法用途：通知飞书服务端未知异常，避免向客户端暴露内部异常详情。
+     * 参数：request 为当前 HTTP 请求；throwable 为待告警的异常对象。
+     * 返回值：无。
+     */
+    private void notifyServerError(HttpServletRequest request, Throwable throwable) {
+        feishuExceptionNotifier.notifyServerError(
+            request.getMethod(),
+            request.getRequestURI(),
+            ServletUtils.getClientIP(),
+            throwable
+        );
     }
 
 }
