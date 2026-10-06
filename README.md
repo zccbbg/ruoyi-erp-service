@@ -22,10 +22,13 @@
 #### github
 [https://github.com/zccbbg/ruoyi-erp-vue](https://github.com/zccbbg/ruoyi-erp-vue)
 
-## 若依实战技术专栏
-关注文末公众号回复：星球
 
 ## 在线体验
+http://erp.ichengle.top/
+
+|                  小程序                   |
+|:--------------------------------------:|
+| <img src="docs/xcx.jpg" width="200px"> |
 
 ## 若依erp功能
 1. 首页：库存预警与到期提醒、基础数据报表展示
